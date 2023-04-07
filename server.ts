@@ -1,1 +1,3 @@
-console.log("New server");
+import { serve } from "./deps.ts"
+
+serve(() => new Response("Hello World!"))
