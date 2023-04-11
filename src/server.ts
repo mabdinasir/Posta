@@ -1,4 +1,4 @@
-import { serve } from "../src/deps";
+import { serve } from "../src/deps.ts";
 
 serve(() => new Response("Hello World!"));
 

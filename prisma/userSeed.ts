@@ -36,9 +36,23 @@ const users: Prisma.UserCreateInput[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
     },
+    {
+        email: "jama@gmail.com",
+        firstName: "Jama",
+        lastName: "Gedi",
+        isDeleted: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+    },
 ];
 
-for (const u of users) {
+const existingUsers = await prisma.user.findMany();
+const existingUserEmails = existingUsers.map((u) => u.email);
+const newUsers = users.filter((u) => !existingUserEmails.includes(u.email));
+
+console.log(`Seeding started...`);
+
+for (const u of newUsers) {
     const user = await prisma.user.create({
         data: u,
     });
