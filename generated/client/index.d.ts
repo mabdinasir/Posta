@@ -25,6 +25,7 @@ export type User = {
   isDeleted: boolean
   createdAt: Date
   updatedAt: Date | null
+  updatedBy: string | null
 }
 
 
@@ -819,6 +820,7 @@ export namespace Prisma {
     isDeleted: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
+    updatedBy: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -830,6 +832,7 @@ export namespace Prisma {
     isDeleted: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
+    updatedBy: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -841,6 +844,7 @@ export namespace Prisma {
     isDeleted: number
     createdAt: number
     updatedAt: number
+    updatedBy: number
     _all: number
   }
 
@@ -862,6 +866,7 @@ export namespace Prisma {
     isDeleted?: true
     createdAt?: true
     updatedAt?: true
+    updatedBy?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -873,6 +878,7 @@ export namespace Prisma {
     isDeleted?: true
     createdAt?: true
     updatedAt?: true
+    updatedBy?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -884,6 +890,7 @@ export namespace Prisma {
     isDeleted?: true
     createdAt?: true
     updatedAt?: true
+    updatedBy?: true
     _all?: true
   }
 
@@ -983,6 +990,7 @@ export namespace Prisma {
     isDeleted: boolean
     createdAt: Date
     updatedAt: Date | null
+    updatedBy: string | null
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -1013,6 +1021,7 @@ export namespace Prisma {
     isDeleted?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    updatedBy?: boolean
   }
 
 
@@ -1770,7 +1779,8 @@ export namespace Prisma {
     lastName: 'lastName',
     isDeleted: 'isDeleted',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -1793,6 +1803,7 @@ export namespace Prisma {
     isDeleted?: BoolFilter | boolean
     createdAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeNullableFilter | Date | string | null
+    updatedBy?: StringNullableFilter | string | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -1804,6 +1815,7 @@ export namespace Prisma {
     isDeleted?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    updatedBy?: SortOrder
   }
 
   export type UserWhereUniqueInput = {
@@ -1820,6 +1832,7 @@ export namespace Prisma {
     isDeleted?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    updatedBy?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -1839,6 +1852,7 @@ export namespace Prisma {
     isDeleted?: BoolWithAggregatesFilter | boolean
     createdAt?: DateTimeWithAggregatesFilter | Date | string
     updatedAt?: DateTimeNullableWithAggregatesFilter | Date | string | null
+    updatedBy?: StringNullableWithAggregatesFilter | string | null
   }
 
   export type UserCreateInput = {
@@ -1849,6 +1863,7 @@ export namespace Prisma {
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string | null
+    updatedBy?: string | null
   }
 
   export type UserUncheckedCreateInput = {
@@ -1860,6 +1875,7 @@ export namespace Prisma {
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string | null
+    updatedBy?: string | null
   }
 
   export type UserUpdateInput = {
@@ -1870,6 +1886,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateInput = {
@@ -1881,6 +1898,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserCreateManyInput = {
@@ -1892,6 +1910,7 @@ export namespace Prisma {
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string | null
+    updatedBy?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -1902,6 +1921,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -1913,6 +1933,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type IntFilter = {
@@ -1968,6 +1989,21 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter | Date | string | null
   }
 
+  export type StringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | string | null
+    notIn?: Enumerable<string> | string | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    mode?: QueryMode
+    not?: NestedStringNullableFilter | string | null
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
@@ -1977,6 +2013,7 @@ export namespace Prisma {
     isDeleted?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    updatedBy?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -1992,6 +2029,7 @@ export namespace Prisma {
     isDeleted?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    updatedBy?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -2003,6 +2041,7 @@ export namespace Prisma {
     isDeleted?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    updatedBy?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -2079,6 +2118,24 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter
   }
 
+  export type StringNullableWithAggregatesFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | string | null
+    notIn?: Enumerable<string> | string | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedStringNullableFilter
+    _max?: NestedStringNullableFilter
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -2093,6 +2150,10 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -2153,6 +2214,20 @@ export namespace Prisma {
     gt?: Date | string
     gte?: Date | string
     not?: NestedDateTimeNullableFilter | Date | string | null
+  }
+
+  export type NestedStringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | string | null
+    notIn?: Enumerable<string> | string | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableFilter | string | null
   }
 
   export type NestedIntWithAggregatesFilter = {
@@ -2244,6 +2319,23 @@ export namespace Prisma {
     gt?: number
     gte?: number
     not?: NestedIntNullableFilter | number | null
+  }
+
+  export type NestedStringNullableWithAggregatesFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | string | null
+    notIn?: Enumerable<string> | string | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableWithAggregatesFilter | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedStringNullableFilter
+    _max?: NestedStringNullableFilter
   }
 
 

@@ -111,7 +111,8 @@ exports.Prisma.UserScalarFieldEnum = {
   lastName: 'lastName',
   isDeleted: 'isDeleted',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy'
 };
 
 
