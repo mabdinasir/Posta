@@ -6,7 +6,9 @@ interface User {
 	lastName: string;
 	isDeleted?: boolean;
 	createdAt?: Date | string;
-	updatedAt?: Date | string | null;
+	createdBy?: string;
+	updatedAt: Date | string;
+	updatedBy?: string;
 }
 
 export default User;
