@@ -13,13 +13,13 @@ datasource db {
 }
 
 model User {
-  id          String      @id @default(uuid())
+  id          String      @unique @id @default(uuid())
   email       String      @unique
   password    String
   firstName    String
   lastName    String
-  isDeleted   Boolean     @default(false)
-  createdAt   DateTime    @default(now())
+  isDeleted   Boolean?     @default(false)
+  createdAt   DateTime?    @default(now())
   createdBy   String?
   updatedAt   DateTime?   @updatedAt
   updatedBy   String?

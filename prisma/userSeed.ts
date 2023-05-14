@@ -1,5 +1,5 @@
-import { Prisma, PrismaClient } from "../generated/client/deno/edge.ts";
 import { config } from "https://deno.land/std@0.163.0/dotenv/mod.ts";
+import { PrismaClient } from "../generated/client/deno/edge.ts";
 
 const envVars = await config();
 
@@ -16,12 +16,6 @@ const users = [
 		email: "johndoe@example.com",
 		password: "password123",
 		firstName: "John",
-		lastName: "Doe",
-	},
-	{
-		email: "janedoe@example.com",
-		password: "secret",
-		firstName: "Jane",
 		lastName: "Doe",
 	},
 ];
