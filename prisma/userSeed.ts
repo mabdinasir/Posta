@@ -20,7 +20,7 @@ const users = [
 	},
 ];
 
-async function seed() {
+async function seedUser() {
 	for (const user of users) {
 		const newUser = await prisma.user.create({
 			data: user,
@@ -29,7 +29,38 @@ async function seed() {
 	}
 }
 
-seed()
+seedUser()
+	.catch((e) => console.error(e))
+	.finally(async () => {
+		await prisma.$disconnect();
+	});
+
+
+const userTypes = [
+	{
+		type: "Admin",
+	},
+	{
+		type: "customer",
+	},
+	{
+		type: "manager",
+	},
+	{
+		type: "employee",
+	},
+];
+
+async function seedUserType() {
+	for (const userType of userTypes) {
+		const newUserType = await prisma.userType.create({
+			data: userType,
+		});
+		console.log(`Created userType with id: ${newUserType.id}`);
+	}
+}
+
+seedUserType()
 	.catch((e) => console.error(e))
 	.finally(async () => {
 		await prisma.$disconnect();

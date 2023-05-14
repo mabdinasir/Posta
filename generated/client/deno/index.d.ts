@@ -19,13 +19,28 @@ export type PrismaPromise<T> = runtime.Types.Public.PrismaPromise<T>
 export type User = {
   id: string
   email: string
-  password: string
+  password: string | null
   firstName: string
   lastName: string
+  isGoogleAuth: boolean | null
+  isEmailVerified: boolean | null
   isDeleted: boolean | null
+  isSignedIn: boolean | null
   createdAt: Date | null
-  createdBy: string | null
   updatedAt: Date | null
+  updatedBy: string | null
+  userTypeId: string | null
+}
+
+/**
+ * Model UserType
+ * 
+ */
+export type UserType = {
+  id: string
+  type: string
+  createdAt: Date
+  updatedAt: Date
   updatedBy: string | null
 }
 
@@ -156,6 +171,16 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<GlobalReject>;
+
+  /**
+   * `prisma.userType`: Exposes CRUD operations for the **UserType** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UserTypes
+    * const userTypes = await prisma.userType.findMany()
+    * ```
+    */
+  get userType(): Prisma.UserTypeDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
@@ -625,7 +650,8 @@ export namespace Prisma {
 
 
   export const ModelName: {
-    User: 'User'
+    User: 'User',
+    UserType: 'UserType'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -786,6 +812,48 @@ export namespace Prisma {
    */
 
 
+  /**
+   * Count Type UserTypeCountOutputType
+   */
+
+
+  export type UserTypeCountOutputType = {
+    User: number
+  }
+
+  export type UserTypeCountOutputTypeSelect = {
+    User?: boolean
+  }
+
+  export type UserTypeCountOutputTypeGetPayload<S extends boolean | null | undefined | UserTypeCountOutputTypeArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? UserTypeCountOutputType :
+    S extends undefined ? never :
+    S extends { include: any } & (UserTypeCountOutputTypeArgs)
+    ? UserTypeCountOutputType 
+    : S extends { select: any } & (UserTypeCountOutputTypeArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+    P extends keyof UserTypeCountOutputType ? UserTypeCountOutputType[P] : never
+  } 
+      : UserTypeCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * UserTypeCountOutputType without action
+   */
+  export type UserTypeCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the UserTypeCountOutputType
+     */
+    select?: UserTypeCountOutputTypeSelect | null
+  }
+
+
 
   /**
    * Models
@@ -808,11 +876,14 @@ export namespace Prisma {
     password: string | null
     firstName: string | null
     lastName: string | null
+    isGoogleAuth: boolean | null
+    isEmailVerified: boolean | null
     isDeleted: boolean | null
+    isSignedIn: boolean | null
     createdAt: Date | null
-    createdBy: string | null
     updatedAt: Date | null
     updatedBy: string | null
+    userTypeId: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -821,11 +892,14 @@ export namespace Prisma {
     password: string | null
     firstName: string | null
     lastName: string | null
+    isGoogleAuth: boolean | null
+    isEmailVerified: boolean | null
     isDeleted: boolean | null
+    isSignedIn: boolean | null
     createdAt: Date | null
-    createdBy: string | null
     updatedAt: Date | null
     updatedBy: string | null
+    userTypeId: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -834,11 +908,14 @@ export namespace Prisma {
     password: number
     firstName: number
     lastName: number
+    isGoogleAuth: number
+    isEmailVerified: number
     isDeleted: number
+    isSignedIn: number
     createdAt: number
-    createdBy: number
     updatedAt: number
     updatedBy: number
+    userTypeId: number
     _all: number
   }
 
@@ -849,11 +926,14 @@ export namespace Prisma {
     password?: true
     firstName?: true
     lastName?: true
+    isGoogleAuth?: true
+    isEmailVerified?: true
     isDeleted?: true
+    isSignedIn?: true
     createdAt?: true
-    createdBy?: true
     updatedAt?: true
     updatedBy?: true
+    userTypeId?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -862,11 +942,14 @@ export namespace Prisma {
     password?: true
     firstName?: true
     lastName?: true
+    isGoogleAuth?: true
+    isEmailVerified?: true
     isDeleted?: true
+    isSignedIn?: true
     createdAt?: true
-    createdBy?: true
     updatedAt?: true
     updatedBy?: true
+    userTypeId?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -875,11 +958,14 @@ export namespace Prisma {
     password?: true
     firstName?: true
     lastName?: true
+    isGoogleAuth?: true
+    isEmailVerified?: true
     isDeleted?: true
+    isSignedIn?: true
     createdAt?: true
-    createdBy?: true
     updatedAt?: true
     updatedBy?: true
+    userTypeId?: true
     _all?: true
   }
 
@@ -959,14 +1045,17 @@ export namespace Prisma {
   export type UserGroupByOutputType = {
     id: string
     email: string
-    password: string
+    password: string | null
     firstName: string
     lastName: string
+    isGoogleAuth: boolean | null
+    isEmailVerified: boolean | null
     isDeleted: boolean | null
+    isSignedIn: boolean | null
     createdAt: Date | null
-    createdBy: string | null
     updatedAt: Date | null
     updatedBy: string | null
+    userTypeId: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -992,24 +1081,35 @@ export namespace Prisma {
     password?: boolean
     firstName?: boolean
     lastName?: boolean
+    isGoogleAuth?: boolean
+    isEmailVerified?: boolean
     isDeleted?: boolean
+    isSignedIn?: boolean
     createdAt?: boolean
-    createdBy?: boolean
     updatedAt?: boolean
     updatedBy?: boolean
+    userTypeId?: boolean
+    type?: boolean | UserTypeArgs
   }
 
+
+  export type UserInclude = {
+    type?: boolean | UserTypeArgs
+  }
 
   export type UserGetPayload<S extends boolean | null | undefined | UserArgs> =
     S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
     S extends true ? User :
     S extends undefined ? never :
     S extends { include: any } & (UserArgs | UserFindManyArgs)
-    ? User 
+    ? User  & {
+    [P in TruthyKeys<S['include']>]:
+        P extends 'type' ? UserTypeGetPayload<S['include'][P]> | null :  never
+  } 
     : S extends { select: any } & (UserArgs | UserFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
-    P extends keyof User ? User[P] : never
+        P extends 'type' ? UserTypeGetPayload<S['select'][P]> | null :  P extends keyof User ? User[P] : never
   } 
       : User
 
@@ -1381,6 +1481,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
     constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
 
+    type<T extends UserTypeArgs= {}>(args?: Subset<T, UserTypeArgs>): Prisma__UserTypeClient<UserTypeGetPayload<T> | Null>;
 
     private get _document();
     /**
@@ -1418,6 +1519,10 @@ export namespace Prisma {
      */
     select?: UserSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
+    /**
      * Filter, which User to fetch.
      */
     where: UserWhereUniqueInput
@@ -1444,6 +1549,10 @@ export namespace Prisma {
      */
     select?: UserSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
+    /**
      * Filter, which User to fetch.
      */
     where: UserWhereUniqueInput
@@ -1458,6 +1567,10 @@ export namespace Prisma {
      * Select specific fields to fetch from the User
      */
     select?: UserSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
     /**
      * Filter, which User to fetch.
      */
@@ -1515,6 +1628,10 @@ export namespace Prisma {
      */
     select?: UserSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
+    /**
      * Filter, which User to fetch.
      */
     where?: UserWhereInput
@@ -1560,6 +1677,10 @@ export namespace Prisma {
      */
     select?: UserSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
+    /**
      * Filter, which Users to fetch.
      */
     where?: UserWhereInput
@@ -1600,6 +1721,10 @@ export namespace Prisma {
      */
     select?: UserSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
+    /**
      * The data needed to create a User.
      */
     data: XOR<UserCreateInput, UserUncheckedCreateInput>
@@ -1626,6 +1751,10 @@ export namespace Prisma {
      * Select specific fields to fetch from the User
      */
     select?: UserSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
     /**
      * The data needed to update a User.
      */
@@ -1661,6 +1790,10 @@ export namespace Prisma {
      */
     select?: UserSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
+    /**
      * The filter to search for the User to update in case it exists.
      */
     where: UserWhereUniqueInput
@@ -1683,6 +1816,10 @@ export namespace Prisma {
      * Select specific fields to fetch from the User
      */
     select?: UserSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
     /**
      * Filter which User to delete.
      */
@@ -1709,6 +1846,966 @@ export namespace Prisma {
      * Select specific fields to fetch from the User
      */
     select?: UserSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
+  }
+
+
+
+  /**
+   * Model UserType
+   */
+
+
+  export type AggregateUserType = {
+    _count: UserTypeCountAggregateOutputType | null
+    _min: UserTypeMinAggregateOutputType | null
+    _max: UserTypeMaxAggregateOutputType | null
+  }
+
+  export type UserTypeMinAggregateOutputType = {
+    id: string | null
+    type: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    updatedBy: string | null
+  }
+
+  export type UserTypeMaxAggregateOutputType = {
+    id: string | null
+    type: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    updatedBy: string | null
+  }
+
+  export type UserTypeCountAggregateOutputType = {
+    id: number
+    type: number
+    createdAt: number
+    updatedAt: number
+    updatedBy: number
+    _all: number
+  }
+
+
+  export type UserTypeMinAggregateInputType = {
+    id?: true
+    type?: true
+    createdAt?: true
+    updatedAt?: true
+    updatedBy?: true
+  }
+
+  export type UserTypeMaxAggregateInputType = {
+    id?: true
+    type?: true
+    createdAt?: true
+    updatedAt?: true
+    updatedBy?: true
+  }
+
+  export type UserTypeCountAggregateInputType = {
+    id?: true
+    type?: true
+    createdAt?: true
+    updatedAt?: true
+    updatedBy?: true
+    _all?: true
+  }
+
+  export type UserTypeAggregateArgs = {
+    /**
+     * Filter which UserType to aggregate.
+     */
+    where?: UserTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserTypes to fetch.
+     */
+    orderBy?: Enumerable<UserTypeOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserTypes
+    **/
+    _count?: true | UserTypeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserTypeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserTypeMaxAggregateInputType
+  }
+
+  export type GetUserTypeAggregateType<T extends UserTypeAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserType]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserType[P]>
+      : GetScalarType<T[P], AggregateUserType[P]>
+  }
+
+
+
+
+  export type UserTypeGroupByArgs = {
+    where?: UserTypeWhereInput
+    orderBy?: Enumerable<UserTypeOrderByWithAggregationInput>
+    by: UserTypeScalarFieldEnum[]
+    having?: UserTypeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserTypeCountAggregateInputType | true
+    _min?: UserTypeMinAggregateInputType
+    _max?: UserTypeMaxAggregateInputType
+  }
+
+
+  export type UserTypeGroupByOutputType = {
+    id: string
+    type: string
+    createdAt: Date
+    updatedAt: Date
+    updatedBy: string | null
+    _count: UserTypeCountAggregateOutputType | null
+    _min: UserTypeMinAggregateOutputType | null
+    _max: UserTypeMaxAggregateOutputType | null
+  }
+
+  type GetUserTypeGroupByPayload<T extends UserTypeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<UserTypeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserTypeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserTypeGroupByOutputType[P]>
+            : GetScalarType<T[P], UserTypeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserTypeSelect = {
+    id?: boolean
+    type?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    User?: boolean | UserType$UserArgs
+    _count?: boolean | UserTypeCountOutputTypeArgs
+  }
+
+
+  export type UserTypeInclude = {
+    User?: boolean | UserType$UserArgs
+    _count?: boolean | UserTypeCountOutputTypeArgs
+  }
+
+  export type UserTypeGetPayload<S extends boolean | null | undefined | UserTypeArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? UserType :
+    S extends undefined ? never :
+    S extends { include: any } & (UserTypeArgs | UserTypeFindManyArgs)
+    ? UserType  & {
+    [P in TruthyKeys<S['include']>]:
+        P extends 'User' ? Array < UserGetPayload<S['include'][P]>>  :
+        P extends '_count' ? UserTypeCountOutputTypeGetPayload<S['include'][P]> :  never
+  } 
+    : S extends { select: any } & (UserTypeArgs | UserTypeFindManyArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+        P extends 'User' ? Array < UserGetPayload<S['select'][P]>>  :
+        P extends '_count' ? UserTypeCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof UserType ? UserType[P] : never
+  } 
+      : UserType
+
+
+  type UserTypeCountArgs = 
+    Omit<UserTypeFindManyArgs, 'select' | 'include'> & {
+      select?: UserTypeCountAggregateInputType | true
+    }
+
+  export interface UserTypeDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
+    /**
+     * Find zero or one UserType that matches the filter.
+     * @param {UserTypeFindUniqueArgs} args - Arguments to find a UserType
+     * @example
+     * // Get one UserType
+     * const userType = await prisma.userType.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends UserTypeFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, UserTypeFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'UserType'> extends True ? Prisma__UserTypeClient<UserTypeGetPayload<T>> : Prisma__UserTypeClient<UserTypeGetPayload<T> | null, null>
+
+    /**
+     * Find one UserType that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {UserTypeFindUniqueOrThrowArgs} args - Arguments to find a UserType
+     * @example
+     * // Get one UserType
+     * const userType = await prisma.userType.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends UserTypeFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, UserTypeFindUniqueOrThrowArgs>
+    ): Prisma__UserTypeClient<UserTypeGetPayload<T>>
+
+    /**
+     * Find the first UserType that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserTypeFindFirstArgs} args - Arguments to find a UserType
+     * @example
+     * // Get one UserType
+     * const userType = await prisma.userType.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends UserTypeFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, UserTypeFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'UserType'> extends True ? Prisma__UserTypeClient<UserTypeGetPayload<T>> : Prisma__UserTypeClient<UserTypeGetPayload<T> | null, null>
+
+    /**
+     * Find the first UserType that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserTypeFindFirstOrThrowArgs} args - Arguments to find a UserType
+     * @example
+     * // Get one UserType
+     * const userType = await prisma.userType.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends UserTypeFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, UserTypeFindFirstOrThrowArgs>
+    ): Prisma__UserTypeClient<UserTypeGetPayload<T>>
+
+    /**
+     * Find zero or more UserTypes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserTypeFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserTypes
+     * const userTypes = await prisma.userType.findMany()
+     * 
+     * // Get first 10 UserTypes
+     * const userTypes = await prisma.userType.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userTypeWithIdOnly = await prisma.userType.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends UserTypeFindManyArgs>(
+      args?: SelectSubset<T, UserTypeFindManyArgs>
+    ): Prisma.PrismaPromise<Array<UserTypeGetPayload<T>>>
+
+    /**
+     * Create a UserType.
+     * @param {UserTypeCreateArgs} args - Arguments to create a UserType.
+     * @example
+     * // Create one UserType
+     * const UserType = await prisma.userType.create({
+     *   data: {
+     *     // ... data to create a UserType
+     *   }
+     * })
+     * 
+    **/
+    create<T extends UserTypeCreateArgs>(
+      args: SelectSubset<T, UserTypeCreateArgs>
+    ): Prisma__UserTypeClient<UserTypeGetPayload<T>>
+
+    /**
+     * Create many UserTypes.
+     *     @param {UserTypeCreateManyArgs} args - Arguments to create many UserTypes.
+     *     @example
+     *     // Create many UserTypes
+     *     const userType = await prisma.userType.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends UserTypeCreateManyArgs>(
+      args?: SelectSubset<T, UserTypeCreateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a UserType.
+     * @param {UserTypeDeleteArgs} args - Arguments to delete one UserType.
+     * @example
+     * // Delete one UserType
+     * const UserType = await prisma.userType.delete({
+     *   where: {
+     *     // ... filter to delete one UserType
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends UserTypeDeleteArgs>(
+      args: SelectSubset<T, UserTypeDeleteArgs>
+    ): Prisma__UserTypeClient<UserTypeGetPayload<T>>
+
+    /**
+     * Update one UserType.
+     * @param {UserTypeUpdateArgs} args - Arguments to update one UserType.
+     * @example
+     * // Update one UserType
+     * const userType = await prisma.userType.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends UserTypeUpdateArgs>(
+      args: SelectSubset<T, UserTypeUpdateArgs>
+    ): Prisma__UserTypeClient<UserTypeGetPayload<T>>
+
+    /**
+     * Delete zero or more UserTypes.
+     * @param {UserTypeDeleteManyArgs} args - Arguments to filter UserTypes to delete.
+     * @example
+     * // Delete a few UserTypes
+     * const { count } = await prisma.userType.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends UserTypeDeleteManyArgs>(
+      args?: SelectSubset<T, UserTypeDeleteManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserTypeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserTypes
+     * const userType = await prisma.userType.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends UserTypeUpdateManyArgs>(
+      args: SelectSubset<T, UserTypeUpdateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one UserType.
+     * @param {UserTypeUpsertArgs} args - Arguments to update or create a UserType.
+     * @example
+     * // Update or create a UserType
+     * const userType = await prisma.userType.upsert({
+     *   create: {
+     *     // ... data to create a UserType
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserType we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends UserTypeUpsertArgs>(
+      args: SelectSubset<T, UserTypeUpsertArgs>
+    ): Prisma__UserTypeClient<UserTypeGetPayload<T>>
+
+    /**
+     * Count the number of UserTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserTypeCountArgs} args - Arguments to filter UserTypes to count.
+     * @example
+     * // Count the number of UserTypes
+     * const count = await prisma.userType.count({
+     *   where: {
+     *     // ... the filter for the UserTypes we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserTypeCountArgs>(
+      args?: Subset<T, UserTypeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserTypeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserTypeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserTypeAggregateArgs>(args: Subset<T, UserTypeAggregateArgs>): Prisma.PrismaPromise<GetUserTypeAggregateType<T>>
+
+    /**
+     * Group by UserType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserTypeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserTypeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserTypeGroupByArgs['orderBy'] }
+        : { orderBy?: UserTypeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserTypeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserTypeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserType.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__UserTypeClient<T, Null = never> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    User<T extends UserType$UserArgs= {}>(args?: Subset<T, UserType$UserArgs>): Prisma.PrismaPromise<Array<UserGetPayload<T>>| Null>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * UserType base type for findUnique actions
+   */
+  export type UserTypeFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the UserType
+     */
+    select?: UserTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserTypeInclude | null
+    /**
+     * Filter, which UserType to fetch.
+     */
+    where: UserTypeWhereUniqueInput
+  }
+
+  /**
+   * UserType findUnique
+   */
+  export interface UserTypeFindUniqueArgs extends UserTypeFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * UserType findUniqueOrThrow
+   */
+  export type UserTypeFindUniqueOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the UserType
+     */
+    select?: UserTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserTypeInclude | null
+    /**
+     * Filter, which UserType to fetch.
+     */
+    where: UserTypeWhereUniqueInput
+  }
+
+
+  /**
+   * UserType base type for findFirst actions
+   */
+  export type UserTypeFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the UserType
+     */
+    select?: UserTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserTypeInclude | null
+    /**
+     * Filter, which UserType to fetch.
+     */
+    where?: UserTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserTypes to fetch.
+     */
+    orderBy?: Enumerable<UserTypeOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserTypes.
+     */
+    cursor?: UserTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserTypes.
+     */
+    distinct?: Enumerable<UserTypeScalarFieldEnum>
+  }
+
+  /**
+   * UserType findFirst
+   */
+  export interface UserTypeFindFirstArgs extends UserTypeFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * UserType findFirstOrThrow
+   */
+  export type UserTypeFindFirstOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the UserType
+     */
+    select?: UserTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserTypeInclude | null
+    /**
+     * Filter, which UserType to fetch.
+     */
+    where?: UserTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserTypes to fetch.
+     */
+    orderBy?: Enumerable<UserTypeOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserTypes.
+     */
+    cursor?: UserTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserTypes.
+     */
+    distinct?: Enumerable<UserTypeScalarFieldEnum>
+  }
+
+
+  /**
+   * UserType findMany
+   */
+  export type UserTypeFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the UserType
+     */
+    select?: UserTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserTypeInclude | null
+    /**
+     * Filter, which UserTypes to fetch.
+     */
+    where?: UserTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserTypes to fetch.
+     */
+    orderBy?: Enumerable<UserTypeOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserTypes.
+     */
+    cursor?: UserTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserTypes.
+     */
+    skip?: number
+    distinct?: Enumerable<UserTypeScalarFieldEnum>
+  }
+
+
+  /**
+   * UserType create
+   */
+  export type UserTypeCreateArgs = {
+    /**
+     * Select specific fields to fetch from the UserType
+     */
+    select?: UserTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserTypeInclude | null
+    /**
+     * The data needed to create a UserType.
+     */
+    data: XOR<UserTypeCreateInput, UserTypeUncheckedCreateInput>
+  }
+
+
+  /**
+   * UserType createMany
+   */
+  export type UserTypeCreateManyArgs = {
+    /**
+     * The data used to create many UserTypes.
+     */
+    data: Enumerable<UserTypeCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * UserType update
+   */
+  export type UserTypeUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the UserType
+     */
+    select?: UserTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserTypeInclude | null
+    /**
+     * The data needed to update a UserType.
+     */
+    data: XOR<UserTypeUpdateInput, UserTypeUncheckedUpdateInput>
+    /**
+     * Choose, which UserType to update.
+     */
+    where: UserTypeWhereUniqueInput
+  }
+
+
+  /**
+   * UserType updateMany
+   */
+  export type UserTypeUpdateManyArgs = {
+    /**
+     * The data used to update UserTypes.
+     */
+    data: XOR<UserTypeUpdateManyMutationInput, UserTypeUncheckedUpdateManyInput>
+    /**
+     * Filter which UserTypes to update
+     */
+    where?: UserTypeWhereInput
+  }
+
+
+  /**
+   * UserType upsert
+   */
+  export type UserTypeUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the UserType
+     */
+    select?: UserTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserTypeInclude | null
+    /**
+     * The filter to search for the UserType to update in case it exists.
+     */
+    where: UserTypeWhereUniqueInput
+    /**
+     * In case the UserType found by the `where` argument doesn't exist, create a new UserType with this data.
+     */
+    create: XOR<UserTypeCreateInput, UserTypeUncheckedCreateInput>
+    /**
+     * In case the UserType was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserTypeUpdateInput, UserTypeUncheckedUpdateInput>
+  }
+
+
+  /**
+   * UserType delete
+   */
+  export type UserTypeDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the UserType
+     */
+    select?: UserTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserTypeInclude | null
+    /**
+     * Filter which UserType to delete.
+     */
+    where: UserTypeWhereUniqueInput
+  }
+
+
+  /**
+   * UserType deleteMany
+   */
+  export type UserTypeDeleteManyArgs = {
+    /**
+     * Filter which UserTypes to delete
+     */
+    where?: UserTypeWhereInput
+  }
+
+
+  /**
+   * UserType.User
+   */
+  export type UserType$UserArgs = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude | null
+    where?: UserWhereInput
+    orderBy?: Enumerable<UserOrderByWithRelationInput>
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<UserScalarFieldEnum>
+  }
+
+
+  /**
+   * UserType without action
+   */
+  export type UserTypeArgs = {
+    /**
+     * Select specific fields to fetch from the UserType
+     */
+    select?: UserTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserTypeInclude | null
   }
 
 
@@ -1752,14 +2849,28 @@ export namespace Prisma {
     password: 'password',
     firstName: 'firstName',
     lastName: 'lastName',
+    isGoogleAuth: 'isGoogleAuth',
+    isEmailVerified: 'isEmailVerified',
     isDeleted: 'isDeleted',
+    isSignedIn: 'isSignedIn',
     createdAt: 'createdAt',
-    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    userTypeId: 'userTypeId'
+  };
+
+  export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const UserTypeScalarFieldEnum: {
+    id: 'id',
+    type: 'type',
+    createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     updatedBy: 'updatedBy'
   };
 
-  export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+  export type UserTypeScalarFieldEnum = (typeof UserTypeScalarFieldEnum)[keyof typeof UserTypeScalarFieldEnum]
 
 
   /**
@@ -1773,14 +2884,18 @@ export namespace Prisma {
     NOT?: Enumerable<UserWhereInput>
     id?: StringFilter | string
     email?: StringFilter | string
-    password?: StringFilter | string
+    password?: StringNullableFilter | string | null
     firstName?: StringFilter | string
     lastName?: StringFilter | string
+    isGoogleAuth?: BoolNullableFilter | boolean | null
+    isEmailVerified?: BoolNullableFilter | boolean | null
     isDeleted?: BoolNullableFilter | boolean | null
+    isSignedIn?: BoolNullableFilter | boolean | null
     createdAt?: DateTimeNullableFilter | Date | string | null
-    createdBy?: StringNullableFilter | string | null
     updatedAt?: DateTimeNullableFilter | Date | string | null
     updatedBy?: StringNullableFilter | string | null
+    userTypeId?: StringNullableFilter | string | null
+    type?: XOR<UserTypeRelationFilter, UserTypeWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -1789,11 +2904,15 @@ export namespace Prisma {
     password?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
+    isGoogleAuth?: SortOrder
+    isEmailVerified?: SortOrder
     isDeleted?: SortOrder
+    isSignedIn?: SortOrder
     createdAt?: SortOrder
-    createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
+    userTypeId?: SortOrder
+    type?: UserTypeOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = {
@@ -1807,11 +2926,14 @@ export namespace Prisma {
     password?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
+    isGoogleAuth?: SortOrder
+    isEmailVerified?: SortOrder
     isDeleted?: SortOrder
+    isSignedIn?: SortOrder
     createdAt?: SortOrder
-    createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
+    userTypeId?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -1823,90 +2945,157 @@ export namespace Prisma {
     NOT?: Enumerable<UserScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
     email?: StringWithAggregatesFilter | string
-    password?: StringWithAggregatesFilter | string
+    password?: StringNullableWithAggregatesFilter | string | null
     firstName?: StringWithAggregatesFilter | string
     lastName?: StringWithAggregatesFilter | string
+    isGoogleAuth?: BoolNullableWithAggregatesFilter | boolean | null
+    isEmailVerified?: BoolNullableWithAggregatesFilter | boolean | null
     isDeleted?: BoolNullableWithAggregatesFilter | boolean | null
+    isSignedIn?: BoolNullableWithAggregatesFilter | boolean | null
     createdAt?: DateTimeNullableWithAggregatesFilter | Date | string | null
-    createdBy?: StringNullableWithAggregatesFilter | string | null
     updatedAt?: DateTimeNullableWithAggregatesFilter | Date | string | null
+    updatedBy?: StringNullableWithAggregatesFilter | string | null
+    userTypeId?: StringNullableWithAggregatesFilter | string | null
+  }
+
+  export type UserTypeWhereInput = {
+    AND?: Enumerable<UserTypeWhereInput>
+    OR?: Enumerable<UserTypeWhereInput>
+    NOT?: Enumerable<UserTypeWhereInput>
+    id?: StringFilter | string
+    type?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeFilter | Date | string
+    updatedBy?: StringNullableFilter | string | null
+    User?: UserListRelationFilter
+  }
+
+  export type UserTypeOrderByWithRelationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    User?: UserOrderByRelationAggregateInput
+  }
+
+  export type UserTypeWhereUniqueInput = {
+    id?: string
+  }
+
+  export type UserTypeOrderByWithAggregationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    _count?: UserTypeCountOrderByAggregateInput
+    _max?: UserTypeMaxOrderByAggregateInput
+    _min?: UserTypeMinOrderByAggregateInput
+  }
+
+  export type UserTypeScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<UserTypeScalarWhereWithAggregatesInput>
+    OR?: Enumerable<UserTypeScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<UserTypeScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    type?: StringWithAggregatesFilter | string
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
     updatedBy?: StringNullableWithAggregatesFilter | string | null
   }
 
   export type UserCreateInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     firstName: string
     lastName: string
+    isGoogleAuth?: boolean | null
+    isEmailVerified?: boolean | null
     isDeleted?: boolean | null
+    isSignedIn?: boolean | null
     createdAt?: Date | string | null
-    createdBy?: string | null
     updatedAt?: Date | string | null
     updatedBy?: string | null
+    type?: UserTypeCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     firstName: string
     lastName: string
+    isGoogleAuth?: boolean | null
+    isEmailVerified?: boolean | null
     isDeleted?: boolean | null
+    isSignedIn?: boolean | null
     createdAt?: Date | string | null
-    createdBy?: string | null
     updatedAt?: Date | string | null
     updatedBy?: string | null
+    userTypeId?: string | null
   }
 
   export type UserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
+    isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isEmailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isSignedIn?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: UserTypeUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
+    isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isEmailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isSignedIn?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    userTypeId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserCreateManyInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
     firstName: string
     lastName: string
+    isGoogleAuth?: boolean | null
+    isEmailVerified?: boolean | null
     isDeleted?: boolean | null
+    isSignedIn?: boolean | null
     createdAt?: Date | string | null
-    createdBy?: string | null
     updatedAt?: Date | string | null
     updatedBy?: string | null
+    userTypeId?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
+    isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isEmailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isSignedIn?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -1914,13 +3103,76 @@ export namespace Prisma {
   export type UserUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
+    isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isEmailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isSignedIn?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    userTypeId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserTypeCreateInput = {
+    id?: string
+    type?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    User?: UserCreateNestedManyWithoutTypeInput
+  }
+
+  export type UserTypeUncheckedCreateInput = {
+    id?: string
+    type?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    User?: UserUncheckedCreateNestedManyWithoutTypeInput
+  }
+
+  export type UserTypeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    User?: UserUpdateManyWithoutTypeNestedInput
+  }
+
+  export type UserTypeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    User?: UserUncheckedUpdateManyWithoutTypeNestedInput
+  }
+
+  export type UserTypeCreateManyInput = {
+    id?: string
+    type?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type UserTypeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserTypeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -1939,6 +3191,21 @@ export namespace Prisma {
     not?: NestedStringFilter | string
   }
 
+  export type StringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | string | null
+    notIn?: Enumerable<string> | string | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    mode?: QueryMode
+    not?: NestedStringNullableFilter | string | null
+  }
+
   export type BoolNullableFilter = {
     equals?: boolean | null
     not?: NestedBoolNullableFilter | boolean | null
@@ -1955,19 +3222,9 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter | Date | string | null
   }
 
-  export type StringNullableFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | string | null
-    notIn?: Enumerable<string> | string | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    mode?: QueryMode
-    not?: NestedStringNullableFilter | string | null
+  export type UserTypeRelationFilter = {
+    is?: UserTypeWhereInput | null
+    isNot?: UserTypeWhereInput | null
   }
 
   export type UserCountOrderByAggregateInput = {
@@ -1976,11 +3233,14 @@ export namespace Prisma {
     password?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
+    isGoogleAuth?: SortOrder
+    isEmailVerified?: SortOrder
     isDeleted?: SortOrder
+    isSignedIn?: SortOrder
     createdAt?: SortOrder
-    createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
+    userTypeId?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -1989,11 +3249,14 @@ export namespace Prisma {
     password?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
+    isGoogleAuth?: SortOrder
+    isEmailVerified?: SortOrder
     isDeleted?: SortOrder
+    isSignedIn?: SortOrder
     createdAt?: SortOrder
-    createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
+    userTypeId?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -2002,11 +3265,14 @@ export namespace Prisma {
     password?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
+    isGoogleAuth?: SortOrder
+    isEmailVerified?: SortOrder
     isDeleted?: SortOrder
+    isSignedIn?: SortOrder
     createdAt?: SortOrder
-    createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
+    userTypeId?: SortOrder
   }
 
   export type StringWithAggregatesFilter = {
@@ -2025,6 +3291,24 @@ export namespace Prisma {
     _count?: NestedIntFilter
     _min?: NestedStringFilter
     _max?: NestedStringFilter
+  }
+
+  export type StringNullableWithAggregatesFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | string | null
+    notIn?: Enumerable<string> | string | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedStringNullableFilter
+    _max?: NestedStringNullableFilter
   }
 
   export type BoolNullableWithAggregatesFilter = {
@@ -2049,26 +3333,77 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter
   }
 
-  export type StringNullableWithAggregatesFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | string | null
-    notIn?: Enumerable<string> | string | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter | string | null
-    _count?: NestedIntNullableFilter
-    _min?: NestedStringNullableFilter
-    _max?: NestedStringNullableFilter
+  export type DateTimeFilter = {
+    equals?: Date | string
+    in?: Enumerable<Date> | Enumerable<string> | Date | string
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeFilter | Date | string
+  }
+
+  export type UserListRelationFilter = {
+    every?: UserWhereInput
+    some?: UserWhereInput
+    none?: UserWhereInput
+  }
+
+  export type UserOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserTypeCountOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type UserTypeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type UserTypeMinOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type DateTimeWithAggregatesFilter = {
+    equals?: Date | string
+    in?: Enumerable<Date> | Enumerable<string> | Date | string
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeWithAggregatesFilter | Date | string
+    _count?: NestedIntFilter
+    _min?: NestedDateTimeFilter
+    _max?: NestedDateTimeFilter
+  }
+
+  export type UserTypeCreateNestedOneWithoutUserInput = {
+    create?: XOR<UserTypeCreateWithoutUserInput, UserTypeUncheckedCreateWithoutUserInput>
+    connectOrCreate?: UserTypeCreateOrConnectWithoutUserInput
+    connect?: UserTypeWhereUniqueInput
   }
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type NullableBoolFieldUpdateOperationsInput = {
@@ -2079,8 +3414,60 @@ export namespace Prisma {
     set?: Date | string | null
   }
 
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
+  export type UserTypeUpdateOneWithoutUserNestedInput = {
+    create?: XOR<UserTypeCreateWithoutUserInput, UserTypeUncheckedCreateWithoutUserInput>
+    connectOrCreate?: UserTypeCreateOrConnectWithoutUserInput
+    upsert?: UserTypeUpsertWithoutUserInput
+    disconnect?: boolean
+    delete?: boolean
+    connect?: UserTypeWhereUniqueInput
+    update?: XOR<UserTypeUpdateWithoutUserInput, UserTypeUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserCreateNestedManyWithoutTypeInput = {
+    create?: XOR<Enumerable<UserCreateWithoutTypeInput>, Enumerable<UserUncheckedCreateWithoutTypeInput>>
+    connectOrCreate?: Enumerable<UserCreateOrConnectWithoutTypeInput>
+    createMany?: UserCreateManyTypeInputEnvelope
+    connect?: Enumerable<UserWhereUniqueInput>
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutTypeInput = {
+    create?: XOR<Enumerable<UserCreateWithoutTypeInput>, Enumerable<UserUncheckedCreateWithoutTypeInput>>
+    connectOrCreate?: Enumerable<UserCreateOrConnectWithoutTypeInput>
+    createMany?: UserCreateManyTypeInputEnvelope
+    connect?: Enumerable<UserWhereUniqueInput>
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
+  export type UserUpdateManyWithoutTypeNestedInput = {
+    create?: XOR<Enumerable<UserCreateWithoutTypeInput>, Enumerable<UserUncheckedCreateWithoutTypeInput>>
+    connectOrCreate?: Enumerable<UserCreateOrConnectWithoutTypeInput>
+    upsert?: Enumerable<UserUpsertWithWhereUniqueWithoutTypeInput>
+    createMany?: UserCreateManyTypeInputEnvelope
+    set?: Enumerable<UserWhereUniqueInput>
+    disconnect?: Enumerable<UserWhereUniqueInput>
+    delete?: Enumerable<UserWhereUniqueInput>
+    connect?: Enumerable<UserWhereUniqueInput>
+    update?: Enumerable<UserUpdateWithWhereUniqueWithoutTypeInput>
+    updateMany?: Enumerable<UserUpdateManyWithWhereWithoutTypeInput>
+    deleteMany?: Enumerable<UserScalarWhereInput>
+  }
+
+  export type UserUncheckedUpdateManyWithoutTypeNestedInput = {
+    create?: XOR<Enumerable<UserCreateWithoutTypeInput>, Enumerable<UserUncheckedCreateWithoutTypeInput>>
+    connectOrCreate?: Enumerable<UserCreateOrConnectWithoutTypeInput>
+    upsert?: Enumerable<UserUpsertWithWhereUniqueWithoutTypeInput>
+    createMany?: UserCreateManyTypeInputEnvelope
+    set?: Enumerable<UserWhereUniqueInput>
+    disconnect?: Enumerable<UserWhereUniqueInput>
+    delete?: Enumerable<UserWhereUniqueInput>
+    connect?: Enumerable<UserWhereUniqueInput>
+    update?: Enumerable<UserUpdateWithWhereUniqueWithoutTypeInput>
+    updateMany?: Enumerable<UserUpdateManyWithWhereWithoutTypeInput>
+    deleteMany?: Enumerable<UserScalarWhereInput>
   }
 
   export type NestedStringFilter = {
@@ -2097,6 +3484,20 @@ export namespace Prisma {
     not?: NestedStringFilter | string
   }
 
+  export type NestedStringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | string | null
+    notIn?: Enumerable<string> | string | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableFilter | string | null
+  }
+
   export type NestedBoolNullableFilter = {
     equals?: boolean | null
     not?: NestedBoolNullableFilter | boolean | null
@@ -2111,20 +3512,6 @@ export namespace Prisma {
     gt?: Date | string
     gte?: Date | string
     not?: NestedDateTimeNullableFilter | Date | string | null
-  }
-
-  export type NestedStringNullableFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | string | null
-    notIn?: Enumerable<string> | string | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringNullableFilter | string | null
   }
 
   export type NestedStringWithAggregatesFilter = {
@@ -2155,12 +3542,21 @@ export namespace Prisma {
     not?: NestedIntFilter | number
   }
 
-  export type NestedBoolNullableWithAggregatesFilter = {
-    equals?: boolean | null
-    not?: NestedBoolNullableWithAggregatesFilter | boolean | null
+  export type NestedStringNullableWithAggregatesFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | string | null
+    notIn?: Enumerable<string> | string | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableWithAggregatesFilter | string | null
     _count?: NestedIntNullableFilter
-    _min?: NestedBoolNullableFilter
-    _max?: NestedBoolNullableFilter
+    _min?: NestedStringNullableFilter
+    _max?: NestedStringNullableFilter
   }
 
   export type NestedIntNullableFilter = {
@@ -2172,6 +3568,14 @@ export namespace Prisma {
     gt?: number
     gte?: number
     not?: NestedIntNullableFilter | number | null
+  }
+
+  export type NestedBoolNullableWithAggregatesFilter = {
+    equals?: boolean | null
+    not?: NestedBoolNullableWithAggregatesFilter | boolean | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedBoolNullableFilter
+    _max?: NestedBoolNullableFilter
   }
 
   export type NestedDateTimeNullableWithAggregatesFilter = {
@@ -2188,21 +3592,206 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter
   }
 
-  export type NestedStringNullableWithAggregatesFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | string | null
-    notIn?: Enumerable<string> | string | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringNullableWithAggregatesFilter | string | null
-    _count?: NestedIntNullableFilter
-    _min?: NestedStringNullableFilter
-    _max?: NestedStringNullableFilter
+  export type NestedDateTimeFilter = {
+    equals?: Date | string
+    in?: Enumerable<Date> | Enumerable<string> | Date | string
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeFilter | Date | string
+  }
+
+  export type NestedDateTimeWithAggregatesFilter = {
+    equals?: Date | string
+    in?: Enumerable<Date> | Enumerable<string> | Date | string
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeWithAggregatesFilter | Date | string
+    _count?: NestedIntFilter
+    _min?: NestedDateTimeFilter
+    _max?: NestedDateTimeFilter
+  }
+
+  export type UserTypeCreateWithoutUserInput = {
+    id?: string
+    type?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type UserTypeUncheckedCreateWithoutUserInput = {
+    id?: string
+    type?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type UserTypeCreateOrConnectWithoutUserInput = {
+    where: UserTypeWhereUniqueInput
+    create: XOR<UserTypeCreateWithoutUserInput, UserTypeUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserTypeUpsertWithoutUserInput = {
+    update: XOR<UserTypeUpdateWithoutUserInput, UserTypeUncheckedUpdateWithoutUserInput>
+    create: XOR<UserTypeCreateWithoutUserInput, UserTypeUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserTypeUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserTypeUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserCreateWithoutTypeInput = {
+    id?: string
+    email: string
+    password?: string | null
+    firstName: string
+    lastName: string
+    isGoogleAuth?: boolean | null
+    isEmailVerified?: boolean | null
+    isDeleted?: boolean | null
+    isSignedIn?: boolean | null
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
+    updatedBy?: string | null
+  }
+
+  export type UserUncheckedCreateWithoutTypeInput = {
+    id?: string
+    email: string
+    password?: string | null
+    firstName: string
+    lastName: string
+    isGoogleAuth?: boolean | null
+    isEmailVerified?: boolean | null
+    isDeleted?: boolean | null
+    isSignedIn?: boolean | null
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
+    updatedBy?: string | null
+  }
+
+  export type UserCreateOrConnectWithoutTypeInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTypeInput, UserUncheckedCreateWithoutTypeInput>
+  }
+
+  export type UserCreateManyTypeInputEnvelope = {
+    data: Enumerable<UserCreateManyTypeInput>
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithWhereUniqueWithoutTypeInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutTypeInput, UserUncheckedUpdateWithoutTypeInput>
+    create: XOR<UserCreateWithoutTypeInput, UserUncheckedCreateWithoutTypeInput>
+  }
+
+  export type UserUpdateWithWhereUniqueWithoutTypeInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutTypeInput, UserUncheckedUpdateWithoutTypeInput>
+  }
+
+  export type UserUpdateManyWithWhereWithoutTypeInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type UserScalarWhereInput = {
+    AND?: Enumerable<UserScalarWhereInput>
+    OR?: Enumerable<UserScalarWhereInput>
+    NOT?: Enumerable<UserScalarWhereInput>
+    id?: StringFilter | string
+    email?: StringFilter | string
+    password?: StringNullableFilter | string | null
+    firstName?: StringFilter | string
+    lastName?: StringFilter | string
+    isGoogleAuth?: BoolNullableFilter | boolean | null
+    isEmailVerified?: BoolNullableFilter | boolean | null
+    isDeleted?: BoolNullableFilter | boolean | null
+    isSignedIn?: BoolNullableFilter | boolean | null
+    createdAt?: DateTimeNullableFilter | Date | string | null
+    updatedAt?: DateTimeNullableFilter | Date | string | null
+    updatedBy?: StringNullableFilter | string | null
+    userTypeId?: StringNullableFilter | string | null
+  }
+
+  export type UserCreateManyTypeInput = {
+    id?: string
+    email: string
+    password?: string | null
+    firstName: string
+    lastName: string
+    isGoogleAuth?: boolean | null
+    isEmailVerified?: boolean | null
+    isDeleted?: boolean | null
+    isSignedIn?: boolean | null
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
+    updatedBy?: string | null
+  }
+
+  export type UserUpdateWithoutTypeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isEmailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isSignedIn?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserUncheckedUpdateWithoutTypeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isEmailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isSignedIn?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isEmailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    isSignedIn?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

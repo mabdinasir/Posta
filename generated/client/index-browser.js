@@ -109,16 +109,28 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   firstName: 'firstName',
   lastName: 'lastName',
+  isGoogleAuth: 'isGoogleAuth',
+  isEmailVerified: 'isEmailVerified',
   isDeleted: 'isDeleted',
+  isSignedIn: 'isSignedIn',
   createdAt: 'createdAt',
-  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  userTypeId: 'userTypeId'
+};
+
+exports.Prisma.UserTypeScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   updatedBy: 'updatedBy'
 };
 
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  UserType: 'UserType'
 };
 
 /**
