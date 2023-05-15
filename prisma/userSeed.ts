@@ -6,7 +6,7 @@ const envVars = await config();
 const prisma = new PrismaClient({
 	datasources: {
 		db: {
-			url: envVars.DATABASE_URL,
+			url: envVars.PRISMA_CLIENT_URL,
 		},
 	},
 });
