@@ -1,9 +1,11 @@
 import { Context, PrismaClient, config } from "../../deps.ts";
 
+const env = await config();
+
 const prisma = new PrismaClient({
 	datasources: {
 		db: {
-			url: config().PRISMA_CLIENT_URL,
+			url: env.PRISMA_CLIENT_URL,
 		},
 	},
 });
