@@ -35,7 +35,6 @@ seedUser()
 		await prisma.$disconnect();
 	});
 
-
 const userTypes = [
 	{
 		type: "Admin",

@@ -14,7 +14,6 @@ interface User {
 	updatedAt: Date | string;
 	updatedBy?: string;
 	userTypeId?: string;
-	type?: UserType;
 }
 
 export default User;
