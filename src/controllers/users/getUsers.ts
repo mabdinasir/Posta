@@ -3,7 +3,7 @@ import { Context, PrismaClient, config } from "../../deps.ts";
 const prisma = new PrismaClient({
 	datasources: {
 		db: {
-			url: config().PRISMA_CLIENT_URL || Deno.env.get("PRISMA_CLIENT_URL"),
+			url: config().PRISMA_CLIENT_URL,
 		},
 	},
 });

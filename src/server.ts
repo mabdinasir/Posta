@@ -12,4 +12,4 @@ console.log(`Server running on port ${PORT} `);
 
 await app.listen({ port: +PORT });
 
-// denon run --allow-net --allow-env --allow-read server.ts
+// denon run -A server.ts
