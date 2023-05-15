@@ -1,4 +1,4 @@
-import { Application, config, serve } from "./deps.ts";
+import { Application, config } from "./deps.ts";
 import router from "./routes/index.ts";
 
 const app = new Application();
@@ -11,7 +11,5 @@ const PORT = config().PORT || 8082;
 console.log(`Server running on port ${PORT} `);
 
 await app.listen({ port: +PORT });
-
-serve(() => new Response("Hello World!"));
 
 // denon run --allow-net --allow-env --allow-read server.ts
