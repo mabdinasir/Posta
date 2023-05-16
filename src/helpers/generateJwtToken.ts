@@ -7,7 +7,9 @@ const secretKey = await crypto.subtle.generateKey(
 	["sign", "verify"]
 );
 
-export const generateJwtToken = async (user: User, expiresIn: number) => {
+const expiresIn = 89789633;
+
+export const generateJwtToken = async (user: User) => {
 	const payload = {
 		...user,
 		expiresIn,

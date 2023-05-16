@@ -1,4 +1,5 @@
 import { signIn } from "../controllers/apis/auth/signIn.ts";
+import { signOut } from "../controllers/apis/auth/signOut.ts";
 import { signUp } from "../controllers/apis/auth/signUp.ts";
 import { addUser } from "../controllers/apis/users/addUser.ts";
 import { deleteUser } from "../controllers/apis/users/deleteUser.ts";
@@ -16,6 +17,7 @@ router
 	.put("/api/users/:id", updateUser)
 	.delete("/api/users/:id", deleteUser)
 	.post("/api/auth/signup", signUp)
-	.post("/api/auth/signin", signIn);
+	.post("/api/auth/signin", signIn)
+	.post("/api/auth/signout", signOut);
 
 export default router;

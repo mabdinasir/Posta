@@ -23,8 +23,9 @@ const signUp = async (ctx: Context) => {
 			where: { email },
 		});
 
+		const jwt = await generateJwtToken({ ...user });
+
 		if (!existingUser) {
-			const jwt = await generateJwtToken({ ...user }, 89789633);
 			const newUser = await prisma.user.create({
 				data: {
 					email,
@@ -59,12 +60,18 @@ const signUp = async (ctx: Context) => {
 						password: await encryptPassword(password),
 					},
 				});
+
+				await ctx.cookies.set("jwt", jwt, {
+					httpOnly: true,
+					sameSite: "strict",
+				});
+
 				ctx.response.status = 200;
 				ctx.response.body = {
 					success: true,
 					message: "User restored successfully and signed in!",
 					user: restoredUser,
-					jwt: await generateJwtToken({ ...user }, 89789633),
+					jwt,
 				};
 			}
 		}

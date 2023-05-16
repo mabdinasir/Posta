@@ -20,7 +20,7 @@ const signIn = async (ctx: Context) => {
 		}
 
 		const existingUser = await prisma.user.findUnique({
-			where: { email: user.email },
+			where: { email },
 		});
 
 		if (!existingUser || existingUser.isDeleted) {
@@ -47,7 +47,7 @@ const signIn = async (ctx: Context) => {
 		}
 
 		// Passwords match, successful login
-		const jwt = await generateJwtToken({ ...user }, 89789633);
+		const jwt = await generateJwtToken({ ...user });
 
 		await prisma.user.update({
 			where: { email },
@@ -57,6 +57,12 @@ const signIn = async (ctx: Context) => {
 				isEmailVerified,
 			},
 		});
+
+		await ctx.cookies.set("jwt", jwt, {
+			httpOnly: true,
+			sameSite: "strict",
+		});
+		console.log("jwt", jwt);
 
 		ctx.response.status = 200;
 		ctx.response.body = {
