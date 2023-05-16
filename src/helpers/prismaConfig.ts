@@ -1,9 +1,10 @@
-import { PrismaClient,config } from "../deps.ts";
+import "https://deno.land/std@0.173.0/dotenv/load.ts";
+import { PrismaClient } from "../deps.ts";
 
 const prisma = new PrismaClient({
 	datasources: {
 		db: {
-			url: config().PRISMA_CLIENT_URL,
+			url: Deno.env.get("PRISMA_CLIENT_URL"),
 		},
 	},
 });
