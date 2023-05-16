@@ -34,7 +34,7 @@ const deleteUser = async (ctx: Context) => {
 		ctx.response.body = {
 			success: true,
 			message: "User deleted successfully",
-			user: deletedUser,
+			user: deletedUser.id,
 		};
 	} catch (error) {
 		console.log(error);

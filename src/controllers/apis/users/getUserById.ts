@@ -12,7 +12,7 @@ const getUserById = async (ctx: Context) => {
 			},
 		});
 
-		if (!user) {
+		if (!user || user.isDeleted) {
 			ctx.response.status = 404;
 			ctx.response.body = {
 				success: false,
@@ -25,7 +25,7 @@ const getUserById = async (ctx: Context) => {
 		ctx.response.body = {
 			success: true,
 			count: user ? 1 : 0,
-			user,
+			user: user ? { ...user, password: undefined } : undefined,
 		};
 	} catch (error) {
 		ctx.response.status = 500;

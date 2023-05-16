@@ -1,4 +1,5 @@
 import { Context } from "../../../deps.ts";
+import { encryptPassword } from "../../../helpers/passwordEncrypt.ts";
 import { prisma } from "../../../helpers/prismaConfig.ts";
 import User from "../../../models/User.ts";
 
@@ -40,7 +41,9 @@ const addUser = async (ctx: Context) => {
 			users.map(async (userValue) => {
 				const newUser = {
 					email: userValue.email,
-					password: userValue.isGoogleAuth ? undefined : userValue.password,
+					password: userValue.isGoogleAuth
+						? undefined
+						: await encryptPassword(userValue.password!),
 					firstName: userValue.firstName,
 					lastName: userValue.lastName,
 					isGoogleAuth: userValue.isGoogleAuth ?? false,
@@ -49,7 +52,23 @@ const addUser = async (ctx: Context) => {
 					isSignedIn: true,
 				};
 
-				const createdUser = await prisma.user.create({ data: newUser });
+				const createdUser = await prisma.user.create({
+					data: newUser,
+					select: {
+						id: true,
+						email: true,
+						firstName: true,
+						lastName: true,
+						isGoogleAuth: true,
+						isEmailVerified: true,
+						isDeleted: true,
+						isSignedIn: true,
+						createdAt: true,
+						updatedAt: true,
+						updatedBy: true,
+						userTypeId: true,
+					},
+				});
 				return createdUser;
 			})
 		);

@@ -9,6 +9,8 @@ const signIn = async (ctx: Context) => {
 	const user: User = await body.value;
 	const { email, password, isGoogleAuth, isEmailVerified } = user;
 
+	//cannot sign in to an account that is already signed in
+
 	try {
 		if (!email || !password) {
 			ctx.response.status = 404;
@@ -28,6 +30,15 @@ const signIn = async (ctx: Context) => {
 			ctx.response.body = {
 				success: false,
 				message: "User does not exist! Please sign up instead.",
+			};
+			return;
+		}
+
+		if (existingUser.isSignedIn) {
+			ctx.response.status = 400;
+			ctx.response.body = {
+				success: false,
+				message: "User is already signed in!",
 			};
 			return;
 		}
