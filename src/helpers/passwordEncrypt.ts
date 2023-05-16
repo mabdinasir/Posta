@@ -7,4 +7,12 @@ async function encryptPassword(password: string): Promise<string> {
 	return hashedPassword;
 }
 
-export { encryptPassword };
+async function comparePassword(
+	password: string,
+	hashedPassword: string
+): Promise<boolean> {
+	const isPasswordValid = await bcrypt.compare(password, hashedPassword);
+	return isPasswordValid;
+}
+
+export { encryptPassword, comparePassword };

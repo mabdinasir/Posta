@@ -28,11 +28,10 @@ const getUserById = async (ctx: Context) => {
 			user,
 		};
 	} catch (error) {
-		console.log(error);
 		ctx.response.status = 500;
 		ctx.response.body = {
 			success: false,
-			message: "Internal server error",
+			message: error.toString(),
 		};
 	} finally {
 		await prisma.$disconnect();

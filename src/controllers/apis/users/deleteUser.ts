@@ -41,7 +41,7 @@ const deleteUser = async (ctx: Context) => {
 		ctx.response.status = 500;
 		ctx.response.body = {
 			success: false,
-			message: "Internal server error",
+			message: error.toString(),
 		};
 	} finally {
 		await prisma.$disconnect();

@@ -1,12 +1,13 @@
 import { Context } from "../../../deps.ts";
 import { generateJwtToken } from "../../../helpers/generateJwtToken.ts";
+import { comparePassword } from "../../../helpers/passwordEncrypt.ts";
 import { prisma } from "../../../helpers/prismaConfig.ts";
 import User from "../../../models/User.ts";
 
 const signIn = async (ctx: Context) => {
 	const body = ctx.request.body();
 	const user: User = await body.value;
-	const { email, password } = user;
+	const { email, password, isGoogleAuth, isEmailVerified } = user;
 
 	try {
 		if (!email || !password) {
@@ -19,50 +20,55 @@ const signIn = async (ctx: Context) => {
 		}
 
 		const existingUser = await prisma.user.findUnique({
-			where: { email },
+			where: { email: user.email },
 		});
 
-		if (!existingUser) {
+		if (!existingUser || existingUser.isDeleted) {
 			ctx.response.status = 400;
 			ctx.response.body = {
 				success: false,
 				message: "User does not exist! Please sign up instead.",
 			};
 			return;
-		} else {
-			if (existingUser.isDeleted) {
-				ctx.response.status = 400;
-				ctx.response.body = {
-					success: false,
-					message: "User does not exist! Please sign up instead.",
-				};
-				return;
-			}
-			if (existingUser.password !== password) {
-				ctx.response.status = 400;
-				ctx.response.body = {
-					success: false,
-					message: "Password is incorrect!",
-				};
-				return;
-			}
-			const jwt = await generateJwtToken({ ...user }, 89789633);
-			const updatedUser = await prisma.user.update({
-				where: { email: user.email },
-				data: { isSignedIn: true },
-			});
-			ctx.response.status = 200;
-			ctx.response.body = {
-				success: true,
-				message: "User signed in successfully!",
-				jwt,
-			};
 		}
+
+		const passwordMatch = await comparePassword(
+			password,
+			existingUser?.password!
+		);
+
+		if (!passwordMatch) {
+			ctx.response.status = 401;
+			ctx.response.body = {
+				success: false,
+				message: "Incorrect password",
+			};
+			return;
+		}
+
+		// Passwords match, successful login
+		const jwt = await generateJwtToken({ ...user }, 89789633);
+
+		await prisma.user.update({
+			where: { email },
+			data: {
+				isSignedIn: true,
+				isGoogleAuth,
+				isEmailVerified,
+			},
+		});
+
+		ctx.response.status = 200;
+		ctx.response.body = {
+			success: true,
+			message: "Login successful",
+			jwt,
+		};
 	} catch (error) {
 		ctx.response.status = 500;
 		ctx.response.body = {
 			success: false,
-			message: "Internal server error",
+			message: error.toString(),
 		};
 	} finally {
 		await prisma.$disconnect();

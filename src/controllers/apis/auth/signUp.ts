@@ -53,7 +53,11 @@ const signUp = async (ctx: Context) => {
 			} else {
 				const restoredUser = await prisma.user.update({
 					where: { email: user.email },
-					data: { isDeleted: false, isSignedIn: true, password: await encryptPassword(password) },
+					data: {
+						isDeleted: false,
+						isSignedIn: true,
+						password: await encryptPassword(password),
+					},
 				});
 				ctx.response.status = 200;
 				ctx.response.body = {

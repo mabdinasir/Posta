@@ -16,6 +16,6 @@ router
 	.put("/api/users/:id", updateUser)
 	.delete("/api/users/:id", deleteUser)
 	.post("/api/auth/signup", signUp)
-	.post("/api/auth/login", signIn)
+	.post("/api/auth/signin", signIn);
 
 export default router;

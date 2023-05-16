@@ -158,5 +158,34 @@
     "https://deno.land/x/oak@v12.1.0/types.d.ts": "41951a18c3bfdb11e40707cab75da078ba8a4907cd7d4e11d8536bc2db0dde05",
     "https://deno.land/x/oak@v12.1.0/util.ts": "3af8c4ed04c6cc2bedbe66e562a77fc59c72df31c55a902a63885861ca1639d6",
     "https://deno.land/x/path_to_regexp@v6.2.1/index.ts": "894060567837bae8fc9c5cbd4d0a05e9024672083d5883b525c031eea940e556"
+  },
+  "npm": {
+    "specifiers": {
+      "@prisma/client@^4.14.0": "@prisma/client@4.14.0_prisma@4.14.0",
+      "prisma@^4.14.0": "prisma@4.14.0"
+    },
+    "packages": {
+      "@prisma/client@4.14.0_prisma@4.14.0": {
+        "integrity": "sha512-MK/XaA2sFdfaOa7I9MjNKz6dxeIEdeZlnpNRoF2w3JuRLlFJLkpp6cD3yaqw2nUUhbrn3Iqe3ZpVV+VuGGil7Q==",
+        "dependencies": {
+          "@prisma/engines-version": "@prisma/engines-version@4.14.0-67.d9a4c5988f480fa576d43970d5a23641aa77bc9c",
+          "prisma": "prisma@4.14.0"
+        }
+      },
+      "@prisma/engines-version@4.14.0-67.d9a4c5988f480fa576d43970d5a23641aa77bc9c": {
+        "integrity": "sha512-3jum8/YSudeSN0zGW5qkpz+wAN2V/NYCQ+BPjvHYDfWatLWlQkqy99toX0GysDeaUoBIJg1vaz2yKqiA3CFcQw==",
+        "dependencies": {}
+      },
+      "@prisma/engines@4.14.0": {
+        "integrity": "sha512-PDNlhP/1vyTgmNyiucGqGCdXIp7HIkkvKO50si3y3PcceeHvqtiKPaH1iJdz63jCWMVMbj2MElSxXPOeBvEVIQ==",
+        "dependencies": {}
+      },
+      "prisma@4.14.0": {
+        "integrity": "sha512-+5dMl1uxMQb4RepndY6AwR9xi1cDcaGFICu+ws6/Nmgt93mFPNj8tYxSfTdmfg+rkNrUId9rk/Ac2vTgLe/oXA==",
+        "dependencies": {
+          "@prisma/engines": "@prisma/engines@4.14.0"
+        }
+      }
+    }
   }
 }
