@@ -1,5 +1,3 @@
-import UserType from "./UserType.ts";
-
 interface User {
 	id: string;
 	email: string;

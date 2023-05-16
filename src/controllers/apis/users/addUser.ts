@@ -10,7 +10,7 @@ const addUser = async (ctx: Context) => {
 			ctx.response.status = 400;
 			ctx.response.body = {
 				success: false,
-				message: "No users provided",
+				message: "Body is missing!",
 			};
 			return;
 		}
@@ -30,7 +30,8 @@ const addUser = async (ctx: Context) => {
 			ctx.response.status = 400;
 			ctx.response.body = {
 				success: false,
-				meessage: "Email provided exists. Please provide a unique email!",
+				meessage:
+					"Email(s) provided exists(s). Please provide unique email(s)!",
 			};
 			return;
 		}
@@ -55,6 +56,8 @@ const addUser = async (ctx: Context) => {
 		ctx.response.status = 201;
 		ctx.response.body = {
 			success: true,
+			message: "User(s) created successfully!",
+			count: createdUsers.length,
 			users: createdUsers,
 		};
 	} catch (error) {
