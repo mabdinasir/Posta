@@ -55,32 +55,36 @@ const signIn = async (ctx: Context) => {
 				message: "Incorrect password",
 			};
 			return;
+		} else {
+
+			// Passwords match, successful login
+			const jwt = await generateJwtToken({ ...user });
+
+			const signedInUser = await prisma.user.update({
+				where: { email },
+				data: {
+					isSignedIn: true,
+					isGoogleAuth,
+					isEmailVerified,
+				},
+			});
+
+			await ctx.cookies.set("jwt", jwt, {
+				httpOnly: true,
+				sameSite: "strict",
+			});
+
+			ctx.response.status = 200;
+			ctx.response.body = {
+				success: true,
+				message: "Sign in successful!",
+				user: {
+					...signedInUser,
+					password: undefined,
+				},
+				jwt,
+			};
 		}
-
-		// Passwords match, successful login
-		const jwt = await generateJwtToken({ ...user });
-
-		await prisma.user.update({
-			where: { email },
-			data: {
-				isSignedIn: true,
-				isGoogleAuth,
-				isEmailVerified,
-			},
-		});
-
-		await ctx.cookies.set("jwt", jwt, {
-			httpOnly: true,
-			sameSite: "strict",
-		});
-		console.log("jwt", jwt);
-
-		ctx.response.status = 200;
-		ctx.response.body = {
-			success: true,
-			message: "Login successful",
-			jwt,
-		};
 	} catch (error) {
 		ctx.response.status = 500;
 		ctx.response.body = {

@@ -12,7 +12,7 @@ const deleteUser = async (ctx: Context) => {
 			},
 		});
 
-		if (!user) {
+		if (!user || user.isDeleted) {
 			ctx.response.status = 404;
 			ctx.response.body = {
 				success: false,
@@ -37,7 +37,6 @@ const deleteUser = async (ctx: Context) => {
 			user: deletedUser.id,
 		};
 	} catch (error) {
-		console.log(error);
 		ctx.response.status = 500;
 		ctx.response.body = {
 			success: false,

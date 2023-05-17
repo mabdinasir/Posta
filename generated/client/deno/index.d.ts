@@ -19,7 +19,7 @@ export type PrismaPromise<T> = runtime.Types.Public.PrismaPromise<T>
 export type User = {
   id: string
   email: string
-  password: string | null
+  password: string
   firstName: string
   lastName: string
   isGoogleAuth: boolean | null
@@ -1045,7 +1045,7 @@ export namespace Prisma {
   export type UserGroupByOutputType = {
     id: string
     email: string
-    password: string | null
+    password: string
     firstName: string
     lastName: string
     isGoogleAuth: boolean | null
@@ -2884,7 +2884,7 @@ export namespace Prisma {
     NOT?: Enumerable<UserWhereInput>
     id?: StringFilter | string
     email?: StringFilter | string
-    password?: StringNullableFilter | string | null
+    password?: StringFilter | string
     firstName?: StringFilter | string
     lastName?: StringFilter | string
     isGoogleAuth?: BoolNullableFilter | boolean | null
@@ -2945,7 +2945,7 @@ export namespace Prisma {
     NOT?: Enumerable<UserScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
     email?: StringWithAggregatesFilter | string
-    password?: StringNullableWithAggregatesFilter | string | null
+    password?: StringWithAggregatesFilter | string
     firstName?: StringWithAggregatesFilter | string
     lastName?: StringWithAggregatesFilter | string
     isGoogleAuth?: BoolNullableWithAggregatesFilter | boolean | null
@@ -3008,7 +3008,7 @@ export namespace Prisma {
   export type UserCreateInput = {
     id?: string
     email: string
-    password?: string | null
+    password: string
     firstName: string
     lastName: string
     isGoogleAuth?: boolean | null
@@ -3024,7 +3024,7 @@ export namespace Prisma {
   export type UserUncheckedCreateInput = {
     id?: string
     email: string
-    password?: string | null
+    password: string
     firstName: string
     lastName: string
     isGoogleAuth?: boolean | null
@@ -3040,7 +3040,7 @@ export namespace Prisma {
   export type UserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -3056,7 +3056,7 @@ export namespace Prisma {
   export type UserUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -3072,7 +3072,7 @@ export namespace Prisma {
   export type UserCreateManyInput = {
     id?: string
     email: string
-    password?: string | null
+    password: string
     firstName: string
     lastName: string
     isGoogleAuth?: boolean | null
@@ -3088,7 +3088,7 @@ export namespace Prisma {
   export type UserUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -3103,7 +3103,7 @@ export namespace Prisma {
   export type UserUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -3191,21 +3191,6 @@ export namespace Prisma {
     not?: NestedStringFilter | string
   }
 
-  export type StringNullableFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | string | null
-    notIn?: Enumerable<string> | string | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    mode?: QueryMode
-    not?: NestedStringNullableFilter | string | null
-  }
-
   export type BoolNullableFilter = {
     equals?: boolean | null
     not?: NestedBoolNullableFilter | boolean | null
@@ -3220,6 +3205,21 @@ export namespace Prisma {
     gt?: Date | string
     gte?: Date | string
     not?: NestedDateTimeNullableFilter | Date | string | null
+  }
+
+  export type StringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | string | null
+    notIn?: Enumerable<string> | string | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    mode?: QueryMode
+    not?: NestedStringNullableFilter | string | null
   }
 
   export type UserTypeRelationFilter = {
@@ -3293,24 +3293,6 @@ export namespace Prisma {
     _max?: NestedStringFilter
   }
 
-  export type StringNullableWithAggregatesFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | string | null
-    notIn?: Enumerable<string> | string | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter | string | null
-    _count?: NestedIntNullableFilter
-    _min?: NestedStringNullableFilter
-    _max?: NestedStringNullableFilter
-  }
-
   export type BoolNullableWithAggregatesFilter = {
     equals?: boolean | null
     not?: NestedBoolNullableWithAggregatesFilter | boolean | null
@@ -3331,6 +3313,24 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter
     _min?: NestedDateTimeNullableFilter
     _max?: NestedDateTimeNullableFilter
+  }
+
+  export type StringNullableWithAggregatesFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | string | null
+    notIn?: Enumerable<string> | string | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedStringNullableFilter
+    _max?: NestedStringNullableFilter
   }
 
   export type DateTimeFilter = {
@@ -3402,16 +3402,16 @@ export namespace Prisma {
     set?: string
   }
 
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-  }
-
   export type NullableBoolFieldUpdateOperationsInput = {
     set?: boolean | null
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type UserTypeUpdateOneWithoutUserNestedInput = {
@@ -3484,20 +3484,6 @@ export namespace Prisma {
     not?: NestedStringFilter | string
   }
 
-  export type NestedStringNullableFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | string | null
-    notIn?: Enumerable<string> | string | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringNullableFilter | string | null
-  }
-
   export type NestedBoolNullableFilter = {
     equals?: boolean | null
     not?: NestedBoolNullableFilter | boolean | null
@@ -3512,6 +3498,20 @@ export namespace Prisma {
     gt?: Date | string
     gte?: Date | string
     not?: NestedDateTimeNullableFilter | Date | string | null
+  }
+
+  export type NestedStringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | string | null
+    notIn?: Enumerable<string> | string | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableFilter | string | null
   }
 
   export type NestedStringWithAggregatesFilter = {
@@ -3542,6 +3542,39 @@ export namespace Prisma {
     not?: NestedIntFilter | number
   }
 
+  export type NestedBoolNullableWithAggregatesFilter = {
+    equals?: boolean | null
+    not?: NestedBoolNullableWithAggregatesFilter | boolean | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedBoolNullableFilter
+    _max?: NestedBoolNullableFilter
+  }
+
+  export type NestedIntNullableFilter = {
+    equals?: number | null
+    in?: Enumerable<number> | number | null
+    notIn?: Enumerable<number> | number | null
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntNullableFilter | number | null
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter = {
+    equals?: Date | string | null
+    in?: Enumerable<Date> | Enumerable<string> | Date | string | null
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string | null
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeNullableWithAggregatesFilter | Date | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedDateTimeNullableFilter
+    _max?: NestedDateTimeNullableFilter
+  }
+
   export type NestedStringNullableWithAggregatesFilter = {
     equals?: string | null
     in?: Enumerable<string> | string | null
@@ -3557,39 +3590,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter
     _min?: NestedStringNullableFilter
     _max?: NestedStringNullableFilter
-  }
-
-  export type NestedIntNullableFilter = {
-    equals?: number | null
-    in?: Enumerable<number> | number | null
-    notIn?: Enumerable<number> | number | null
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntNullableFilter | number | null
-  }
-
-  export type NestedBoolNullableWithAggregatesFilter = {
-    equals?: boolean | null
-    not?: NestedBoolNullableWithAggregatesFilter | boolean | null
-    _count?: NestedIntNullableFilter
-    _min?: NestedBoolNullableFilter
-    _max?: NestedBoolNullableFilter
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter = {
-    equals?: Date | string | null
-    in?: Enumerable<Date> | Enumerable<string> | Date | string | null
-    notIn?: Enumerable<Date> | Enumerable<string> | Date | string | null
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeNullableWithAggregatesFilter | Date | string | null
-    _count?: NestedIntNullableFilter
-    _min?: NestedDateTimeNullableFilter
-    _max?: NestedDateTimeNullableFilter
   }
 
   export type NestedDateTimeFilter = {
@@ -3662,7 +3662,7 @@ export namespace Prisma {
   export type UserCreateWithoutTypeInput = {
     id?: string
     email: string
-    password?: string | null
+    password: string
     firstName: string
     lastName: string
     isGoogleAuth?: boolean | null
@@ -3677,7 +3677,7 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutTypeInput = {
     id?: string
     email: string
-    password?: string | null
+    password: string
     firstName: string
     lastName: string
     isGoogleAuth?: boolean | null
@@ -3721,7 +3721,7 @@ export namespace Prisma {
     NOT?: Enumerable<UserScalarWhereInput>
     id?: StringFilter | string
     email?: StringFilter | string
-    password?: StringNullableFilter | string | null
+    password?: StringFilter | string
     firstName?: StringFilter | string
     lastName?: StringFilter | string
     isGoogleAuth?: BoolNullableFilter | boolean | null
@@ -3737,7 +3737,7 @@ export namespace Prisma {
   export type UserCreateManyTypeInput = {
     id?: string
     email: string
-    password?: string | null
+    password: string
     firstName: string
     lastName: string
     isGoogleAuth?: boolean | null
@@ -3752,7 +3752,7 @@ export namespace Prisma {
   export type UserUpdateWithoutTypeInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -3767,7 +3767,7 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutTypeInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -3782,7 +3782,7 @@ export namespace Prisma {
   export type UserUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
     isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
