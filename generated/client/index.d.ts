@@ -3008,7 +3008,7 @@ export namespace Prisma {
   export type UserCreateInput = {
     id?: string
     email: string
-    password: string
+    password?: string
     firstName: string
     lastName: string
     isGoogleAuth?: boolean | null
@@ -3024,7 +3024,7 @@ export namespace Prisma {
   export type UserUncheckedCreateInput = {
     id?: string
     email: string
-    password: string
+    password?: string
     firstName: string
     lastName: string
     isGoogleAuth?: boolean | null
@@ -3072,7 +3072,7 @@ export namespace Prisma {
   export type UserCreateManyInput = {
     id?: string
     email: string
-    password: string
+    password?: string
     firstName: string
     lastName: string
     isGoogleAuth?: boolean | null
@@ -3662,7 +3662,7 @@ export namespace Prisma {
   export type UserCreateWithoutTypeInput = {
     id?: string
     email: string
-    password: string
+    password?: string
     firstName: string
     lastName: string
     isGoogleAuth?: boolean | null
@@ -3677,7 +3677,7 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutTypeInput = {
     id?: string
     email: string
-    password: string
+    password?: string
     firstName: string
     lastName: string
     isGoogleAuth?: boolean | null
@@ -3737,7 +3737,7 @@ export namespace Prisma {
   export type UserCreateManyTypeInput = {
     id?: string
     email: string
-    password: string
+    password?: string
     firstName: string
     lastName: string
     isGoogleAuth?: boolean | null

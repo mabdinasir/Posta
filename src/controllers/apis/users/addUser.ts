@@ -53,20 +53,8 @@ const addUser = async (ctx: Context) => {
 				};
 
 				const createdUser = await prisma.user.create({
-					data: newUser,
-					select: {
-						id: true,
-						email: true,
-						firstName: true,
-						lastName: true,
-						isGoogleAuth: true,
-						isEmailVerified: true,
-						isDeleted: true,
-						isSignedIn: true,
-						createdAt: true,
-						updatedAt: true,
-						updatedBy: true,
-						userTypeId: true,
+					data: {
+						...newUser,
 					},
 				});
 				return createdUser;
@@ -77,7 +65,9 @@ const addUser = async (ctx: Context) => {
 			success: true,
 			message: "User(s) created successfully!",
 			count: createdUsers.length,
-			users: createdUsers,
+			users: createdUsers.map((user) => {
+				return { ...user, password: undefined };
+			}),
 		};
 	} catch (error) {
 		ctx.response.status = 500;

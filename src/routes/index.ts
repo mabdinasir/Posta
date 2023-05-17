@@ -12,13 +12,13 @@ import authMiddleware from "../middleWares/authMiddleware.ts";
 const router = new Router();
 
 router
+	.post("/api/auth/signup", signUp)
+	.post("/api/auth/signin", signIn)
+	.post("/api/auth/signout", signOut)
 	.get("/api/users", authMiddleware, getUsers)
 	.post("/api/users", authMiddleware, addUser)
 	.get("/api/users/:id", authMiddleware, getUserById)
 	.put("/api/users/:id", authMiddleware, updateUser)
-	.delete("/api/users/:id", authMiddleware, deleteUser)
-	.post("/api/auth/signup", signUp)
-	.post("/api/auth/signin", signIn)
-	.post("/api/auth/signout", signOut);
+	.delete("/api/users/:id", authMiddleware, deleteUser);
 
 export default router;

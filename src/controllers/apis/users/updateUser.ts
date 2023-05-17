@@ -23,13 +23,14 @@ const updateUser = async (ctx: Context) => {
 			...user,
 			password: user.password
 				? await encryptPassword(user.password)
-				: undefined,
+				: "",
 		};
 
 		const updatedUserResult = await prisma.user.update({
 			where: { id: userId },
 			data: updatedUser,
 		});
+
 		ctx.response.status = 200;
 		ctx.response.body = {
 			success: true,
