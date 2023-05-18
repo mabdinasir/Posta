@@ -1,19 +1,19 @@
-import { Context } from "../../../deps.ts";
-import { encryptPassword } from "../../../helpers/passwordEncrypt.ts";
-import { prisma } from "../../../helpers/prismaConfig.ts";
-import User from "../../../models/User.ts";
+import { Context } from '../../../deps.ts'
+import { encryptPassword } from '../../../helpers/passwordEncrypt.ts'
+import { prisma } from '../../../helpers/prismaConfig.ts'
+import User from '../../../models/User.ts'
 
 const addUser = async (ctx: Context) => {
-	const body = ctx.request.body();
-	const users: User[] = await body.value;
+	const body = ctx.request.body()
+	const users: User[] = await body.value
 	try {
 		if (!users) {
-			ctx.response.status = 400;
+			ctx.response.status = 400
 			ctx.response.body = {
 				success: false,
-				message: "Body is missing!",
-			};
-			return;
+				message: 'Body is missing!',
+			}
+			return
 		}
 
 		const duplicateEmails = await Promise.all(
@@ -22,19 +22,19 @@ const addUser = async (ctx: Context) => {
 					where: {
 						email: userValue.email,
 					},
-				});
-				return user ? 1 : 0;
-			})
-		);
+				})
+				return user ? 1 : 0
+			}),
+		)
 
 		if (duplicateEmails.some((count) => count > 0)) {
-			ctx.response.status = 400;
+			ctx.response.status = 400
 			ctx.response.body = {
 				success: false,
 				meessage:
-					"Email(s) provided exists(s). Please provide unique email(s)!",
-			};
-			return;
+					'Email(s) provided exists(s). Please provide unique email(s)!',
+			}
+			return
 		}
 
 		const createdUsers = await Promise.all(
@@ -50,34 +50,35 @@ const addUser = async (ctx: Context) => {
 					isEmailVerified: userValue.isEmailVerified ?? false,
 					isDeleted: false,
 					isSignedIn: true,
-				};
+				}
 
 				const createdUser = await prisma.user.create({
 					data: {
 						...newUser,
+						password: newUser.password!,
 					},
-				});
-				return createdUser;
-			})
-		);
-		ctx.response.status = 201;
+				})
+				return createdUser
+			}),
+		)
+		ctx.response.status = 201
 		ctx.response.body = {
 			success: true,
-			message: "User(s) created successfully!",
+			message: 'User(s) created successfully!',
 			count: createdUsers.length,
 			users: createdUsers.map((user) => {
-				return { ...user, password: undefined };
+				return { ...user, password: undefined }
 			}),
-		};
+		}
 	} catch (error) {
-		ctx.response.status = 500;
+		ctx.response.status = 500
 		ctx.response.body = {
 			success: false,
 			message: error.toString(),
-		};
+		}
 	} finally {
-		await prisma.$disconnect();
+		await prisma.$disconnect()
 	}
-};
+}
 
-export { addUser };
+export { addUser }

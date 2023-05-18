@@ -22,12 +22,12 @@ export type User = {
   password: string
   firstName: string
   lastName: string
-  isGoogleAuth: boolean | null
-  isEmailVerified: boolean | null
-  isDeleted: boolean | null
-  isSignedIn: boolean | null
-  createdAt: Date | null
-  updatedAt: Date | null
+  isGoogleAuth: boolean
+  isEmailVerified: boolean
+  isDeleted: boolean
+  isSignedIn: boolean
+  createdAt: Date
+  updatedAt: Date
   updatedBy: string | null
   userTypeId: string | null
 }
@@ -41,7 +41,7 @@ export type UserType = {
   type: string
   createdAt: Date
   updatedAt: Date
-  updatedBy: string | null
+  updatedBy: string
 }
 
 
@@ -1048,12 +1048,12 @@ export namespace Prisma {
     password: string
     firstName: string
     lastName: string
-    isGoogleAuth: boolean | null
-    isEmailVerified: boolean | null
-    isDeleted: boolean | null
-    isSignedIn: boolean | null
-    createdAt: Date | null
-    updatedAt: Date | null
+    isGoogleAuth: boolean
+    isEmailVerified: boolean
+    isDeleted: boolean
+    isSignedIn: boolean
+    createdAt: Date
+    updatedAt: Date
     updatedBy: string | null
     userTypeId: string | null
     _count: UserCountAggregateOutputType | null
@@ -1994,7 +1994,7 @@ export namespace Prisma {
     type: string
     createdAt: Date
     updatedAt: Date
-    updatedBy: string | null
+    updatedBy: string
     _count: UserTypeCountAggregateOutputType | null
     _min: UserTypeMinAggregateOutputType | null
     _max: UserTypeMaxAggregateOutputType | null
@@ -2887,12 +2887,12 @@ export namespace Prisma {
     password?: StringFilter | string
     firstName?: StringFilter | string
     lastName?: StringFilter | string
-    isGoogleAuth?: BoolNullableFilter | boolean | null
-    isEmailVerified?: BoolNullableFilter | boolean | null
-    isDeleted?: BoolNullableFilter | boolean | null
-    isSignedIn?: BoolNullableFilter | boolean | null
-    createdAt?: DateTimeNullableFilter | Date | string | null
-    updatedAt?: DateTimeNullableFilter | Date | string | null
+    isGoogleAuth?: BoolFilter | boolean
+    isEmailVerified?: BoolFilter | boolean
+    isDeleted?: BoolFilter | boolean
+    isSignedIn?: BoolFilter | boolean
+    createdAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeFilter | Date | string
     updatedBy?: StringNullableFilter | string | null
     userTypeId?: StringNullableFilter | string | null
     type?: XOR<UserTypeRelationFilter, UserTypeWhereInput> | null
@@ -2948,12 +2948,12 @@ export namespace Prisma {
     password?: StringWithAggregatesFilter | string
     firstName?: StringWithAggregatesFilter | string
     lastName?: StringWithAggregatesFilter | string
-    isGoogleAuth?: BoolNullableWithAggregatesFilter | boolean | null
-    isEmailVerified?: BoolNullableWithAggregatesFilter | boolean | null
-    isDeleted?: BoolNullableWithAggregatesFilter | boolean | null
-    isSignedIn?: BoolNullableWithAggregatesFilter | boolean | null
-    createdAt?: DateTimeNullableWithAggregatesFilter | Date | string | null
-    updatedAt?: DateTimeNullableWithAggregatesFilter | Date | string | null
+    isGoogleAuth?: BoolWithAggregatesFilter | boolean
+    isEmailVerified?: BoolWithAggregatesFilter | boolean
+    isDeleted?: BoolWithAggregatesFilter | boolean
+    isSignedIn?: BoolWithAggregatesFilter | boolean
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
     updatedBy?: StringNullableWithAggregatesFilter | string | null
     userTypeId?: StringNullableWithAggregatesFilter | string | null
   }
@@ -2966,7 +2966,7 @@ export namespace Prisma {
     type?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeFilter | Date | string
-    updatedBy?: StringNullableFilter | string | null
+    updatedBy?: StringFilter | string
     User?: UserListRelationFilter
   }
 
@@ -3002,21 +3002,21 @@ export namespace Prisma {
     type?: StringWithAggregatesFilter | string
     createdAt?: DateTimeWithAggregatesFilter | Date | string
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
-    updatedBy?: StringNullableWithAggregatesFilter | string | null
+    updatedBy?: StringWithAggregatesFilter | string
   }
 
   export type UserCreateInput = {
     id?: string
     email: string
-    password?: string
+    password: string
     firstName: string
     lastName: string
-    isGoogleAuth?: boolean | null
-    isEmailVerified?: boolean | null
-    isDeleted?: boolean | null
-    isSignedIn?: boolean | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    isGoogleAuth?: boolean
+    isEmailVerified?: boolean
+    isDeleted?: boolean
+    isSignedIn?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
     updatedBy?: string | null
     type?: UserTypeCreateNestedOneWithoutUserInput
   }
@@ -3024,15 +3024,15 @@ export namespace Prisma {
   export type UserUncheckedCreateInput = {
     id?: string
     email: string
-    password?: string
+    password: string
     firstName: string
     lastName: string
-    isGoogleAuth?: boolean | null
-    isEmailVerified?: boolean | null
-    isDeleted?: boolean | null
-    isSignedIn?: boolean | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    isGoogleAuth?: boolean
+    isEmailVerified?: boolean
+    isDeleted?: boolean
+    isSignedIn?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
     updatedBy?: string | null
     userTypeId?: string | null
   }
@@ -3043,12 +3043,12 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isEmailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isSignedIn?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isSignedIn?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     type?: UserTypeUpdateOneWithoutUserNestedInput
   }
@@ -3059,12 +3059,12 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isEmailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isSignedIn?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isSignedIn?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     userTypeId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -3072,15 +3072,15 @@ export namespace Prisma {
   export type UserCreateManyInput = {
     id?: string
     email: string
-    password?: string
+    password: string
     firstName: string
     lastName: string
-    isGoogleAuth?: boolean | null
-    isEmailVerified?: boolean | null
-    isDeleted?: boolean | null
-    isSignedIn?: boolean | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    isGoogleAuth?: boolean
+    isEmailVerified?: boolean
+    isDeleted?: boolean
+    isSignedIn?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
     updatedBy?: string | null
     userTypeId?: string | null
   }
@@ -3091,12 +3091,12 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isEmailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isSignedIn?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isSignedIn?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -3106,12 +3106,12 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isEmailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isSignedIn?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isSignedIn?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     userTypeId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -3121,7 +3121,7 @@ export namespace Prisma {
     type?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    updatedBy?: string | null
+    updatedBy: string
     User?: UserCreateNestedManyWithoutTypeInput
   }
 
@@ -3130,7 +3130,7 @@ export namespace Prisma {
     type?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    updatedBy?: string | null
+    updatedBy: string
     User?: UserUncheckedCreateNestedManyWithoutTypeInput
   }
 
@@ -3139,7 +3139,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: StringFieldUpdateOperationsInput | string
     User?: UserUpdateManyWithoutTypeNestedInput
   }
 
@@ -3148,7 +3148,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: StringFieldUpdateOperationsInput | string
     User?: UserUncheckedUpdateManyWithoutTypeNestedInput
   }
 
@@ -3157,7 +3157,7 @@ export namespace Prisma {
     type?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    updatedBy?: string | null
+    updatedBy: string
   }
 
   export type UserTypeUpdateManyMutationInput = {
@@ -3165,7 +3165,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserTypeUncheckedUpdateManyInput = {
@@ -3173,7 +3173,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter = {
@@ -3191,20 +3191,20 @@ export namespace Prisma {
     not?: NestedStringFilter | string
   }
 
-  export type BoolNullableFilter = {
-    equals?: boolean | null
-    not?: NestedBoolNullableFilter | boolean | null
+  export type BoolFilter = {
+    equals?: boolean
+    not?: NestedBoolFilter | boolean
   }
 
-  export type DateTimeNullableFilter = {
-    equals?: Date | string | null
-    in?: Enumerable<Date> | Enumerable<string> | Date | string | null
-    notIn?: Enumerable<Date> | Enumerable<string> | Date | string | null
+  export type DateTimeFilter = {
+    equals?: Date | string
+    in?: Enumerable<Date> | Enumerable<string> | Date | string
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string
     lt?: Date | string
     lte?: Date | string
     gt?: Date | string
     gte?: Date | string
-    not?: NestedDateTimeNullableFilter | Date | string | null
+    not?: NestedDateTimeFilter | Date | string
   }
 
   export type StringNullableFilter = {
@@ -3293,26 +3293,26 @@ export namespace Prisma {
     _max?: NestedStringFilter
   }
 
-  export type BoolNullableWithAggregatesFilter = {
-    equals?: boolean | null
-    not?: NestedBoolNullableWithAggregatesFilter | boolean | null
-    _count?: NestedIntNullableFilter
-    _min?: NestedBoolNullableFilter
-    _max?: NestedBoolNullableFilter
+  export type BoolWithAggregatesFilter = {
+    equals?: boolean
+    not?: NestedBoolWithAggregatesFilter | boolean
+    _count?: NestedIntFilter
+    _min?: NestedBoolFilter
+    _max?: NestedBoolFilter
   }
 
-  export type DateTimeNullableWithAggregatesFilter = {
-    equals?: Date | string | null
-    in?: Enumerable<Date> | Enumerable<string> | Date | string | null
-    notIn?: Enumerable<Date> | Enumerable<string> | Date | string | null
+  export type DateTimeWithAggregatesFilter = {
+    equals?: Date | string
+    in?: Enumerable<Date> | Enumerable<string> | Date | string
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string
     lt?: Date | string
     lte?: Date | string
     gt?: Date | string
     gte?: Date | string
-    not?: NestedDateTimeNullableWithAggregatesFilter | Date | string | null
-    _count?: NestedIntNullableFilter
-    _min?: NestedDateTimeNullableFilter
-    _max?: NestedDateTimeNullableFilter
+    not?: NestedDateTimeWithAggregatesFilter | Date | string
+    _count?: NestedIntFilter
+    _min?: NestedDateTimeFilter
+    _max?: NestedDateTimeFilter
   }
 
   export type StringNullableWithAggregatesFilter = {
@@ -3331,17 +3331,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter
     _min?: NestedStringNullableFilter
     _max?: NestedStringNullableFilter
-  }
-
-  export type DateTimeFilter = {
-    equals?: Date | string
-    in?: Enumerable<Date> | Enumerable<string> | Date | string
-    notIn?: Enumerable<Date> | Enumerable<string> | Date | string
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeFilter | Date | string
   }
 
   export type UserListRelationFilter = {
@@ -3378,20 +3367,6 @@ export namespace Prisma {
     updatedBy?: SortOrder
   }
 
-  export type DateTimeWithAggregatesFilter = {
-    equals?: Date | string
-    in?: Enumerable<Date> | Enumerable<string> | Date | string
-    notIn?: Enumerable<Date> | Enumerable<string> | Date | string
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeWithAggregatesFilter | Date | string
-    _count?: NestedIntFilter
-    _min?: NestedDateTimeFilter
-    _max?: NestedDateTimeFilter
-  }
-
   export type UserTypeCreateNestedOneWithoutUserInput = {
     create?: XOR<UserTypeCreateWithoutUserInput, UserTypeUncheckedCreateWithoutUserInput>
     connectOrCreate?: UserTypeCreateOrConnectWithoutUserInput
@@ -3402,12 +3377,12 @@ export namespace Prisma {
     set?: string
   }
 
-  export type NullableBoolFieldUpdateOperationsInput = {
-    set?: boolean | null
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -3436,10 +3411,6 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<UserCreateOrConnectWithoutTypeInput>
     createMany?: UserCreateManyTypeInputEnvelope
     connect?: Enumerable<UserWhereUniqueInput>
-  }
-
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
   }
 
   export type UserUpdateManyWithoutTypeNestedInput = {
@@ -3484,20 +3455,20 @@ export namespace Prisma {
     not?: NestedStringFilter | string
   }
 
-  export type NestedBoolNullableFilter = {
-    equals?: boolean | null
-    not?: NestedBoolNullableFilter | boolean | null
+  export type NestedBoolFilter = {
+    equals?: boolean
+    not?: NestedBoolFilter | boolean
   }
 
-  export type NestedDateTimeNullableFilter = {
-    equals?: Date | string | null
-    in?: Enumerable<Date> | Enumerable<string> | Date | string | null
-    notIn?: Enumerable<Date> | Enumerable<string> | Date | string | null
+  export type NestedDateTimeFilter = {
+    equals?: Date | string
+    in?: Enumerable<Date> | Enumerable<string> | Date | string
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string
     lt?: Date | string
     lte?: Date | string
     gt?: Date | string
     gte?: Date | string
-    not?: NestedDateTimeNullableFilter | Date | string | null
+    not?: NestedDateTimeFilter | Date | string
   }
 
   export type NestedStringNullableFilter = {
@@ -3542,37 +3513,26 @@ export namespace Prisma {
     not?: NestedIntFilter | number
   }
 
-  export type NestedBoolNullableWithAggregatesFilter = {
-    equals?: boolean | null
-    not?: NestedBoolNullableWithAggregatesFilter | boolean | null
-    _count?: NestedIntNullableFilter
-    _min?: NestedBoolNullableFilter
-    _max?: NestedBoolNullableFilter
+  export type NestedBoolWithAggregatesFilter = {
+    equals?: boolean
+    not?: NestedBoolWithAggregatesFilter | boolean
+    _count?: NestedIntFilter
+    _min?: NestedBoolFilter
+    _max?: NestedBoolFilter
   }
 
-  export type NestedIntNullableFilter = {
-    equals?: number | null
-    in?: Enumerable<number> | number | null
-    notIn?: Enumerable<number> | number | null
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntNullableFilter | number | null
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter = {
-    equals?: Date | string | null
-    in?: Enumerable<Date> | Enumerable<string> | Date | string | null
-    notIn?: Enumerable<Date> | Enumerable<string> | Date | string | null
+  export type NestedDateTimeWithAggregatesFilter = {
+    equals?: Date | string
+    in?: Enumerable<Date> | Enumerable<string> | Date | string
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string
     lt?: Date | string
     lte?: Date | string
     gt?: Date | string
     gte?: Date | string
-    not?: NestedDateTimeNullableWithAggregatesFilter | Date | string | null
-    _count?: NestedIntNullableFilter
-    _min?: NestedDateTimeNullableFilter
-    _max?: NestedDateTimeNullableFilter
+    not?: NestedDateTimeWithAggregatesFilter | Date | string
+    _count?: NestedIntFilter
+    _min?: NestedDateTimeFilter
+    _max?: NestedDateTimeFilter
   }
 
   export type NestedStringNullableWithAggregatesFilter = {
@@ -3592,29 +3552,15 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter
   }
 
-  export type NestedDateTimeFilter = {
-    equals?: Date | string
-    in?: Enumerable<Date> | Enumerable<string> | Date | string
-    notIn?: Enumerable<Date> | Enumerable<string> | Date | string
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeFilter | Date | string
-  }
-
-  export type NestedDateTimeWithAggregatesFilter = {
-    equals?: Date | string
-    in?: Enumerable<Date> | Enumerable<string> | Date | string
-    notIn?: Enumerable<Date> | Enumerable<string> | Date | string
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeWithAggregatesFilter | Date | string
-    _count?: NestedIntFilter
-    _min?: NestedDateTimeFilter
-    _max?: NestedDateTimeFilter
+  export type NestedIntNullableFilter = {
+    equals?: number | null
+    in?: Enumerable<number> | number | null
+    notIn?: Enumerable<number> | number | null
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntNullableFilter | number | null
   }
 
   export type UserTypeCreateWithoutUserInput = {
@@ -3622,7 +3568,7 @@ export namespace Prisma {
     type?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    updatedBy?: string | null
+    updatedBy: string
   }
 
   export type UserTypeUncheckedCreateWithoutUserInput = {
@@ -3630,7 +3576,7 @@ export namespace Prisma {
     type?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    updatedBy?: string | null
+    updatedBy: string
   }
 
   export type UserTypeCreateOrConnectWithoutUserInput = {
@@ -3648,7 +3594,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserTypeUncheckedUpdateWithoutUserInput = {
@@ -3656,36 +3602,36 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserCreateWithoutTypeInput = {
     id?: string
     email: string
-    password?: string
+    password: string
     firstName: string
     lastName: string
-    isGoogleAuth?: boolean | null
-    isEmailVerified?: boolean | null
-    isDeleted?: boolean | null
-    isSignedIn?: boolean | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    isGoogleAuth?: boolean
+    isEmailVerified?: boolean
+    isDeleted?: boolean
+    isSignedIn?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
     updatedBy?: string | null
   }
 
   export type UserUncheckedCreateWithoutTypeInput = {
     id?: string
     email: string
-    password?: string
+    password: string
     firstName: string
     lastName: string
-    isGoogleAuth?: boolean | null
-    isEmailVerified?: boolean | null
-    isDeleted?: boolean | null
-    isSignedIn?: boolean | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    isGoogleAuth?: boolean
+    isEmailVerified?: boolean
+    isDeleted?: boolean
+    isSignedIn?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
     updatedBy?: string | null
   }
 
@@ -3724,12 +3670,12 @@ export namespace Prisma {
     password?: StringFilter | string
     firstName?: StringFilter | string
     lastName?: StringFilter | string
-    isGoogleAuth?: BoolNullableFilter | boolean | null
-    isEmailVerified?: BoolNullableFilter | boolean | null
-    isDeleted?: BoolNullableFilter | boolean | null
-    isSignedIn?: BoolNullableFilter | boolean | null
-    createdAt?: DateTimeNullableFilter | Date | string | null
-    updatedAt?: DateTimeNullableFilter | Date | string | null
+    isGoogleAuth?: BoolFilter | boolean
+    isEmailVerified?: BoolFilter | boolean
+    isDeleted?: BoolFilter | boolean
+    isSignedIn?: BoolFilter | boolean
+    createdAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeFilter | Date | string
     updatedBy?: StringNullableFilter | string | null
     userTypeId?: StringNullableFilter | string | null
   }
@@ -3737,15 +3683,15 @@ export namespace Prisma {
   export type UserCreateManyTypeInput = {
     id?: string
     email: string
-    password?: string
+    password: string
     firstName: string
     lastName: string
-    isGoogleAuth?: boolean | null
-    isEmailVerified?: boolean | null
-    isDeleted?: boolean | null
-    isSignedIn?: boolean | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    isGoogleAuth?: boolean
+    isEmailVerified?: boolean
+    isDeleted?: boolean
+    isSignedIn?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
     updatedBy?: string | null
   }
 
@@ -3755,12 +3701,12 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isEmailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isSignedIn?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isSignedIn?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -3770,12 +3716,12 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isEmailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isSignedIn?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isSignedIn?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -3785,12 +3731,12 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: StringFieldUpdateOperationsInput | string
-    isGoogleAuth?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isEmailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isDeleted?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    isSignedIn?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isSignedIn?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
