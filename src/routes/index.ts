@@ -11,7 +11,7 @@ import { Router } from '../deps.ts'
 const router = new Router()
 
 router
-	.post<string>('/api/auth/signup', signUp)
+	.post('/api/auth/signup', signUp)
 	.post('/api/auth/signin', signIn)
 	.post('/api/auth/signout', signOut)
 	.get('/api/users', getUsers)
