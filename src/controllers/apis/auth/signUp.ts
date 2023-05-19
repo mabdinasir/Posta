@@ -1,8 +1,8 @@
 import { Context } from '../../../deps.ts'
 import { generateJwtToken } from '../../../helpers/generateJwtToken.ts'
-import { encryptPassword } from '../../../helpers/passwordEncrypt.ts'
+import { hashPassword } from '../../../helpers/hashPassword.ts'
 import { prisma } from '../../../helpers/prismaConfig.ts'
-import User from '../../../models/User.ts'
+import User from '../../../models/Users/User.ts'
 
 const signUp = async (ctx: Context) => {
 	const body = ctx.request.body()
@@ -27,7 +27,7 @@ const signUp = async (ctx: Context) => {
 			const newUser = await prisma.user.create({
 				data: {
 					email,
-					password: await encryptPassword(password),
+					password: await hashPassword(password),
 					firstName,
 					lastName,
 					isSignedIn: true,
@@ -53,7 +53,7 @@ const signUp = async (ctx: Context) => {
 					data: {
 						isDeleted: false,
 						isSignedIn: true,
-						password: await encryptPassword(password),
+						password: await hashPassword(password),
 					},
 				})
 
@@ -64,6 +64,7 @@ const signUp = async (ctx: Context) => {
 				await ctx.cookies.set('jwt', jwt, {
 					httpOnly: true,
 					sameSite: 'strict',
+					expires: new Date(Date.now() + 2 * 60 * 1000),
 				})
 
 				ctx.response.status = 200

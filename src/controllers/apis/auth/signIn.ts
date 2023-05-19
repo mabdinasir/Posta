@@ -1,8 +1,8 @@
 import { Context } from '../../../deps.ts'
 import { generateJwtToken } from '../../../helpers/generateJwtToken.ts'
-import { comparePassword } from '../../../helpers/passwordEncrypt.ts'
+import { comparePassword } from '../../../helpers/hashPassword.ts'
 import { prisma } from '../../../helpers/prismaConfig.ts'
-import User from '../../../models/User.ts'
+import User from '../../../models/Users/User.ts'
 
 const signIn = async (ctx: Context) => {
 	const body = ctx.request.body()
@@ -69,6 +69,7 @@ const signIn = async (ctx: Context) => {
 			await ctx.cookies.set('jwt', jwt, {
 				httpOnly: true,
 				sameSite: 'strict',
+				expires: new Date(Date.now() + 2 * 60 * 1000),
 			})
 
 			ctx.response.status = 200

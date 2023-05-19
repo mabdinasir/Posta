@@ -1,5 +1,7 @@
-import { create, Header } from 'https://deno.land/x/djwt@v2.8/mod.ts'
-import User from '../models/User.ts'
+import { create, getNumericDate, Header, verify } from '../deps.ts'
+import User from '../models/Users/User.ts'
+
+const algorithm = 'HS512'
 
 const secretKey = await crypto.subtle.generateKey(
 	{ name: 'HMAC', hash: 'SHA-512' },
@@ -7,17 +9,22 @@ const secretKey = await crypto.subtle.generateKey(
 	['sign', 'verify'],
 )
 
-const expiresIn = 89789633
+const expiresIn = getNumericDate(new Date(Date.now() + 2 * 60 * 1000))
 
 const generateJwtToken = async (user: User) => {
 	const payload = {
 		...user,
+		algorithm,
+		secretKey,
+		iss: 'posta-auth',
 		expiresIn,
+		issuedAt: getNumericDate(new Date()),
+		nbf: getNumericDate(new Date()),
 	}
 
 	const header: Header = {
 		alg: 'HS512',
-		typ: 'bearer',
+		typ: 'JWT',
 	}
 
 	try {
@@ -28,4 +35,12 @@ const generateJwtToken = async (user: User) => {
 	}
 }
 
-export { generateJwtToken, secretKey }
+async function verifyJwt(token: string) {
+	try {
+		return await verify(token, secretKey)
+	} catch (error) {
+		return error.message
+	}
+}
+
+export { generateJwtToken, secretKey, verifyJwt }

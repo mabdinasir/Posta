@@ -1,7 +1,7 @@
 import { Context } from '../../../deps.ts'
-import { encryptPassword } from '../../../helpers/passwordEncrypt.ts'
+import { hashPassword } from '../../../helpers/hashPassword.ts'
 import { prisma } from '../../../helpers/prismaConfig.ts'
-import User from '../../../models/User.ts'
+import User from '../../../models/Users/User.ts'
 
 const addUser = async (ctx: Context) => {
 	const body = ctx.request.body()
@@ -43,7 +43,7 @@ const addUser = async (ctx: Context) => {
 					email: userValue.email,
 					password: userValue.isGoogleAuth
 						? undefined
-						: await encryptPassword(userValue.password!),
+						: await hashPassword(userValue.password!),
 					firstName: userValue.firstName,
 					lastName: userValue.lastName,
 					isGoogleAuth: userValue.isGoogleAuth ?? false,

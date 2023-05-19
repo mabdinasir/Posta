@@ -1,45 +1,73 @@
-import { Context, verify } from '../deps.ts'
-import { secretKey } from '../helpers/generateJwtToken.ts'
+import { Context } from '../deps.ts'
+import { verifyJwt } from '../helpers/generateJwtToken.ts'
 
 const authMiddleware = async (ctx: Context, next: () => Promise<unknown>) => {
 	const headers: Headers = ctx.request.headers
 	const authorization = headers.get('Authorization')
-	const cookies = (await ctx.cookies.get('jwt')) || ''
-	console.log('secretKey', secretKey)
+	const cookieToken = await ctx.cookies.get('jwt')
+	let jwtToken
 
-	if (!authorization || !cookies) {
+	if (authorization) {
+		jwtToken = authorization.split(' ')[1]
+	} else if (cookieToken) {
+		jwtToken = cookieToken
+	}
+
+	if (!jwtToken) {
 		ctx.response.status = 401
 		ctx.response.body = {
 			success: false,
-			message: 'Authorization failed!',
+			message: 'Authorization failed! Please sign in.',
 		}
 		return
 	}
 
-	const jwt = authorization.split(' ')[1]
 	try {
-		const verifiedJwt = await verify(jwt, secretKey)
-		if (verifiedJwt && cookies) {
+		const verifiedJwt = await verifyJwt(jwtToken)
+
+		// const existingUser = await prisma.user.findUnique({
+		// 	where: { email: verifiedJwt.payload.email },
+		// })
+
+		// const passwordMatch = await comparePassword(
+		// 	verifiedJwt?.payload?.password,
+		// 	existingUser?.password!,
+		// )
+
+		// if (
+		// 	!passwordMatch || !existingUser || existingUser.isDeleted ||
+		// 	!existingUser.isSignedIn
+		// ) {
+		// 	ctx.response.status = 401
+		// 	ctx.response.body = {
+		// 		success: false,
+		// 		message:
+		// 			'Invalid credentials or user is deleted or not signed in!',
+		// 	}
+		// 	return
+		// }
+
+		if (!verifiedJwt) {
+			ctx.response.status = 403
+			ctx.response.body = {
+				success: false,
+				message: 'Invalid token',
+			}
+			return
+		} else {
 			ctx.response.body = {
 				success: true,
 				message: 'Authentication successful',
 			}
 			await next()
-			return
 		}
 	} catch (error) {
-		ctx.response.status = 401
+		ctx.response.status = 500
 		ctx.response.body = {
 			success: false,
-			message: 'Invalid JWT token',
+			message: error.toString(),
 		}
 		return
-	}
-
-	ctx.response.status = 401
-	ctx.response.body = {
-		success: false,
-		message: 'Invalid JWT token',
 	}
 }
 

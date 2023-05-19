@@ -9,6 +9,7 @@ export {
 	verify,
 } from 'https://deno.land/x/djwt@v2.8/mod.ts'
 export type { Header, Payload } from 'https://deno.land/x/djwt@v2.8/mod.ts'
+export { configAsync as dotenv } from 'https://deno.land/x/dotenv@v3.2.0/mod.ts'
 export { Context } from 'https://deno.land/x/oak@v12.1.0/context.ts'
 export { Application, Router } from 'https://deno.land/x/oak@v12.1.0/mod.ts'
 export { PrismaClient } from '../generated/client/deno/edge.ts'
