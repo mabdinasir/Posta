@@ -1,6 +1,6 @@
-import { Application, oakCors } from './src/deps.ts'
-import { getEnv } from './src/helpers/envLoader.ts'
-import router from './src/routes/index.ts'
+import { Application, oakCors } from './deps.ts'
+import { getEnv } from './helpers/envLoader.ts'
+import router from './routes/index.ts'
 
 await getEnv()
 
