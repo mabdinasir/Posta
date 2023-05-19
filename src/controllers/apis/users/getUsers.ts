@@ -1,5 +1,5 @@
-import { Context } from "../../../deps.ts";
-import { prisma } from "../../../helpers/prismaConfig.ts";
+import { Context } from '../../../deps.ts'
+import { prisma } from '../../../helpers/prismaConfig.ts'
 
 const getUsers = async (ctx: Context) => {
 	try {
@@ -21,30 +21,30 @@ const getUsers = async (ctx: Context) => {
 				updatedBy: true,
 				userTypeId: true,
 			},
-		});
+		})
 
 		if (users.length > 0) {
-			ctx.response.status = 200;
+			ctx.response.status = 200
 			ctx.response.body = {
 				success: true,
 				count: users.length,
 				users,
-			};
+			}
 		} else {
 			ctx.response.body = {
 				success: false,
 				users: [],
-			};
+			}
 		}
 	} catch (err) {
-		ctx.response.status = 500;
+		ctx.response.status = 500
 		ctx.response.body = {
 			success: false,
 			msg: err.toString(),
-		};
+		}
 	} finally {
-		await prisma.$disconnect();
+		await prisma.$disconnect()
 	}
-};
+}
 
-export { getUsers };
+export { getUsers }
