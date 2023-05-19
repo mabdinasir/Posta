@@ -29,11 +29,6 @@ const signOut = async (ctx: Context) => {
 			where: { email },
 		})
 
-		// const passwordMatch = await comparePassword(
-		// 	password,
-		// 	existingUser?.password!,
-		// )
-
 		if (!existingUser) {
 			ctx.response.status = 400
 			ctx.response.body = {
@@ -42,15 +37,6 @@ const signOut = async (ctx: Context) => {
 			}
 			return
 		}
-
-		// if (!passwordMatch) {
-		// 	ctx.response.status = 401
-		// 	ctx.response.body = {
-		// 		success: false,
-		// 		message: 'Incorrect email or password!',
-		// 	}
-		// 	return
-		// }
 
 		if (!existingUser.isSignedIn) {
 			ctx.response.status = 400
@@ -76,7 +62,7 @@ const signOut = async (ctx: Context) => {
 
 		ctx.cookies.delete('jwt', {
 			httpOnly: true,
-			secure: true,
+			secure: false,
 		})
 
 		ctx.response.status = 200

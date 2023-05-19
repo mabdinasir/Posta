@@ -69,7 +69,6 @@ const signIn = async (ctx: Context) => {
 			await ctx.cookies.set('jwt', jwt, {
 				httpOnly: true,
 				sameSite: 'strict',
-				expires: new Date(Date.now() + 2 * 60 * 1000),
 			})
 
 			ctx.response.status = 200

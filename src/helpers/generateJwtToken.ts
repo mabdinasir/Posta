@@ -1,4 +1,4 @@
-import { create, getNumericDate, Header, verify } from '../deps.ts'
+import { create, getNumericDate, Header } from '../deps.ts'
 import User from '../models/Users/User.ts'
 
 const algorithm = 'HS512'
@@ -9,7 +9,7 @@ const secretKey = await crypto.subtle.generateKey(
 	['sign', 'verify'],
 )
 
-const expiresIn = getNumericDate(new Date(Date.now() + 2 * 60 * 1000))
+const expiresIn = 120
 
 const generateJwtToken = async (user: User) => {
 	const payload = {
@@ -35,12 +35,4 @@ const generateJwtToken = async (user: User) => {
 	}
 }
 
-async function verifyJwt(token: string) {
-	try {
-		return await verify(token, secretKey)
-	} catch (error) {
-		return error.message
-	}
-}
-
-export { generateJwtToken, secretKey, verifyJwt }
+export { generateJwtToken, secretKey }
