@@ -1,8 +1,6 @@
+import 'https://deno.land/std@0.173.0/dotenv/load.ts'
 import { Application, oakCors } from './deps.ts'
-import { getEnv } from './helpers/envLoader.ts'
 import router from './routes/index.ts'
-
-await getEnv()
 
 const app = new Application()
 
