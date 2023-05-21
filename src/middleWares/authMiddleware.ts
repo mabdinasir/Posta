@@ -6,10 +6,11 @@ export const authMiddleware = async (
 	ctx: Context,
 	next: () => Promise<unknown>,
 ) => {
-	const Authorization = ctx.request.headers.get('Authorization')
+	const headers: Headers = ctx.request.headers
+	const authorization = headers.get('Authorization')
 	const cookies = await ctx.cookies.get('jwt') || ''
 
-	if (!Authorization && !cookies) {
+	if (!authorization && !cookies) {
 		ctx.response.status = 401
 		ctx.response.body = {
 			success: false,
@@ -19,11 +20,15 @@ export const authMiddleware = async (
 	}
 
 	try {
-		const jwt = Authorization ? Authorization.split(' ')[1] : cookies
-		const payload = await verify(jwt, secretKey)
-		if (payload) {
-			ctx.state.user = payload
+		const jwt = authorization?.split(' ')[1]
+		const verifiedJwt = jwt && await verify(jwt, secretKey)
+		if (verifiedJwt) {
+			ctx.response.body = {
+				success: true,
+				msg: 'Authentication successful',
+			}
 			await next()
+			return
 		} else {
 			ctx.response.status = 401
 			ctx.response.body = {
@@ -32,7 +37,7 @@ export const authMiddleware = async (
 			}
 		}
 	} catch (err) {
-		ctx.response.status = 401
+		ctx.response.status = 500
 		ctx.response.body = {
 			success: false,
 			message: err.toString(),

@@ -1,5 +1,8 @@
 import { Context } from '../../../deps.ts'
-import { generateJwtToken } from '../../../helpers/generateJwtToken.ts'
+import {
+	generateJwtToken,
+	secretKey,
+} from '../../../helpers/generateJwtToken.ts'
 import { comparePassword } from '../../../helpers/hashPassword.ts'
 import { prisma } from '../../../helpers/prismaConfig.ts'
 import User from '../../../models/Users/User.ts'
@@ -14,7 +17,7 @@ const signIn = async (ctx: Context) => {
 			ctx.response.status = 404
 			ctx.response.body = {
 				success: false,
-				message: 'Please enter valid email or password!',
+				message: 'Please enter a valid email or password!',
 			}
 			return
 		}
@@ -58,13 +61,12 @@ const signIn = async (ctx: Context) => {
 				where: { email },
 				data: {
 					isSignedIn: true,
-					isGoogleAuth: isGoogleAuth ?? false,
 				},
 			})
 
 			const jwt = await generateJwtToken({
 				...signedInUser,
-			})
+			}, secretKey)
 
 			await ctx.cookies.set('jwt', jwt, {
 				httpOnly: true,

@@ -1,7 +1,5 @@
-import { create, getNumericDate, Header } from '../deps.ts'
+import { create, Header } from '../deps.ts'
 import User from '../models/Users/User.ts'
-
-const algorithm = 'HS512'
 
 const secretKey = await crypto.subtle.generateKey(
 	{ name: 'HMAC', hash: 'SHA-512' },
@@ -9,17 +7,9 @@ const secretKey = await crypto.subtle.generateKey(
 	['sign', 'verify'],
 )
 
-const expiresIn = 120
-
-const generateJwtToken = async (user: User) => {
+const generateJwtToken = async (user: User, secretKey: CryptoKey) => {
 	const payload = {
 		...user,
-		algorithm,
-		secretKey,
-		iss: 'posta-auth',
-		expiresIn,
-		issuedAt: getNumericDate(new Date()),
-		nbf: getNumericDate(new Date()),
 	}
 
 	const header: Header = {

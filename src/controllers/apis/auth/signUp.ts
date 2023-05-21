@@ -1,5 +1,8 @@
 import { Context } from '../../../deps.ts'
-import { generateJwtToken } from '../../../helpers/generateJwtToken.ts'
+import {
+	generateJwtToken,
+	secretKey,
+} from '../../../helpers/generateJwtToken.ts'
 import { hashPassword } from '../../../helpers/hashPassword.ts'
 import { prisma } from '../../../helpers/prismaConfig.ts'
 import User from '../../../models/Users/User.ts'
@@ -33,7 +36,7 @@ const signUp = async (ctx: Context) => {
 					isSignedIn: true,
 				},
 			})
-			const jwt = await generateJwtToken({ ...newUser })
+			const jwt = await generateJwtToken({ ...newUser }, secretKey)
 			ctx.response.status = 201
 			ctx.response.body = {
 				jwt,
@@ -59,7 +62,7 @@ const signUp = async (ctx: Context) => {
 
 				const jwt = await generateJwtToken({
 					...restoredUser,
-				})
+				}, secretKey)
 
 				await ctx.cookies.set('jwt', jwt, {
 					httpOnly: true,

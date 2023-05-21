@@ -1,5 +1,4 @@
 import { Context } from '../../../deps.ts'
-import { comparePassword } from "../../../helpers/hashPassword.ts";
 import { prisma } from '../../../helpers/prismaConfig.ts'
 
 const signOut = async (ctx: Context) => {
@@ -54,16 +53,7 @@ const signOut = async (ctx: Context) => {
 			},
 		})
 
-		ctx.cookies.set('jwt', '', {
-			httpOnly: true,
-			secure: false,
-			expires: new Date(0),
-		})
-
-		ctx.cookies.delete('jwt', {
-			httpOnly: true,
-			secure: false,
-		})
+		ctx.cookies.delete('jwt')
 
 		ctx.response.status = 200
 		ctx.response.body = {
