@@ -1,6 +1,0 @@
--- AlterTable
-ALTER TABLE "User" ALTER COLUMN "password" DROP DEFAULT,
-ALTER COLUMN "updatedBy" DROP DEFAULT;
-
--- AlterTable
-ALTER TABLE "UserType" ALTER COLUMN "updatedBy" DROP DEFAULT;

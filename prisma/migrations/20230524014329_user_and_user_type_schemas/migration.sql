@@ -2,15 +2,15 @@
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "password" TEXT,
+    "password" TEXT NOT NULL,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
-    "isGoogleAuth" BOOLEAN DEFAULT false,
-    "isEmailVerified" BOOLEAN DEFAULT false,
-    "isDeleted" BOOLEAN DEFAULT false,
-    "isSignedIn" BOOLEAN DEFAULT false,
-    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3),
+    "isGoogleAuth" BOOLEAN NOT NULL DEFAULT false,
+    "isEmailVerified" BOOLEAN NOT NULL DEFAULT false,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
+    "isSignedIn" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     "updatedBy" TEXT,
     "userTypeId" TEXT,
 
@@ -23,7 +23,7 @@ CREATE TABLE "UserType" (
     "type" TEXT NOT NULL DEFAULT 'customer',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "updatedBy" TEXT,
+    "updatedBy" TEXT NOT NULL,
 
     CONSTRAINT "UserType_pkey" PRIMARY KEY ("id")
 );
