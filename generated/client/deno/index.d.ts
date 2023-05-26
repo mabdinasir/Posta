@@ -6497,7 +6497,7 @@ export namespace Prisma {
 
   export type UserTypeCreateInput = {
     id?: string
-    name?: string
+    name: string
     createdAt?: Date | string
     createdBy?: string | null
     updatedAt?: Date | string
@@ -6507,7 +6507,7 @@ export namespace Prisma {
 
   export type UserTypeUncheckedCreateInput = {
     id?: string
-    name?: string
+    name: string
     createdAt?: Date | string
     createdBy?: string | null
     updatedAt?: Date | string
@@ -6537,7 +6537,7 @@ export namespace Prisma {
 
   export type UserTypeCreateManyInput = {
     id?: string
-    name?: string
+    name: string
     createdAt?: Date | string
     createdBy?: string | null
     updatedAt?: Date | string
@@ -7445,7 +7445,7 @@ export namespace Prisma {
 
   export type UserTypeCreateWithoutUsersInput = {
     id?: string
-    name?: string
+    name: string
     createdAt?: Date | string
     createdBy?: string | null
     updatedAt?: Date | string
@@ -7454,7 +7454,7 @@ export namespace Prisma {
 
   export type UserTypeUncheckedCreateWithoutUsersInput = {
     id?: string
-    name?: string
+    name: string
     createdAt?: Date | string
     createdBy?: string | null
     updatedAt?: Date | string

@@ -1,4 +1,4 @@
-import UserType from './UserType.ts'
+import UserType from "./UserType.ts"
 
 interface User {
 	id: string
@@ -10,11 +10,11 @@ interface User {
 	isEmailVerified: boolean
 	isDeleted: boolean
 	isSignedIn: boolean
-	createdAt: string
+	createdAt: Date | string
 	createdBy?: string | null
-	updatedAt: string
+	updatedAt: Date | string
 	updatedBy?: string | null
-	userTypes: UserType[]
+	userTypes?: UserType[]
 }
 
 export default User

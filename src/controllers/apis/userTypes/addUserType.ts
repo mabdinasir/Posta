@@ -18,13 +18,15 @@ const addUserType = async (ctx: Context) => {
 
 		const existingUserTypes = await prisma.userType.findMany({
 			where: {
-				type: { in: userTypes.map((userType) => userType.type) },
+				name: {
+					in: userTypes.map((userType) => userType.name),
+				},
 			},
 		})
 
 		if (existingUserTypes.length > 0) {
 			const duplicateTypes = existingUserTypes.map((userType) =>
-				userType.type
+				userType.name
 			)
 			ctx.response.status = 400
 			ctx.response.body = {
@@ -38,10 +40,10 @@ const addUserType = async (ctx: Context) => {
 
 		const createdUserTypes = await prisma.userType.createMany({
 			data: userTypes.map((userType) => ({
-				type: userType.type,
+				name: userType.name,
+				createdBy: userType.createdBy || '',
 				updatedBy: userType.updatedBy || '',
 			})),
-			skipDuplicates: true,
 		})
 
 		ctx.response.status = 201

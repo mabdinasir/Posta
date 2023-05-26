@@ -34,7 +34,7 @@ const updateUserType = async (ctx: Context) => {
 		const updatedUserType = await prisma.userType.update({
 			where: { id: userTypeId },
 			data: {
-				type: userType.type,
+				name: userType.name,
 				updatedBy: userType.updatedBy || '',
 			},
 		})
