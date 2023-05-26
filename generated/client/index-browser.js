@@ -86,6 +86,38 @@ Prisma.NullTypes = {
  * Enums
  */
 
+exports.Prisma.CityScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  countryId: 'countryId'
+};
+
+exports.Prisma.CountryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy'
+};
+
+exports.Prisma.PostOfficeScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  poAddress: 'poAddress',
+  poContact: 'poContact',
+  poManagerId: 'poManagerId',
+  poContactPerson: 'poContactPerson',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  cityId: 'cityId'
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -114,15 +146,16 @@ exports.Prisma.UserScalarFieldEnum = {
   isDeleted: 'isDeleted',
   isSignedIn: 'isSignedIn',
   createdAt: 'createdAt',
+  createdBy: 'createdBy',
   updatedAt: 'updatedAt',
-  updatedBy: 'updatedBy',
-  userTypeId: 'userTypeId'
+  updatedBy: 'updatedBy'
 };
 
 exports.Prisma.UserTypeScalarFieldEnum = {
   id: 'id',
-  type: 'type',
+  name: 'name',
   createdAt: 'createdAt',
+  createdBy: 'createdBy',
   updatedAt: 'updatedAt',
   updatedBy: 'updatedBy'
 };
@@ -130,7 +163,10 @@ exports.Prisma.UserTypeScalarFieldEnum = {
 
 exports.Prisma.ModelName = {
   User: 'User',
-  UserType: 'UserType'
+  UserType: 'UserType',
+  Country: 'Country',
+  City: 'City',
+  PostOffice: 'PostOffice'
 };
 
 /**

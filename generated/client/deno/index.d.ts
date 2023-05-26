@@ -27,9 +27,9 @@ export type User = {
   isDeleted: boolean
   isSignedIn: boolean
   createdAt: Date
+  createdBy: string | null
   updatedAt: Date
   updatedBy: string | null
-  userTypeId: string | null
 }
 
 /**
@@ -38,10 +38,55 @@ export type User = {
  */
 export type UserType = {
   id: string
-  type: string
+  name: string
+  createdAt: Date
+  createdBy: string | null
+  updatedAt: Date
+  updatedBy: string | null
+}
+
+/**
+ * Model Country
+ * 
+ */
+export type Country = {
+  id: string
+  name: string
+  createdAt: Date
+  createdBy: string | null
+  updatedAt: Date
+  updatedBy: string | null
+}
+
+/**
+ * Model City
+ * 
+ */
+export type City = {
+  id: string
+  name: string
+  createdAt: Date
+  createdBy: string | null
+  updatedAt: Date
+  updatedBy: string
+  countryId: string
+}
+
+/**
+ * Model PostOffice
+ * 
+ */
+export type PostOffice = {
+  id: string
+  name: string
+  poAddress: string
+  poContact: string
+  poManagerId: string
+  poContactPerson: string
   createdAt: Date
   updatedAt: Date
   updatedBy: string
+  cityId: string
 }
 
 
@@ -181,6 +226,36 @@ export class PrismaClient<
     * ```
     */
   get userType(): Prisma.UserTypeDelegate<GlobalReject>;
+
+  /**
+   * `prisma.country`: Exposes CRUD operations for the **Country** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Countries
+    * const countries = await prisma.country.findMany()
+    * ```
+    */
+  get country(): Prisma.CountryDelegate<GlobalReject>;
+
+  /**
+   * `prisma.city`: Exposes CRUD operations for the **City** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Cities
+    * const cities = await prisma.city.findMany()
+    * ```
+    */
+  get city(): Prisma.CityDelegate<GlobalReject>;
+
+  /**
+   * `prisma.postOffice`: Exposes CRUD operations for the **PostOffice** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PostOffices
+    * const postOffices = await prisma.postOffice.findMany()
+    * ```
+    */
+  get postOffice(): Prisma.PostOfficeDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
@@ -651,7 +726,10 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
-    UserType: 'UserType'
+    UserType: 'UserType',
+    Country: 'Country',
+    City: 'City',
+    PostOffice: 'PostOffice'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -813,16 +891,59 @@ export namespace Prisma {
 
 
   /**
+   * Count Type UserCountOutputType
+   */
+
+
+  export type UserCountOutputType = {
+    userTypes: number
+  }
+
+  export type UserCountOutputTypeSelect = {
+    userTypes?: boolean
+  }
+
+  export type UserCountOutputTypeGetPayload<S extends boolean | null | undefined | UserCountOutputTypeArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? UserCountOutputType :
+    S extends undefined ? never :
+    S extends { include: any } & (UserCountOutputTypeArgs)
+    ? UserCountOutputType 
+    : S extends { select: any } & (UserCountOutputTypeArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+    P extends keyof UserCountOutputType ? UserCountOutputType[P] : never
+  } 
+      : UserCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the UserCountOutputType
+     */
+    select?: UserCountOutputTypeSelect | null
+  }
+
+
+
+  /**
    * Count Type UserTypeCountOutputType
    */
 
 
   export type UserTypeCountOutputType = {
-    User: number
+    users: number
   }
 
   export type UserTypeCountOutputTypeSelect = {
-    User?: boolean
+    users?: boolean
   }
 
   export type UserTypeCountOutputTypeGetPayload<S extends boolean | null | undefined | UserTypeCountOutputTypeArgs> =
@@ -856,6 +977,92 @@ export namespace Prisma {
 
 
   /**
+   * Count Type CountryCountOutputType
+   */
+
+
+  export type CountryCountOutputType = {
+    cities: number
+  }
+
+  export type CountryCountOutputTypeSelect = {
+    cities?: boolean
+  }
+
+  export type CountryCountOutputTypeGetPayload<S extends boolean | null | undefined | CountryCountOutputTypeArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? CountryCountOutputType :
+    S extends undefined ? never :
+    S extends { include: any } & (CountryCountOutputTypeArgs)
+    ? CountryCountOutputType 
+    : S extends { select: any } & (CountryCountOutputTypeArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+    P extends keyof CountryCountOutputType ? CountryCountOutputType[P] : never
+  } 
+      : CountryCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * CountryCountOutputType without action
+   */
+  export type CountryCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the CountryCountOutputType
+     */
+    select?: CountryCountOutputTypeSelect | null
+  }
+
+
+
+  /**
+   * Count Type CityCountOutputType
+   */
+
+
+  export type CityCountOutputType = {
+    postOffices: number
+  }
+
+  export type CityCountOutputTypeSelect = {
+    postOffices?: boolean
+  }
+
+  export type CityCountOutputTypeGetPayload<S extends boolean | null | undefined | CityCountOutputTypeArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? CityCountOutputType :
+    S extends undefined ? never :
+    S extends { include: any } & (CityCountOutputTypeArgs)
+    ? CityCountOutputType 
+    : S extends { select: any } & (CityCountOutputTypeArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+    P extends keyof CityCountOutputType ? CityCountOutputType[P] : never
+  } 
+      : CityCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * CityCountOutputType without action
+   */
+  export type CityCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the CityCountOutputType
+     */
+    select?: CityCountOutputTypeSelect | null
+  }
+
+
+
+  /**
    * Models
    */
 
@@ -881,9 +1088,9 @@ export namespace Prisma {
     isDeleted: boolean | null
     isSignedIn: boolean | null
     createdAt: Date | null
+    createdBy: string | null
     updatedAt: Date | null
     updatedBy: string | null
-    userTypeId: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -897,9 +1104,9 @@ export namespace Prisma {
     isDeleted: boolean | null
     isSignedIn: boolean | null
     createdAt: Date | null
+    createdBy: string | null
     updatedAt: Date | null
     updatedBy: string | null
-    userTypeId: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -913,9 +1120,9 @@ export namespace Prisma {
     isDeleted: number
     isSignedIn: number
     createdAt: number
+    createdBy: number
     updatedAt: number
     updatedBy: number
-    userTypeId: number
     _all: number
   }
 
@@ -931,9 +1138,9 @@ export namespace Prisma {
     isDeleted?: true
     isSignedIn?: true
     createdAt?: true
+    createdBy?: true
     updatedAt?: true
     updatedBy?: true
-    userTypeId?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -947,9 +1154,9 @@ export namespace Prisma {
     isDeleted?: true
     isSignedIn?: true
     createdAt?: true
+    createdBy?: true
     updatedAt?: true
     updatedBy?: true
-    userTypeId?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -963,9 +1170,9 @@ export namespace Prisma {
     isDeleted?: true
     isSignedIn?: true
     createdAt?: true
+    createdBy?: true
     updatedAt?: true
     updatedBy?: true
-    userTypeId?: true
     _all?: true
   }
 
@@ -1053,9 +1260,9 @@ export namespace Prisma {
     isDeleted: boolean
     isSignedIn: boolean
     createdAt: Date
+    createdBy: string | null
     updatedAt: Date
     updatedBy: string | null
-    userTypeId: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -1086,15 +1293,17 @@ export namespace Prisma {
     isDeleted?: boolean
     isSignedIn?: boolean
     createdAt?: boolean
+    createdBy?: boolean
     updatedAt?: boolean
     updatedBy?: boolean
-    userTypeId?: boolean
-    type?: boolean | UserTypeArgs
+    userTypes?: boolean | User$userTypesArgs
+    _count?: boolean | UserCountOutputTypeArgs
   }
 
 
   export type UserInclude = {
-    type?: boolean | UserTypeArgs
+    userTypes?: boolean | User$userTypesArgs
+    _count?: boolean | UserCountOutputTypeArgs
   }
 
   export type UserGetPayload<S extends boolean | null | undefined | UserArgs> =
@@ -1104,12 +1313,14 @@ export namespace Prisma {
     S extends { include: any } & (UserArgs | UserFindManyArgs)
     ? User  & {
     [P in TruthyKeys<S['include']>]:
-        P extends 'type' ? UserTypeGetPayload<S['include'][P]> | null :  never
+        P extends 'userTypes' ? Array < UserTypeGetPayload<S['include'][P]>>  :
+        P extends '_count' ? UserCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : S extends { select: any } & (UserArgs | UserFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
-        P extends 'type' ? UserTypeGetPayload<S['select'][P]> | null :  P extends keyof User ? User[P] : never
+        P extends 'userTypes' ? Array < UserTypeGetPayload<S['select'][P]>>  :
+        P extends '_count' ? UserCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof User ? User[P] : never
   } 
       : User
 
@@ -1481,7 +1692,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
     constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
 
-    type<T extends UserTypeArgs= {}>(args?: Subset<T, UserTypeArgs>): Prisma__UserTypeClient<UserTypeGetPayload<T> | Null>;
+    userTypes<T extends User$userTypesArgs= {}>(args?: Subset<T, User$userTypesArgs>): Prisma.PrismaPromise<Array<UserTypeGetPayload<T>>| Null>;
 
     private get _document();
     /**
@@ -1839,6 +2050,27 @@ export namespace Prisma {
 
 
   /**
+   * User.userTypes
+   */
+  export type User$userTypesArgs = {
+    /**
+     * Select specific fields to fetch from the UserType
+     */
+    select?: UserTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserTypeInclude | null
+    where?: UserTypeWhereInput
+    orderBy?: Enumerable<UserTypeOrderByWithRelationInput>
+    cursor?: UserTypeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<UserTypeScalarFieldEnum>
+  }
+
+
+  /**
    * User without action
    */
   export type UserArgs = {
@@ -1867,24 +2099,27 @@ export namespace Prisma {
 
   export type UserTypeMinAggregateOutputType = {
     id: string | null
-    type: string | null
+    name: string | null
     createdAt: Date | null
+    createdBy: string | null
     updatedAt: Date | null
     updatedBy: string | null
   }
 
   export type UserTypeMaxAggregateOutputType = {
     id: string | null
-    type: string | null
+    name: string | null
     createdAt: Date | null
+    createdBy: string | null
     updatedAt: Date | null
     updatedBy: string | null
   }
 
   export type UserTypeCountAggregateOutputType = {
     id: number
-    type: number
+    name: number
     createdAt: number
+    createdBy: number
     updatedAt: number
     updatedBy: number
     _all: number
@@ -1893,24 +2128,27 @@ export namespace Prisma {
 
   export type UserTypeMinAggregateInputType = {
     id?: true
-    type?: true
+    name?: true
     createdAt?: true
+    createdBy?: true
     updatedAt?: true
     updatedBy?: true
   }
 
   export type UserTypeMaxAggregateInputType = {
     id?: true
-    type?: true
+    name?: true
     createdAt?: true
+    createdBy?: true
     updatedAt?: true
     updatedBy?: true
   }
 
   export type UserTypeCountAggregateInputType = {
     id?: true
-    type?: true
+    name?: true
     createdAt?: true
+    createdBy?: true
     updatedAt?: true
     updatedBy?: true
     _all?: true
@@ -1991,10 +2229,11 @@ export namespace Prisma {
 
   export type UserTypeGroupByOutputType = {
     id: string
-    type: string
+    name: string
     createdAt: Date
+    createdBy: string | null
     updatedAt: Date
-    updatedBy: string
+    updatedBy: string | null
     _count: UserTypeCountAggregateOutputType | null
     _min: UserTypeMinAggregateOutputType | null
     _max: UserTypeMaxAggregateOutputType | null
@@ -2016,17 +2255,18 @@ export namespace Prisma {
 
   export type UserTypeSelect = {
     id?: boolean
-    type?: boolean
+    name?: boolean
     createdAt?: boolean
+    createdBy?: boolean
     updatedAt?: boolean
     updatedBy?: boolean
-    User?: boolean | UserType$UserArgs
+    users?: boolean | UserType$usersArgs
     _count?: boolean | UserTypeCountOutputTypeArgs
   }
 
 
   export type UserTypeInclude = {
-    User?: boolean | UserType$UserArgs
+    users?: boolean | UserType$usersArgs
     _count?: boolean | UserTypeCountOutputTypeArgs
   }
 
@@ -2037,13 +2277,13 @@ export namespace Prisma {
     S extends { include: any } & (UserTypeArgs | UserTypeFindManyArgs)
     ? UserType  & {
     [P in TruthyKeys<S['include']>]:
-        P extends 'User' ? Array < UserGetPayload<S['include'][P]>>  :
+        P extends 'users' ? Array < UserGetPayload<S['include'][P]>>  :
         P extends '_count' ? UserTypeCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : S extends { select: any } & (UserTypeArgs | UserTypeFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
-        P extends 'User' ? Array < UserGetPayload<S['select'][P]>>  :
+        P extends 'users' ? Array < UserGetPayload<S['select'][P]>>  :
         P extends '_count' ? UserTypeCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof UserType ? UserType[P] : never
   } 
       : UserType
@@ -2416,7 +2656,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
     constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
 
-    User<T extends UserType$UserArgs= {}>(args?: Subset<T, UserType$UserArgs>): Prisma.PrismaPromise<Array<UserGetPayload<T>>| Null>;
+    users<T extends UserType$usersArgs= {}>(args?: Subset<T, UserType$usersArgs>): Prisma.PrismaPromise<Array<UserGetPayload<T>>| Null>;
 
     private get _document();
     /**
@@ -2774,9 +3014,9 @@ export namespace Prisma {
 
 
   /**
-   * UserType.User
+   * UserType.users
    */
-  export type UserType$UserArgs = {
+  export type UserType$usersArgs = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -2811,11 +3051,2965 @@ export namespace Prisma {
 
 
   /**
+   * Model Country
+   */
+
+
+  export type AggregateCountry = {
+    _count: CountryCountAggregateOutputType | null
+    _min: CountryMinAggregateOutputType | null
+    _max: CountryMaxAggregateOutputType | null
+  }
+
+  export type CountryMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+  }
+
+  export type CountryMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+  }
+
+  export type CountryCountAggregateOutputType = {
+    id: number
+    name: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    _all: number
+  }
+
+
+  export type CountryMinAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+  }
+
+  export type CountryMaxAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+  }
+
+  export type CountryCountAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    _all?: true
+  }
+
+  export type CountryAggregateArgs = {
+    /**
+     * Filter which Country to aggregate.
+     */
+    where?: CountryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Countries to fetch.
+     */
+    orderBy?: Enumerable<CountryOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CountryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Countries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Countries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Countries
+    **/
+    _count?: true | CountryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CountryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CountryMaxAggregateInputType
+  }
+
+  export type GetCountryAggregateType<T extends CountryAggregateArgs> = {
+        [P in keyof T & keyof AggregateCountry]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCountry[P]>
+      : GetScalarType<T[P], AggregateCountry[P]>
+  }
+
+
+
+
+  export type CountryGroupByArgs = {
+    where?: CountryWhereInput
+    orderBy?: Enumerable<CountryOrderByWithAggregationInput>
+    by: CountryScalarFieldEnum[]
+    having?: CountryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CountryCountAggregateInputType | true
+    _min?: CountryMinAggregateInputType
+    _max?: CountryMaxAggregateInputType
+  }
+
+
+  export type CountryGroupByOutputType = {
+    id: string
+    name: string
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    _count: CountryCountAggregateOutputType | null
+    _min: CountryMinAggregateOutputType | null
+    _max: CountryMaxAggregateOutputType | null
+  }
+
+  type GetCountryGroupByPayload<T extends CountryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<CountryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CountryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CountryGroupByOutputType[P]>
+            : GetScalarType<T[P], CountryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CountrySelect = {
+    id?: boolean
+    name?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    cities?: boolean | Country$citiesArgs
+    _count?: boolean | CountryCountOutputTypeArgs
+  }
+
+
+  export type CountryInclude = {
+    cities?: boolean | Country$citiesArgs
+    _count?: boolean | CountryCountOutputTypeArgs
+  }
+
+  export type CountryGetPayload<S extends boolean | null | undefined | CountryArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? Country :
+    S extends undefined ? never :
+    S extends { include: any } & (CountryArgs | CountryFindManyArgs)
+    ? Country  & {
+    [P in TruthyKeys<S['include']>]:
+        P extends 'cities' ? Array < CityGetPayload<S['include'][P]>>  :
+        P extends '_count' ? CountryCountOutputTypeGetPayload<S['include'][P]> :  never
+  } 
+    : S extends { select: any } & (CountryArgs | CountryFindManyArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+        P extends 'cities' ? Array < CityGetPayload<S['select'][P]>>  :
+        P extends '_count' ? CountryCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Country ? Country[P] : never
+  } 
+      : Country
+
+
+  type CountryCountArgs = 
+    Omit<CountryFindManyArgs, 'select' | 'include'> & {
+      select?: CountryCountAggregateInputType | true
+    }
+
+  export interface CountryDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
+    /**
+     * Find zero or one Country that matches the filter.
+     * @param {CountryFindUniqueArgs} args - Arguments to find a Country
+     * @example
+     * // Get one Country
+     * const country = await prisma.country.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends CountryFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, CountryFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Country'> extends True ? Prisma__CountryClient<CountryGetPayload<T>> : Prisma__CountryClient<CountryGetPayload<T> | null, null>
+
+    /**
+     * Find one Country that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {CountryFindUniqueOrThrowArgs} args - Arguments to find a Country
+     * @example
+     * // Get one Country
+     * const country = await prisma.country.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends CountryFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, CountryFindUniqueOrThrowArgs>
+    ): Prisma__CountryClient<CountryGetPayload<T>>
+
+    /**
+     * Find the first Country that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CountryFindFirstArgs} args - Arguments to find a Country
+     * @example
+     * // Get one Country
+     * const country = await prisma.country.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends CountryFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, CountryFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Country'> extends True ? Prisma__CountryClient<CountryGetPayload<T>> : Prisma__CountryClient<CountryGetPayload<T> | null, null>
+
+    /**
+     * Find the first Country that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CountryFindFirstOrThrowArgs} args - Arguments to find a Country
+     * @example
+     * // Get one Country
+     * const country = await prisma.country.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends CountryFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, CountryFindFirstOrThrowArgs>
+    ): Prisma__CountryClient<CountryGetPayload<T>>
+
+    /**
+     * Find zero or more Countries that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CountryFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Countries
+     * const countries = await prisma.country.findMany()
+     * 
+     * // Get first 10 Countries
+     * const countries = await prisma.country.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const countryWithIdOnly = await prisma.country.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends CountryFindManyArgs>(
+      args?: SelectSubset<T, CountryFindManyArgs>
+    ): Prisma.PrismaPromise<Array<CountryGetPayload<T>>>
+
+    /**
+     * Create a Country.
+     * @param {CountryCreateArgs} args - Arguments to create a Country.
+     * @example
+     * // Create one Country
+     * const Country = await prisma.country.create({
+     *   data: {
+     *     // ... data to create a Country
+     *   }
+     * })
+     * 
+    **/
+    create<T extends CountryCreateArgs>(
+      args: SelectSubset<T, CountryCreateArgs>
+    ): Prisma__CountryClient<CountryGetPayload<T>>
+
+    /**
+     * Create many Countries.
+     *     @param {CountryCreateManyArgs} args - Arguments to create many Countries.
+     *     @example
+     *     // Create many Countries
+     *     const country = await prisma.country.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends CountryCreateManyArgs>(
+      args?: SelectSubset<T, CountryCreateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Country.
+     * @param {CountryDeleteArgs} args - Arguments to delete one Country.
+     * @example
+     * // Delete one Country
+     * const Country = await prisma.country.delete({
+     *   where: {
+     *     // ... filter to delete one Country
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends CountryDeleteArgs>(
+      args: SelectSubset<T, CountryDeleteArgs>
+    ): Prisma__CountryClient<CountryGetPayload<T>>
+
+    /**
+     * Update one Country.
+     * @param {CountryUpdateArgs} args - Arguments to update one Country.
+     * @example
+     * // Update one Country
+     * const country = await prisma.country.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends CountryUpdateArgs>(
+      args: SelectSubset<T, CountryUpdateArgs>
+    ): Prisma__CountryClient<CountryGetPayload<T>>
+
+    /**
+     * Delete zero or more Countries.
+     * @param {CountryDeleteManyArgs} args - Arguments to filter Countries to delete.
+     * @example
+     * // Delete a few Countries
+     * const { count } = await prisma.country.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends CountryDeleteManyArgs>(
+      args?: SelectSubset<T, CountryDeleteManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Countries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CountryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Countries
+     * const country = await prisma.country.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends CountryUpdateManyArgs>(
+      args: SelectSubset<T, CountryUpdateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Country.
+     * @param {CountryUpsertArgs} args - Arguments to update or create a Country.
+     * @example
+     * // Update or create a Country
+     * const country = await prisma.country.upsert({
+     *   create: {
+     *     // ... data to create a Country
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Country we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends CountryUpsertArgs>(
+      args: SelectSubset<T, CountryUpsertArgs>
+    ): Prisma__CountryClient<CountryGetPayload<T>>
+
+    /**
+     * Count the number of Countries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CountryCountArgs} args - Arguments to filter Countries to count.
+     * @example
+     * // Count the number of Countries
+     * const count = await prisma.country.count({
+     *   where: {
+     *     // ... the filter for the Countries we want to count
+     *   }
+     * })
+    **/
+    count<T extends CountryCountArgs>(
+      args?: Subset<T, CountryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CountryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Country.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CountryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CountryAggregateArgs>(args: Subset<T, CountryAggregateArgs>): Prisma.PrismaPromise<GetCountryAggregateType<T>>
+
+    /**
+     * Group by Country.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CountryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CountryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CountryGroupByArgs['orderBy'] }
+        : { orderBy?: CountryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CountryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCountryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Country.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__CountryClient<T, Null = never> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    cities<T extends Country$citiesArgs= {}>(args?: Subset<T, Country$citiesArgs>): Prisma.PrismaPromise<Array<CityGetPayload<T>>| Null>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * Country base type for findUnique actions
+   */
+  export type CountryFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the Country
+     */
+    select?: CountrySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CountryInclude | null
+    /**
+     * Filter, which Country to fetch.
+     */
+    where: CountryWhereUniqueInput
+  }
+
+  /**
+   * Country findUnique
+   */
+  export interface CountryFindUniqueArgs extends CountryFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * Country findUniqueOrThrow
+   */
+  export type CountryFindUniqueOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the Country
+     */
+    select?: CountrySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CountryInclude | null
+    /**
+     * Filter, which Country to fetch.
+     */
+    where: CountryWhereUniqueInput
+  }
+
+
+  /**
+   * Country base type for findFirst actions
+   */
+  export type CountryFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the Country
+     */
+    select?: CountrySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CountryInclude | null
+    /**
+     * Filter, which Country to fetch.
+     */
+    where?: CountryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Countries to fetch.
+     */
+    orderBy?: Enumerable<CountryOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Countries.
+     */
+    cursor?: CountryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Countries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Countries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Countries.
+     */
+    distinct?: Enumerable<CountryScalarFieldEnum>
+  }
+
+  /**
+   * Country findFirst
+   */
+  export interface CountryFindFirstArgs extends CountryFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * Country findFirstOrThrow
+   */
+  export type CountryFindFirstOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the Country
+     */
+    select?: CountrySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CountryInclude | null
+    /**
+     * Filter, which Country to fetch.
+     */
+    where?: CountryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Countries to fetch.
+     */
+    orderBy?: Enumerable<CountryOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Countries.
+     */
+    cursor?: CountryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Countries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Countries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Countries.
+     */
+    distinct?: Enumerable<CountryScalarFieldEnum>
+  }
+
+
+  /**
+   * Country findMany
+   */
+  export type CountryFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the Country
+     */
+    select?: CountrySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CountryInclude | null
+    /**
+     * Filter, which Countries to fetch.
+     */
+    where?: CountryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Countries to fetch.
+     */
+    orderBy?: Enumerable<CountryOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Countries.
+     */
+    cursor?: CountryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Countries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Countries.
+     */
+    skip?: number
+    distinct?: Enumerable<CountryScalarFieldEnum>
+  }
+
+
+  /**
+   * Country create
+   */
+  export type CountryCreateArgs = {
+    /**
+     * Select specific fields to fetch from the Country
+     */
+    select?: CountrySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CountryInclude | null
+    /**
+     * The data needed to create a Country.
+     */
+    data: XOR<CountryCreateInput, CountryUncheckedCreateInput>
+  }
+
+
+  /**
+   * Country createMany
+   */
+  export type CountryCreateManyArgs = {
+    /**
+     * The data used to create many Countries.
+     */
+    data: Enumerable<CountryCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * Country update
+   */
+  export type CountryUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the Country
+     */
+    select?: CountrySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CountryInclude | null
+    /**
+     * The data needed to update a Country.
+     */
+    data: XOR<CountryUpdateInput, CountryUncheckedUpdateInput>
+    /**
+     * Choose, which Country to update.
+     */
+    where: CountryWhereUniqueInput
+  }
+
+
+  /**
+   * Country updateMany
+   */
+  export type CountryUpdateManyArgs = {
+    /**
+     * The data used to update Countries.
+     */
+    data: XOR<CountryUpdateManyMutationInput, CountryUncheckedUpdateManyInput>
+    /**
+     * Filter which Countries to update
+     */
+    where?: CountryWhereInput
+  }
+
+
+  /**
+   * Country upsert
+   */
+  export type CountryUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the Country
+     */
+    select?: CountrySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CountryInclude | null
+    /**
+     * The filter to search for the Country to update in case it exists.
+     */
+    where: CountryWhereUniqueInput
+    /**
+     * In case the Country found by the `where` argument doesn't exist, create a new Country with this data.
+     */
+    create: XOR<CountryCreateInput, CountryUncheckedCreateInput>
+    /**
+     * In case the Country was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CountryUpdateInput, CountryUncheckedUpdateInput>
+  }
+
+
+  /**
+   * Country delete
+   */
+  export type CountryDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the Country
+     */
+    select?: CountrySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CountryInclude | null
+    /**
+     * Filter which Country to delete.
+     */
+    where: CountryWhereUniqueInput
+  }
+
+
+  /**
+   * Country deleteMany
+   */
+  export type CountryDeleteManyArgs = {
+    /**
+     * Filter which Countries to delete
+     */
+    where?: CountryWhereInput
+  }
+
+
+  /**
+   * Country.cities
+   */
+  export type Country$citiesArgs = {
+    /**
+     * Select specific fields to fetch from the City
+     */
+    select?: CitySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CityInclude | null
+    where?: CityWhereInput
+    orderBy?: Enumerable<CityOrderByWithRelationInput>
+    cursor?: CityWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<CityScalarFieldEnum>
+  }
+
+
+  /**
+   * Country without action
+   */
+  export type CountryArgs = {
+    /**
+     * Select specific fields to fetch from the Country
+     */
+    select?: CountrySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CountryInclude | null
+  }
+
+
+
+  /**
+   * Model City
+   */
+
+
+  export type AggregateCity = {
+    _count: CityCountAggregateOutputType | null
+    _min: CityMinAggregateOutputType | null
+    _max: CityMaxAggregateOutputType | null
+  }
+
+  export type CityMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    countryId: string | null
+  }
+
+  export type CityMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    countryId: string | null
+  }
+
+  export type CityCountAggregateOutputType = {
+    id: number
+    name: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    countryId: number
+    _all: number
+  }
+
+
+  export type CityMinAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    countryId?: true
+  }
+
+  export type CityMaxAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    countryId?: true
+  }
+
+  export type CityCountAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    countryId?: true
+    _all?: true
+  }
+
+  export type CityAggregateArgs = {
+    /**
+     * Filter which City to aggregate.
+     */
+    where?: CityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Cities to fetch.
+     */
+    orderBy?: Enumerable<CityOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Cities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Cities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Cities
+    **/
+    _count?: true | CityCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CityMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CityMaxAggregateInputType
+  }
+
+  export type GetCityAggregateType<T extends CityAggregateArgs> = {
+        [P in keyof T & keyof AggregateCity]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCity[P]>
+      : GetScalarType<T[P], AggregateCity[P]>
+  }
+
+
+
+
+  export type CityGroupByArgs = {
+    where?: CityWhereInput
+    orderBy?: Enumerable<CityOrderByWithAggregationInput>
+    by: CityScalarFieldEnum[]
+    having?: CityScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CityCountAggregateInputType | true
+    _min?: CityMinAggregateInputType
+    _max?: CityMaxAggregateInputType
+  }
+
+
+  export type CityGroupByOutputType = {
+    id: string
+    name: string
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string
+    countryId: string
+    _count: CityCountAggregateOutputType | null
+    _min: CityMinAggregateOutputType | null
+    _max: CityMaxAggregateOutputType | null
+  }
+
+  type GetCityGroupByPayload<T extends CityGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<CityGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CityGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CityGroupByOutputType[P]>
+            : GetScalarType<T[P], CityGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CitySelect = {
+    id?: boolean
+    name?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    countryId?: boolean
+    Country?: boolean | CountryArgs
+    postOffices?: boolean | City$postOfficesArgs
+    _count?: boolean | CityCountOutputTypeArgs
+  }
+
+
+  export type CityInclude = {
+    Country?: boolean | CountryArgs
+    postOffices?: boolean | City$postOfficesArgs
+    _count?: boolean | CityCountOutputTypeArgs
+  }
+
+  export type CityGetPayload<S extends boolean | null | undefined | CityArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? City :
+    S extends undefined ? never :
+    S extends { include: any } & (CityArgs | CityFindManyArgs)
+    ? City  & {
+    [P in TruthyKeys<S['include']>]:
+        P extends 'Country' ? CountryGetPayload<S['include'][P]> :
+        P extends 'postOffices' ? Array < PostOfficeGetPayload<S['include'][P]>>  :
+        P extends '_count' ? CityCountOutputTypeGetPayload<S['include'][P]> :  never
+  } 
+    : S extends { select: any } & (CityArgs | CityFindManyArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+        P extends 'Country' ? CountryGetPayload<S['select'][P]> :
+        P extends 'postOffices' ? Array < PostOfficeGetPayload<S['select'][P]>>  :
+        P extends '_count' ? CityCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof City ? City[P] : never
+  } 
+      : City
+
+
+  type CityCountArgs = 
+    Omit<CityFindManyArgs, 'select' | 'include'> & {
+      select?: CityCountAggregateInputType | true
+    }
+
+  export interface CityDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
+    /**
+     * Find zero or one City that matches the filter.
+     * @param {CityFindUniqueArgs} args - Arguments to find a City
+     * @example
+     * // Get one City
+     * const city = await prisma.city.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends CityFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, CityFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'City'> extends True ? Prisma__CityClient<CityGetPayload<T>> : Prisma__CityClient<CityGetPayload<T> | null, null>
+
+    /**
+     * Find one City that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {CityFindUniqueOrThrowArgs} args - Arguments to find a City
+     * @example
+     * // Get one City
+     * const city = await prisma.city.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends CityFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, CityFindUniqueOrThrowArgs>
+    ): Prisma__CityClient<CityGetPayload<T>>
+
+    /**
+     * Find the first City that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CityFindFirstArgs} args - Arguments to find a City
+     * @example
+     * // Get one City
+     * const city = await prisma.city.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends CityFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, CityFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'City'> extends True ? Prisma__CityClient<CityGetPayload<T>> : Prisma__CityClient<CityGetPayload<T> | null, null>
+
+    /**
+     * Find the first City that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CityFindFirstOrThrowArgs} args - Arguments to find a City
+     * @example
+     * // Get one City
+     * const city = await prisma.city.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends CityFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, CityFindFirstOrThrowArgs>
+    ): Prisma__CityClient<CityGetPayload<T>>
+
+    /**
+     * Find zero or more Cities that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CityFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Cities
+     * const cities = await prisma.city.findMany()
+     * 
+     * // Get first 10 Cities
+     * const cities = await prisma.city.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const cityWithIdOnly = await prisma.city.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends CityFindManyArgs>(
+      args?: SelectSubset<T, CityFindManyArgs>
+    ): Prisma.PrismaPromise<Array<CityGetPayload<T>>>
+
+    /**
+     * Create a City.
+     * @param {CityCreateArgs} args - Arguments to create a City.
+     * @example
+     * // Create one City
+     * const City = await prisma.city.create({
+     *   data: {
+     *     // ... data to create a City
+     *   }
+     * })
+     * 
+    **/
+    create<T extends CityCreateArgs>(
+      args: SelectSubset<T, CityCreateArgs>
+    ): Prisma__CityClient<CityGetPayload<T>>
+
+    /**
+     * Create many Cities.
+     *     @param {CityCreateManyArgs} args - Arguments to create many Cities.
+     *     @example
+     *     // Create many Cities
+     *     const city = await prisma.city.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends CityCreateManyArgs>(
+      args?: SelectSubset<T, CityCreateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a City.
+     * @param {CityDeleteArgs} args - Arguments to delete one City.
+     * @example
+     * // Delete one City
+     * const City = await prisma.city.delete({
+     *   where: {
+     *     // ... filter to delete one City
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends CityDeleteArgs>(
+      args: SelectSubset<T, CityDeleteArgs>
+    ): Prisma__CityClient<CityGetPayload<T>>
+
+    /**
+     * Update one City.
+     * @param {CityUpdateArgs} args - Arguments to update one City.
+     * @example
+     * // Update one City
+     * const city = await prisma.city.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends CityUpdateArgs>(
+      args: SelectSubset<T, CityUpdateArgs>
+    ): Prisma__CityClient<CityGetPayload<T>>
+
+    /**
+     * Delete zero or more Cities.
+     * @param {CityDeleteManyArgs} args - Arguments to filter Cities to delete.
+     * @example
+     * // Delete a few Cities
+     * const { count } = await prisma.city.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends CityDeleteManyArgs>(
+      args?: SelectSubset<T, CityDeleteManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Cities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CityUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Cities
+     * const city = await prisma.city.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends CityUpdateManyArgs>(
+      args: SelectSubset<T, CityUpdateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one City.
+     * @param {CityUpsertArgs} args - Arguments to update or create a City.
+     * @example
+     * // Update or create a City
+     * const city = await prisma.city.upsert({
+     *   create: {
+     *     // ... data to create a City
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the City we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends CityUpsertArgs>(
+      args: SelectSubset<T, CityUpsertArgs>
+    ): Prisma__CityClient<CityGetPayload<T>>
+
+    /**
+     * Count the number of Cities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CityCountArgs} args - Arguments to filter Cities to count.
+     * @example
+     * // Count the number of Cities
+     * const count = await prisma.city.count({
+     *   where: {
+     *     // ... the filter for the Cities we want to count
+     *   }
+     * })
+    **/
+    count<T extends CityCountArgs>(
+      args?: Subset<T, CityCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CityCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a City.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CityAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CityAggregateArgs>(args: Subset<T, CityAggregateArgs>): Prisma.PrismaPromise<GetCityAggregateType<T>>
+
+    /**
+     * Group by City.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CityGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CityGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CityGroupByArgs['orderBy'] }
+        : { orderBy?: CityGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CityGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCityGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for City.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__CityClient<T, Null = never> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    Country<T extends CountryArgs= {}>(args?: Subset<T, CountryArgs>): Prisma__CountryClient<CountryGetPayload<T> | Null>;
+
+    postOffices<T extends City$postOfficesArgs= {}>(args?: Subset<T, City$postOfficesArgs>): Prisma.PrismaPromise<Array<PostOfficeGetPayload<T>>| Null>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * City base type for findUnique actions
+   */
+  export type CityFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the City
+     */
+    select?: CitySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CityInclude | null
+    /**
+     * Filter, which City to fetch.
+     */
+    where: CityWhereUniqueInput
+  }
+
+  /**
+   * City findUnique
+   */
+  export interface CityFindUniqueArgs extends CityFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * City findUniqueOrThrow
+   */
+  export type CityFindUniqueOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the City
+     */
+    select?: CitySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CityInclude | null
+    /**
+     * Filter, which City to fetch.
+     */
+    where: CityWhereUniqueInput
+  }
+
+
+  /**
+   * City base type for findFirst actions
+   */
+  export type CityFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the City
+     */
+    select?: CitySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CityInclude | null
+    /**
+     * Filter, which City to fetch.
+     */
+    where?: CityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Cities to fetch.
+     */
+    orderBy?: Enumerable<CityOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Cities.
+     */
+    cursor?: CityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Cities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Cities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Cities.
+     */
+    distinct?: Enumerable<CityScalarFieldEnum>
+  }
+
+  /**
+   * City findFirst
+   */
+  export interface CityFindFirstArgs extends CityFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * City findFirstOrThrow
+   */
+  export type CityFindFirstOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the City
+     */
+    select?: CitySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CityInclude | null
+    /**
+     * Filter, which City to fetch.
+     */
+    where?: CityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Cities to fetch.
+     */
+    orderBy?: Enumerable<CityOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Cities.
+     */
+    cursor?: CityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Cities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Cities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Cities.
+     */
+    distinct?: Enumerable<CityScalarFieldEnum>
+  }
+
+
+  /**
+   * City findMany
+   */
+  export type CityFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the City
+     */
+    select?: CitySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CityInclude | null
+    /**
+     * Filter, which Cities to fetch.
+     */
+    where?: CityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Cities to fetch.
+     */
+    orderBy?: Enumerable<CityOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Cities.
+     */
+    cursor?: CityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Cities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Cities.
+     */
+    skip?: number
+    distinct?: Enumerable<CityScalarFieldEnum>
+  }
+
+
+  /**
+   * City create
+   */
+  export type CityCreateArgs = {
+    /**
+     * Select specific fields to fetch from the City
+     */
+    select?: CitySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CityInclude | null
+    /**
+     * The data needed to create a City.
+     */
+    data: XOR<CityCreateInput, CityUncheckedCreateInput>
+  }
+
+
+  /**
+   * City createMany
+   */
+  export type CityCreateManyArgs = {
+    /**
+     * The data used to create many Cities.
+     */
+    data: Enumerable<CityCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * City update
+   */
+  export type CityUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the City
+     */
+    select?: CitySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CityInclude | null
+    /**
+     * The data needed to update a City.
+     */
+    data: XOR<CityUpdateInput, CityUncheckedUpdateInput>
+    /**
+     * Choose, which City to update.
+     */
+    where: CityWhereUniqueInput
+  }
+
+
+  /**
+   * City updateMany
+   */
+  export type CityUpdateManyArgs = {
+    /**
+     * The data used to update Cities.
+     */
+    data: XOR<CityUpdateManyMutationInput, CityUncheckedUpdateManyInput>
+    /**
+     * Filter which Cities to update
+     */
+    where?: CityWhereInput
+  }
+
+
+  /**
+   * City upsert
+   */
+  export type CityUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the City
+     */
+    select?: CitySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CityInclude | null
+    /**
+     * The filter to search for the City to update in case it exists.
+     */
+    where: CityWhereUniqueInput
+    /**
+     * In case the City found by the `where` argument doesn't exist, create a new City with this data.
+     */
+    create: XOR<CityCreateInput, CityUncheckedCreateInput>
+    /**
+     * In case the City was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CityUpdateInput, CityUncheckedUpdateInput>
+  }
+
+
+  /**
+   * City delete
+   */
+  export type CityDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the City
+     */
+    select?: CitySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CityInclude | null
+    /**
+     * Filter which City to delete.
+     */
+    where: CityWhereUniqueInput
+  }
+
+
+  /**
+   * City deleteMany
+   */
+  export type CityDeleteManyArgs = {
+    /**
+     * Filter which Cities to delete
+     */
+    where?: CityWhereInput
+  }
+
+
+  /**
+   * City.postOffices
+   */
+  export type City$postOfficesArgs = {
+    /**
+     * Select specific fields to fetch from the PostOffice
+     */
+    select?: PostOfficeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PostOfficeInclude | null
+    where?: PostOfficeWhereInput
+    orderBy?: Enumerable<PostOfficeOrderByWithRelationInput>
+    cursor?: PostOfficeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<PostOfficeScalarFieldEnum>
+  }
+
+
+  /**
+   * City without action
+   */
+  export type CityArgs = {
+    /**
+     * Select specific fields to fetch from the City
+     */
+    select?: CitySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CityInclude | null
+  }
+
+
+
+  /**
+   * Model PostOffice
+   */
+
+
+  export type AggregatePostOffice = {
+    _count: PostOfficeCountAggregateOutputType | null
+    _min: PostOfficeMinAggregateOutputType | null
+    _max: PostOfficeMaxAggregateOutputType | null
+  }
+
+  export type PostOfficeMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    poAddress: string | null
+    poContact: string | null
+    poManagerId: string | null
+    poContactPerson: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    cityId: string | null
+  }
+
+  export type PostOfficeMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    poAddress: string | null
+    poContact: string | null
+    poManagerId: string | null
+    poContactPerson: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    cityId: string | null
+  }
+
+  export type PostOfficeCountAggregateOutputType = {
+    id: number
+    name: number
+    poAddress: number
+    poContact: number
+    poManagerId: number
+    poContactPerson: number
+    createdAt: number
+    updatedAt: number
+    updatedBy: number
+    cityId: number
+    _all: number
+  }
+
+
+  export type PostOfficeMinAggregateInputType = {
+    id?: true
+    name?: true
+    poAddress?: true
+    poContact?: true
+    poManagerId?: true
+    poContactPerson?: true
+    createdAt?: true
+    updatedAt?: true
+    updatedBy?: true
+    cityId?: true
+  }
+
+  export type PostOfficeMaxAggregateInputType = {
+    id?: true
+    name?: true
+    poAddress?: true
+    poContact?: true
+    poManagerId?: true
+    poContactPerson?: true
+    createdAt?: true
+    updatedAt?: true
+    updatedBy?: true
+    cityId?: true
+  }
+
+  export type PostOfficeCountAggregateInputType = {
+    id?: true
+    name?: true
+    poAddress?: true
+    poContact?: true
+    poManagerId?: true
+    poContactPerson?: true
+    createdAt?: true
+    updatedAt?: true
+    updatedBy?: true
+    cityId?: true
+    _all?: true
+  }
+
+  export type PostOfficeAggregateArgs = {
+    /**
+     * Filter which PostOffice to aggregate.
+     */
+    where?: PostOfficeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PostOffices to fetch.
+     */
+    orderBy?: Enumerable<PostOfficeOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PostOfficeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PostOffices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PostOffices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PostOffices
+    **/
+    _count?: true | PostOfficeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PostOfficeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PostOfficeMaxAggregateInputType
+  }
+
+  export type GetPostOfficeAggregateType<T extends PostOfficeAggregateArgs> = {
+        [P in keyof T & keyof AggregatePostOffice]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePostOffice[P]>
+      : GetScalarType<T[P], AggregatePostOffice[P]>
+  }
+
+
+
+
+  export type PostOfficeGroupByArgs = {
+    where?: PostOfficeWhereInput
+    orderBy?: Enumerable<PostOfficeOrderByWithAggregationInput>
+    by: PostOfficeScalarFieldEnum[]
+    having?: PostOfficeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PostOfficeCountAggregateInputType | true
+    _min?: PostOfficeMinAggregateInputType
+    _max?: PostOfficeMaxAggregateInputType
+  }
+
+
+  export type PostOfficeGroupByOutputType = {
+    id: string
+    name: string
+    poAddress: string
+    poContact: string
+    poManagerId: string
+    poContactPerson: string
+    createdAt: Date
+    updatedAt: Date
+    updatedBy: string
+    cityId: string
+    _count: PostOfficeCountAggregateOutputType | null
+    _min: PostOfficeMinAggregateOutputType | null
+    _max: PostOfficeMaxAggregateOutputType | null
+  }
+
+  type GetPostOfficeGroupByPayload<T extends PostOfficeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<PostOfficeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PostOfficeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PostOfficeGroupByOutputType[P]>
+            : GetScalarType<T[P], PostOfficeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PostOfficeSelect = {
+    id?: boolean
+    name?: boolean
+    poAddress?: boolean
+    poContact?: boolean
+    poManagerId?: boolean
+    poContactPerson?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    cityId?: boolean
+    city?: boolean | CityArgs
+  }
+
+
+  export type PostOfficeInclude = {
+    city?: boolean | CityArgs
+  }
+
+  export type PostOfficeGetPayload<S extends boolean | null | undefined | PostOfficeArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? PostOffice :
+    S extends undefined ? never :
+    S extends { include: any } & (PostOfficeArgs | PostOfficeFindManyArgs)
+    ? PostOffice  & {
+    [P in TruthyKeys<S['include']>]:
+        P extends 'city' ? CityGetPayload<S['include'][P]> :  never
+  } 
+    : S extends { select: any } & (PostOfficeArgs | PostOfficeFindManyArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+        P extends 'city' ? CityGetPayload<S['select'][P]> :  P extends keyof PostOffice ? PostOffice[P] : never
+  } 
+      : PostOffice
+
+
+  type PostOfficeCountArgs = 
+    Omit<PostOfficeFindManyArgs, 'select' | 'include'> & {
+      select?: PostOfficeCountAggregateInputType | true
+    }
+
+  export interface PostOfficeDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
+    /**
+     * Find zero or one PostOffice that matches the filter.
+     * @param {PostOfficeFindUniqueArgs} args - Arguments to find a PostOffice
+     * @example
+     * // Get one PostOffice
+     * const postOffice = await prisma.postOffice.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends PostOfficeFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, PostOfficeFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'PostOffice'> extends True ? Prisma__PostOfficeClient<PostOfficeGetPayload<T>> : Prisma__PostOfficeClient<PostOfficeGetPayload<T> | null, null>
+
+    /**
+     * Find one PostOffice that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {PostOfficeFindUniqueOrThrowArgs} args - Arguments to find a PostOffice
+     * @example
+     * // Get one PostOffice
+     * const postOffice = await prisma.postOffice.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends PostOfficeFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, PostOfficeFindUniqueOrThrowArgs>
+    ): Prisma__PostOfficeClient<PostOfficeGetPayload<T>>
+
+    /**
+     * Find the first PostOffice that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostOfficeFindFirstArgs} args - Arguments to find a PostOffice
+     * @example
+     * // Get one PostOffice
+     * const postOffice = await prisma.postOffice.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends PostOfficeFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, PostOfficeFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'PostOffice'> extends True ? Prisma__PostOfficeClient<PostOfficeGetPayload<T>> : Prisma__PostOfficeClient<PostOfficeGetPayload<T> | null, null>
+
+    /**
+     * Find the first PostOffice that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostOfficeFindFirstOrThrowArgs} args - Arguments to find a PostOffice
+     * @example
+     * // Get one PostOffice
+     * const postOffice = await prisma.postOffice.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends PostOfficeFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, PostOfficeFindFirstOrThrowArgs>
+    ): Prisma__PostOfficeClient<PostOfficeGetPayload<T>>
+
+    /**
+     * Find zero or more PostOffices that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostOfficeFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PostOffices
+     * const postOffices = await prisma.postOffice.findMany()
+     * 
+     * // Get first 10 PostOffices
+     * const postOffices = await prisma.postOffice.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const postOfficeWithIdOnly = await prisma.postOffice.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends PostOfficeFindManyArgs>(
+      args?: SelectSubset<T, PostOfficeFindManyArgs>
+    ): Prisma.PrismaPromise<Array<PostOfficeGetPayload<T>>>
+
+    /**
+     * Create a PostOffice.
+     * @param {PostOfficeCreateArgs} args - Arguments to create a PostOffice.
+     * @example
+     * // Create one PostOffice
+     * const PostOffice = await prisma.postOffice.create({
+     *   data: {
+     *     // ... data to create a PostOffice
+     *   }
+     * })
+     * 
+    **/
+    create<T extends PostOfficeCreateArgs>(
+      args: SelectSubset<T, PostOfficeCreateArgs>
+    ): Prisma__PostOfficeClient<PostOfficeGetPayload<T>>
+
+    /**
+     * Create many PostOffices.
+     *     @param {PostOfficeCreateManyArgs} args - Arguments to create many PostOffices.
+     *     @example
+     *     // Create many PostOffices
+     *     const postOffice = await prisma.postOffice.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends PostOfficeCreateManyArgs>(
+      args?: SelectSubset<T, PostOfficeCreateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a PostOffice.
+     * @param {PostOfficeDeleteArgs} args - Arguments to delete one PostOffice.
+     * @example
+     * // Delete one PostOffice
+     * const PostOffice = await prisma.postOffice.delete({
+     *   where: {
+     *     // ... filter to delete one PostOffice
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends PostOfficeDeleteArgs>(
+      args: SelectSubset<T, PostOfficeDeleteArgs>
+    ): Prisma__PostOfficeClient<PostOfficeGetPayload<T>>
+
+    /**
+     * Update one PostOffice.
+     * @param {PostOfficeUpdateArgs} args - Arguments to update one PostOffice.
+     * @example
+     * // Update one PostOffice
+     * const postOffice = await prisma.postOffice.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends PostOfficeUpdateArgs>(
+      args: SelectSubset<T, PostOfficeUpdateArgs>
+    ): Prisma__PostOfficeClient<PostOfficeGetPayload<T>>
+
+    /**
+     * Delete zero or more PostOffices.
+     * @param {PostOfficeDeleteManyArgs} args - Arguments to filter PostOffices to delete.
+     * @example
+     * // Delete a few PostOffices
+     * const { count } = await prisma.postOffice.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends PostOfficeDeleteManyArgs>(
+      args?: SelectSubset<T, PostOfficeDeleteManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PostOffices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostOfficeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PostOffices
+     * const postOffice = await prisma.postOffice.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends PostOfficeUpdateManyArgs>(
+      args: SelectSubset<T, PostOfficeUpdateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PostOffice.
+     * @param {PostOfficeUpsertArgs} args - Arguments to update or create a PostOffice.
+     * @example
+     * // Update or create a PostOffice
+     * const postOffice = await prisma.postOffice.upsert({
+     *   create: {
+     *     // ... data to create a PostOffice
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PostOffice we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends PostOfficeUpsertArgs>(
+      args: SelectSubset<T, PostOfficeUpsertArgs>
+    ): Prisma__PostOfficeClient<PostOfficeGetPayload<T>>
+
+    /**
+     * Count the number of PostOffices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostOfficeCountArgs} args - Arguments to filter PostOffices to count.
+     * @example
+     * // Count the number of PostOffices
+     * const count = await prisma.postOffice.count({
+     *   where: {
+     *     // ... the filter for the PostOffices we want to count
+     *   }
+     * })
+    **/
+    count<T extends PostOfficeCountArgs>(
+      args?: Subset<T, PostOfficeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PostOfficeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PostOffice.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostOfficeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PostOfficeAggregateArgs>(args: Subset<T, PostOfficeAggregateArgs>): Prisma.PrismaPromise<GetPostOfficeAggregateType<T>>
+
+    /**
+     * Group by PostOffice.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostOfficeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PostOfficeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PostOfficeGroupByArgs['orderBy'] }
+        : { orderBy?: PostOfficeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PostOfficeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPostOfficeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PostOffice.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__PostOfficeClient<T, Null = never> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    city<T extends CityArgs= {}>(args?: Subset<T, CityArgs>): Prisma__CityClient<CityGetPayload<T> | Null>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * PostOffice base type for findUnique actions
+   */
+  export type PostOfficeFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the PostOffice
+     */
+    select?: PostOfficeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PostOfficeInclude | null
+    /**
+     * Filter, which PostOffice to fetch.
+     */
+    where: PostOfficeWhereUniqueInput
+  }
+
+  /**
+   * PostOffice findUnique
+   */
+  export interface PostOfficeFindUniqueArgs extends PostOfficeFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * PostOffice findUniqueOrThrow
+   */
+  export type PostOfficeFindUniqueOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the PostOffice
+     */
+    select?: PostOfficeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PostOfficeInclude | null
+    /**
+     * Filter, which PostOffice to fetch.
+     */
+    where: PostOfficeWhereUniqueInput
+  }
+
+
+  /**
+   * PostOffice base type for findFirst actions
+   */
+  export type PostOfficeFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the PostOffice
+     */
+    select?: PostOfficeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PostOfficeInclude | null
+    /**
+     * Filter, which PostOffice to fetch.
+     */
+    where?: PostOfficeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PostOffices to fetch.
+     */
+    orderBy?: Enumerable<PostOfficeOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PostOffices.
+     */
+    cursor?: PostOfficeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PostOffices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PostOffices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PostOffices.
+     */
+    distinct?: Enumerable<PostOfficeScalarFieldEnum>
+  }
+
+  /**
+   * PostOffice findFirst
+   */
+  export interface PostOfficeFindFirstArgs extends PostOfficeFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * PostOffice findFirstOrThrow
+   */
+  export type PostOfficeFindFirstOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the PostOffice
+     */
+    select?: PostOfficeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PostOfficeInclude | null
+    /**
+     * Filter, which PostOffice to fetch.
+     */
+    where?: PostOfficeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PostOffices to fetch.
+     */
+    orderBy?: Enumerable<PostOfficeOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PostOffices.
+     */
+    cursor?: PostOfficeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PostOffices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PostOffices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PostOffices.
+     */
+    distinct?: Enumerable<PostOfficeScalarFieldEnum>
+  }
+
+
+  /**
+   * PostOffice findMany
+   */
+  export type PostOfficeFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the PostOffice
+     */
+    select?: PostOfficeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PostOfficeInclude | null
+    /**
+     * Filter, which PostOffices to fetch.
+     */
+    where?: PostOfficeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PostOffices to fetch.
+     */
+    orderBy?: Enumerable<PostOfficeOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PostOffices.
+     */
+    cursor?: PostOfficeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PostOffices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PostOffices.
+     */
+    skip?: number
+    distinct?: Enumerable<PostOfficeScalarFieldEnum>
+  }
+
+
+  /**
+   * PostOffice create
+   */
+  export type PostOfficeCreateArgs = {
+    /**
+     * Select specific fields to fetch from the PostOffice
+     */
+    select?: PostOfficeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PostOfficeInclude | null
+    /**
+     * The data needed to create a PostOffice.
+     */
+    data: XOR<PostOfficeCreateInput, PostOfficeUncheckedCreateInput>
+  }
+
+
+  /**
+   * PostOffice createMany
+   */
+  export type PostOfficeCreateManyArgs = {
+    /**
+     * The data used to create many PostOffices.
+     */
+    data: Enumerable<PostOfficeCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * PostOffice update
+   */
+  export type PostOfficeUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the PostOffice
+     */
+    select?: PostOfficeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PostOfficeInclude | null
+    /**
+     * The data needed to update a PostOffice.
+     */
+    data: XOR<PostOfficeUpdateInput, PostOfficeUncheckedUpdateInput>
+    /**
+     * Choose, which PostOffice to update.
+     */
+    where: PostOfficeWhereUniqueInput
+  }
+
+
+  /**
+   * PostOffice updateMany
+   */
+  export type PostOfficeUpdateManyArgs = {
+    /**
+     * The data used to update PostOffices.
+     */
+    data: XOR<PostOfficeUpdateManyMutationInput, PostOfficeUncheckedUpdateManyInput>
+    /**
+     * Filter which PostOffices to update
+     */
+    where?: PostOfficeWhereInput
+  }
+
+
+  /**
+   * PostOffice upsert
+   */
+  export type PostOfficeUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the PostOffice
+     */
+    select?: PostOfficeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PostOfficeInclude | null
+    /**
+     * The filter to search for the PostOffice to update in case it exists.
+     */
+    where: PostOfficeWhereUniqueInput
+    /**
+     * In case the PostOffice found by the `where` argument doesn't exist, create a new PostOffice with this data.
+     */
+    create: XOR<PostOfficeCreateInput, PostOfficeUncheckedCreateInput>
+    /**
+     * In case the PostOffice was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PostOfficeUpdateInput, PostOfficeUncheckedUpdateInput>
+  }
+
+
+  /**
+   * PostOffice delete
+   */
+  export type PostOfficeDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the PostOffice
+     */
+    select?: PostOfficeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PostOfficeInclude | null
+    /**
+     * Filter which PostOffice to delete.
+     */
+    where: PostOfficeWhereUniqueInput
+  }
+
+
+  /**
+   * PostOffice deleteMany
+   */
+  export type PostOfficeDeleteManyArgs = {
+    /**
+     * Filter which PostOffices to delete
+     */
+    where?: PostOfficeWhereInput
+  }
+
+
+  /**
+   * PostOffice without action
+   */
+  export type PostOfficeArgs = {
+    /**
+     * Select specific fields to fetch from the PostOffice
+     */
+    select?: PostOfficeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PostOfficeInclude | null
+  }
+
+
+
+  /**
    * Enums
    */
 
   // Based on
   // https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
+
+  export const CityScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    countryId: 'countryId'
+  };
+
+  export type CityScalarFieldEnum = (typeof CityScalarFieldEnum)[keyof typeof CityScalarFieldEnum]
+
+
+  export const CountryScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy'
+  };
+
+  export type CountryScalarFieldEnum = (typeof CountryScalarFieldEnum)[keyof typeof CountryScalarFieldEnum]
+
+
+  export const PostOfficeScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    poAddress: 'poAddress',
+    poContact: 'poContact',
+    poManagerId: 'poManagerId',
+    poContactPerson: 'poContactPerson',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    cityId: 'cityId'
+  };
+
+  export type PostOfficeScalarFieldEnum = (typeof PostOfficeScalarFieldEnum)[keyof typeof PostOfficeScalarFieldEnum]
+
 
   export const QueryMode: {
     default: 'default',
@@ -2854,9 +6048,9 @@ export namespace Prisma {
     isDeleted: 'isDeleted',
     isSignedIn: 'isSignedIn',
     createdAt: 'createdAt',
+    createdBy: 'createdBy',
     updatedAt: 'updatedAt',
-    updatedBy: 'updatedBy',
-    userTypeId: 'userTypeId'
+    updatedBy: 'updatedBy'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -2864,8 +6058,9 @@ export namespace Prisma {
 
   export const UserTypeScalarFieldEnum: {
     id: 'id',
-    type: 'type',
+    name: 'name',
     createdAt: 'createdAt',
+    createdBy: 'createdBy',
     updatedAt: 'updatedAt',
     updatedBy: 'updatedBy'
   };
@@ -2892,10 +6087,10 @@ export namespace Prisma {
     isDeleted?: BoolFilter | boolean
     isSignedIn?: BoolFilter | boolean
     createdAt?: DateTimeFilter | Date | string
+    createdBy?: StringNullableFilter | string | null
     updatedAt?: DateTimeFilter | Date | string
     updatedBy?: StringNullableFilter | string | null
-    userTypeId?: StringNullableFilter | string | null
-    type?: XOR<UserTypeRelationFilter, UserTypeWhereInput> | null
+    userTypes?: UserTypeListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -2909,10 +6104,10 @@ export namespace Prisma {
     isDeleted?: SortOrder
     isSignedIn?: SortOrder
     createdAt?: SortOrder
+    createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
-    userTypeId?: SortOrder
-    type?: UserTypeOrderByWithRelationInput
+    userTypes?: UserTypeOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = {
@@ -2931,9 +6126,9 @@ export namespace Prisma {
     isDeleted?: SortOrder
     isSignedIn?: SortOrder
     createdAt?: SortOrder
+    createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
-    userTypeId?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -2953,9 +6148,9 @@ export namespace Prisma {
     isDeleted?: BoolWithAggregatesFilter | boolean
     isSignedIn?: BoolWithAggregatesFilter | boolean
     createdAt?: DateTimeWithAggregatesFilter | Date | string
+    createdBy?: StringNullableWithAggregatesFilter | string | null
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
     updatedBy?: StringNullableWithAggregatesFilter | string | null
-    userTypeId?: StringNullableWithAggregatesFilter | string | null
   }
 
   export type UserTypeWhereInput = {
@@ -2963,20 +6158,22 @@ export namespace Prisma {
     OR?: Enumerable<UserTypeWhereInput>
     NOT?: Enumerable<UserTypeWhereInput>
     id?: StringFilter | string
-    type?: StringFilter | string
+    name?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
+    createdBy?: StringNullableFilter | string | null
     updatedAt?: DateTimeFilter | Date | string
-    updatedBy?: StringFilter | string
-    User?: UserListRelationFilter
+    updatedBy?: StringNullableFilter | string | null
+    users?: UserListRelationFilter
   }
 
   export type UserTypeOrderByWithRelationInput = {
     id?: SortOrder
-    type?: SortOrder
+    name?: SortOrder
     createdAt?: SortOrder
+    createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
-    User?: UserOrderByRelationAggregateInput
+    users?: UserOrderByRelationAggregateInput
   }
 
   export type UserTypeWhereUniqueInput = {
@@ -2985,8 +6182,9 @@ export namespace Prisma {
 
   export type UserTypeOrderByWithAggregationInput = {
     id?: SortOrder
-    type?: SortOrder
+    name?: SortOrder
     createdAt?: SortOrder
+    createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
     _count?: UserTypeCountOrderByAggregateInput
@@ -2999,10 +6197,186 @@ export namespace Prisma {
     OR?: Enumerable<UserTypeScalarWhereWithAggregatesInput>
     NOT?: Enumerable<UserTypeScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
-    type?: StringWithAggregatesFilter | string
+    name?: StringWithAggregatesFilter | string
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+    createdBy?: StringNullableWithAggregatesFilter | string | null
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter | string | null
+  }
+
+  export type CountryWhereInput = {
+    AND?: Enumerable<CountryWhereInput>
+    OR?: Enumerable<CountryWhereInput>
+    NOT?: Enumerable<CountryWhereInput>
+    id?: StringFilter | string
+    name?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    createdBy?: StringNullableFilter | string | null
+    updatedAt?: DateTimeFilter | Date | string
+    updatedBy?: StringNullableFilter | string | null
+    cities?: CityListRelationFilter
+  }
+
+  export type CountryOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    cities?: CityOrderByRelationAggregateInput
+  }
+
+  export type CountryWhereUniqueInput = {
+    id?: string
+  }
+
+  export type CountryOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    _count?: CountryCountOrderByAggregateInput
+    _max?: CountryMaxOrderByAggregateInput
+    _min?: CountryMinOrderByAggregateInput
+  }
+
+  export type CountryScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<CountryScalarWhereWithAggregatesInput>
+    OR?: Enumerable<CountryScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<CountryScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    name?: StringWithAggregatesFilter | string
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+    createdBy?: StringNullableWithAggregatesFilter | string | null
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter | string | null
+  }
+
+  export type CityWhereInput = {
+    AND?: Enumerable<CityWhereInput>
+    OR?: Enumerable<CityWhereInput>
+    NOT?: Enumerable<CityWhereInput>
+    id?: StringFilter | string
+    name?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    createdBy?: StringNullableFilter | string | null
+    updatedAt?: DateTimeFilter | Date | string
+    updatedBy?: StringFilter | string
+    countryId?: StringFilter | string
+    Country?: XOR<CountryRelationFilter, CountryWhereInput>
+    postOffices?: PostOfficeListRelationFilter
+  }
+
+  export type CityOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    countryId?: SortOrder
+    Country?: CountryOrderByWithRelationInput
+    postOffices?: PostOfficeOrderByRelationAggregateInput
+  }
+
+  export type CityWhereUniqueInput = {
+    id?: string
+  }
+
+  export type CityOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    countryId?: SortOrder
+    _count?: CityCountOrderByAggregateInput
+    _max?: CityMaxOrderByAggregateInput
+    _min?: CityMinOrderByAggregateInput
+  }
+
+  export type CityScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<CityScalarWhereWithAggregatesInput>
+    OR?: Enumerable<CityScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<CityScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    name?: StringWithAggregatesFilter | string
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+    createdBy?: StringNullableWithAggregatesFilter | string | null
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
+    updatedBy?: StringWithAggregatesFilter | string
+    countryId?: StringWithAggregatesFilter | string
+  }
+
+  export type PostOfficeWhereInput = {
+    AND?: Enumerable<PostOfficeWhereInput>
+    OR?: Enumerable<PostOfficeWhereInput>
+    NOT?: Enumerable<PostOfficeWhereInput>
+    id?: StringFilter | string
+    name?: StringFilter | string
+    poAddress?: StringFilter | string
+    poContact?: StringFilter | string
+    poManagerId?: StringFilter | string
+    poContactPerson?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeFilter | Date | string
+    updatedBy?: StringFilter | string
+    cityId?: StringFilter | string
+    city?: XOR<CityRelationFilter, CityWhereInput>
+  }
+
+  export type PostOfficeOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    poAddress?: SortOrder
+    poContact?: SortOrder
+    poManagerId?: SortOrder
+    poContactPerson?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    cityId?: SortOrder
+    city?: CityOrderByWithRelationInput
+  }
+
+  export type PostOfficeWhereUniqueInput = {
+    id?: string
+  }
+
+  export type PostOfficeOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    poAddress?: SortOrder
+    poContact?: SortOrder
+    poManagerId?: SortOrder
+    poContactPerson?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    cityId?: SortOrder
+    _count?: PostOfficeCountOrderByAggregateInput
+    _max?: PostOfficeMaxOrderByAggregateInput
+    _min?: PostOfficeMinOrderByAggregateInput
+  }
+
+  export type PostOfficeScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<PostOfficeScalarWhereWithAggregatesInput>
+    OR?: Enumerable<PostOfficeScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<PostOfficeScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    name?: StringWithAggregatesFilter | string
+    poAddress?: StringWithAggregatesFilter | string
+    poContact?: StringWithAggregatesFilter | string
+    poManagerId?: StringWithAggregatesFilter | string
+    poContactPerson?: StringWithAggregatesFilter | string
     createdAt?: DateTimeWithAggregatesFilter | Date | string
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
     updatedBy?: StringWithAggregatesFilter | string
+    cityId?: StringWithAggregatesFilter | string
   }
 
   export type UserCreateInput = {
@@ -3016,9 +6390,10 @@ export namespace Prisma {
     isDeleted?: boolean
     isSignedIn?: boolean
     createdAt?: Date | string
+    createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
-    type?: UserTypeCreateNestedOneWithoutUserInput
+    userTypes?: UserTypeCreateNestedManyWithoutUsersInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -3032,9 +6407,10 @@ export namespace Prisma {
     isDeleted?: boolean
     isSignedIn?: boolean
     createdAt?: Date | string
+    createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
-    userTypeId?: string | null
+    userTypes?: UserTypeUncheckedCreateNestedManyWithoutUsersInput
   }
 
   export type UserUpdateInput = {
@@ -3048,9 +6424,10 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     isSignedIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: UserTypeUpdateOneWithoutUserNestedInput
+    userTypes?: UserTypeUpdateManyWithoutUsersNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -3064,9 +6441,10 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     isSignedIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    userTypeId?: NullableStringFieldUpdateOperationsInput | string | null
+    userTypes?: UserTypeUncheckedUpdateManyWithoutUsersNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -3080,9 +6458,9 @@ export namespace Prisma {
     isDeleted?: boolean
     isSignedIn?: boolean
     createdAt?: Date | string
+    createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
-    userTypeId?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -3096,6 +6474,7 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     isSignedIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -3111,69 +6490,306 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     isSignedIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    userTypeId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserTypeCreateInput = {
     id?: string
-    type?: string
+    name?: string
     createdAt?: Date | string
+    createdBy?: string | null
     updatedAt?: Date | string
-    updatedBy: string
-    User?: UserCreateNestedManyWithoutTypeInput
+    updatedBy?: string | null
+    users?: UserCreateNestedManyWithoutUserTypesInput
   }
 
   export type UserTypeUncheckedCreateInput = {
     id?: string
-    type?: string
+    name?: string
     createdAt?: Date | string
+    createdBy?: string | null
     updatedAt?: Date | string
-    updatedBy: string
-    User?: UserUncheckedCreateNestedManyWithoutTypeInput
+    updatedBy?: string | null
+    users?: UserUncheckedCreateNestedManyWithoutUserTypesInput
   }
 
   export type UserTypeUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: StringFieldUpdateOperationsInput | string
-    User?: UserUpdateManyWithoutTypeNestedInput
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    users?: UserUpdateManyWithoutUserTypesNestedInput
   }
 
   export type UserTypeUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: StringFieldUpdateOperationsInput | string
-    User?: UserUncheckedUpdateManyWithoutTypeNestedInput
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    users?: UserUncheckedUpdateManyWithoutUserTypesNestedInput
   }
 
   export type UserTypeCreateManyInput = {
     id?: string
-    type?: string
+    name?: string
     createdAt?: Date | string
+    createdBy?: string | null
     updatedAt?: Date | string
-    updatedBy: string
+    updatedBy?: string | null
   }
 
   export type UserTypeUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserTypeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CountryCreateInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    cities?: CityCreateNestedManyWithoutCountryInput
+  }
+
+  export type CountryUncheckedCreateInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    cities?: CityUncheckedCreateNestedManyWithoutCountryInput
+  }
+
+  export type CountryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    cities?: CityUpdateManyWithoutCountryNestedInput
+  }
+
+  export type CountryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    cities?: CityUncheckedUpdateManyWithoutCountryNestedInput
+  }
+
+  export type CountryCreateManyInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type CountryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CountryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CityCreateInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy: string
+    Country: CountryCreateNestedOneWithoutCitiesInput
+    postOffices?: PostOfficeCreateNestedManyWithoutCityInput
+  }
+
+  export type CityUncheckedCreateInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy: string
+    countryId: string
+    postOffices?: PostOfficeUncheckedCreateNestedManyWithoutCityInput
+  }
+
+  export type CityUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: StringFieldUpdateOperationsInput | string
+    Country?: CountryUpdateOneRequiredWithoutCitiesNestedInput
+    postOffices?: PostOfficeUpdateManyWithoutCityNestedInput
+  }
+
+  export type CityUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: StringFieldUpdateOperationsInput | string
+    countryId?: StringFieldUpdateOperationsInput | string
+    postOffices?: PostOfficeUncheckedUpdateManyWithoutCityNestedInput
+  }
+
+  export type CityCreateManyInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy: string
+    countryId: string
+  }
+
+  export type CityUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type CityUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: StringFieldUpdateOperationsInput | string
+    countryId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PostOfficeCreateInput = {
+    id?: string
+    name: string
+    poAddress: string
+    poContact: string
+    poManagerId: string
+    poContactPerson: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    updatedBy: string
+    city: CityCreateNestedOneWithoutPostOfficesInput
+  }
+
+  export type PostOfficeUncheckedCreateInput = {
+    id?: string
+    name: string
+    poAddress: string
+    poContact: string
+    poManagerId: string
+    poContactPerson: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    updatedBy: string
+    cityId: string
+  }
+
+  export type PostOfficeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    poAddress?: StringFieldUpdateOperationsInput | string
+    poContact?: StringFieldUpdateOperationsInput | string
+    poManagerId?: StringFieldUpdateOperationsInput | string
+    poContactPerson?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: StringFieldUpdateOperationsInput | string
+    city?: CityUpdateOneRequiredWithoutPostOfficesNestedInput
+  }
+
+  export type PostOfficeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    poAddress?: StringFieldUpdateOperationsInput | string
+    poContact?: StringFieldUpdateOperationsInput | string
+    poManagerId?: StringFieldUpdateOperationsInput | string
+    poContactPerson?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: StringFieldUpdateOperationsInput | string
+    cityId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PostOfficeCreateManyInput = {
+    id?: string
+    name: string
+    poAddress: string
+    poContact: string
+    poManagerId: string
+    poContactPerson: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    updatedBy: string
+    cityId: string
+  }
+
+  export type PostOfficeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    poAddress?: StringFieldUpdateOperationsInput | string
+    poContact?: StringFieldUpdateOperationsInput | string
+    poManagerId?: StringFieldUpdateOperationsInput | string
+    poContactPerson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: StringFieldUpdateOperationsInput | string
   }
 
-  export type UserTypeUncheckedUpdateManyInput = {
+  export type PostOfficeUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    poAddress?: StringFieldUpdateOperationsInput | string
+    poContact?: StringFieldUpdateOperationsInput | string
+    poManagerId?: StringFieldUpdateOperationsInput | string
+    poContactPerson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: StringFieldUpdateOperationsInput | string
+    cityId?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter = {
@@ -3222,9 +6838,14 @@ export namespace Prisma {
     not?: NestedStringNullableFilter | string | null
   }
 
-  export type UserTypeRelationFilter = {
-    is?: UserTypeWhereInput | null
-    isNot?: UserTypeWhereInput | null
+  export type UserTypeListRelationFilter = {
+    every?: UserTypeWhereInput
+    some?: UserTypeWhereInput
+    none?: UserTypeWhereInput
+  }
+
+  export type UserTypeOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type UserCountOrderByAggregateInput = {
@@ -3238,9 +6859,9 @@ export namespace Prisma {
     isDeleted?: SortOrder
     isSignedIn?: SortOrder
     createdAt?: SortOrder
+    createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
-    userTypeId?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -3254,9 +6875,9 @@ export namespace Prisma {
     isDeleted?: SortOrder
     isSignedIn?: SortOrder
     createdAt?: SortOrder
+    createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
-    userTypeId?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -3270,9 +6891,9 @@ export namespace Prisma {
     isDeleted?: SortOrder
     isSignedIn?: SortOrder
     createdAt?: SortOrder
+    createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
-    userTypeId?: SortOrder
   }
 
   export type StringWithAggregatesFilter = {
@@ -3345,32 +6966,167 @@ export namespace Prisma {
 
   export type UserTypeCountOrderByAggregateInput = {
     id?: SortOrder
-    type?: SortOrder
+    name?: SortOrder
     createdAt?: SortOrder
+    createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
   }
 
   export type UserTypeMaxOrderByAggregateInput = {
     id?: SortOrder
-    type?: SortOrder
+    name?: SortOrder
     createdAt?: SortOrder
+    createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
   }
 
   export type UserTypeMinOrderByAggregateInput = {
     id?: SortOrder
-    type?: SortOrder
+    name?: SortOrder
     createdAt?: SortOrder
+    createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
   }
 
-  export type UserTypeCreateNestedOneWithoutUserInput = {
-    create?: XOR<UserTypeCreateWithoutUserInput, UserTypeUncheckedCreateWithoutUserInput>
-    connectOrCreate?: UserTypeCreateOrConnectWithoutUserInput
-    connect?: UserTypeWhereUniqueInput
+  export type CityListRelationFilter = {
+    every?: CityWhereInput
+    some?: CityWhereInput
+    none?: CityWhereInput
+  }
+
+  export type CityOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CountryCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type CountryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type CountryMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type CountryRelationFilter = {
+    is?: CountryWhereInput
+    isNot?: CountryWhereInput
+  }
+
+  export type PostOfficeListRelationFilter = {
+    every?: PostOfficeWhereInput
+    some?: PostOfficeWhereInput
+    none?: PostOfficeWhereInput
+  }
+
+  export type PostOfficeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CityCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    countryId?: SortOrder
+  }
+
+  export type CityMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    countryId?: SortOrder
+  }
+
+  export type CityMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    countryId?: SortOrder
+  }
+
+  export type CityRelationFilter = {
+    is?: CityWhereInput
+    isNot?: CityWhereInput
+  }
+
+  export type PostOfficeCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    poAddress?: SortOrder
+    poContact?: SortOrder
+    poManagerId?: SortOrder
+    poContactPerson?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    cityId?: SortOrder
+  }
+
+  export type PostOfficeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    poAddress?: SortOrder
+    poContact?: SortOrder
+    poManagerId?: SortOrder
+    poContactPerson?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    cityId?: SortOrder
+  }
+
+  export type PostOfficeMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    poAddress?: SortOrder
+    poContact?: SortOrder
+    poManagerId?: SortOrder
+    poContactPerson?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    cityId?: SortOrder
+  }
+
+  export type UserTypeCreateNestedManyWithoutUsersInput = {
+    create?: XOR<Enumerable<UserTypeCreateWithoutUsersInput>, Enumerable<UserTypeUncheckedCreateWithoutUsersInput>>
+    connectOrCreate?: Enumerable<UserTypeCreateOrConnectWithoutUsersInput>
+    connect?: Enumerable<UserTypeWhereUniqueInput>
+  }
+
+  export type UserTypeUncheckedCreateNestedManyWithoutUsersInput = {
+    create?: XOR<Enumerable<UserTypeCreateWithoutUsersInput>, Enumerable<UserTypeUncheckedCreateWithoutUsersInput>>
+    connectOrCreate?: Enumerable<UserTypeCreateOrConnectWithoutUsersInput>
+    connect?: Enumerable<UserTypeWhereUniqueInput>
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -3389,56 +7145,180 @@ export namespace Prisma {
     set?: string | null
   }
 
-  export type UserTypeUpdateOneWithoutUserNestedInput = {
-    create?: XOR<UserTypeCreateWithoutUserInput, UserTypeUncheckedCreateWithoutUserInput>
-    connectOrCreate?: UserTypeCreateOrConnectWithoutUserInput
-    upsert?: UserTypeUpsertWithoutUserInput
-    disconnect?: boolean
-    delete?: boolean
-    connect?: UserTypeWhereUniqueInput
-    update?: XOR<UserTypeUpdateWithoutUserInput, UserTypeUncheckedUpdateWithoutUserInput>
+  export type UserTypeUpdateManyWithoutUsersNestedInput = {
+    create?: XOR<Enumerable<UserTypeCreateWithoutUsersInput>, Enumerable<UserTypeUncheckedCreateWithoutUsersInput>>
+    connectOrCreate?: Enumerable<UserTypeCreateOrConnectWithoutUsersInput>
+    upsert?: Enumerable<UserTypeUpsertWithWhereUniqueWithoutUsersInput>
+    set?: Enumerable<UserTypeWhereUniqueInput>
+    disconnect?: Enumerable<UserTypeWhereUniqueInput>
+    delete?: Enumerable<UserTypeWhereUniqueInput>
+    connect?: Enumerable<UserTypeWhereUniqueInput>
+    update?: Enumerable<UserTypeUpdateWithWhereUniqueWithoutUsersInput>
+    updateMany?: Enumerable<UserTypeUpdateManyWithWhereWithoutUsersInput>
+    deleteMany?: Enumerable<UserTypeScalarWhereInput>
   }
 
-  export type UserCreateNestedManyWithoutTypeInput = {
-    create?: XOR<Enumerable<UserCreateWithoutTypeInput>, Enumerable<UserUncheckedCreateWithoutTypeInput>>
-    connectOrCreate?: Enumerable<UserCreateOrConnectWithoutTypeInput>
-    createMany?: UserCreateManyTypeInputEnvelope
+  export type UserTypeUncheckedUpdateManyWithoutUsersNestedInput = {
+    create?: XOR<Enumerable<UserTypeCreateWithoutUsersInput>, Enumerable<UserTypeUncheckedCreateWithoutUsersInput>>
+    connectOrCreate?: Enumerable<UserTypeCreateOrConnectWithoutUsersInput>
+    upsert?: Enumerable<UserTypeUpsertWithWhereUniqueWithoutUsersInput>
+    set?: Enumerable<UserTypeWhereUniqueInput>
+    disconnect?: Enumerable<UserTypeWhereUniqueInput>
+    delete?: Enumerable<UserTypeWhereUniqueInput>
+    connect?: Enumerable<UserTypeWhereUniqueInput>
+    update?: Enumerable<UserTypeUpdateWithWhereUniqueWithoutUsersInput>
+    updateMany?: Enumerable<UserTypeUpdateManyWithWhereWithoutUsersInput>
+    deleteMany?: Enumerable<UserTypeScalarWhereInput>
+  }
+
+  export type UserCreateNestedManyWithoutUserTypesInput = {
+    create?: XOR<Enumerable<UserCreateWithoutUserTypesInput>, Enumerable<UserUncheckedCreateWithoutUserTypesInput>>
+    connectOrCreate?: Enumerable<UserCreateOrConnectWithoutUserTypesInput>
     connect?: Enumerable<UserWhereUniqueInput>
   }
 
-  export type UserUncheckedCreateNestedManyWithoutTypeInput = {
-    create?: XOR<Enumerable<UserCreateWithoutTypeInput>, Enumerable<UserUncheckedCreateWithoutTypeInput>>
-    connectOrCreate?: Enumerable<UserCreateOrConnectWithoutTypeInput>
-    createMany?: UserCreateManyTypeInputEnvelope
+  export type UserUncheckedCreateNestedManyWithoutUserTypesInput = {
+    create?: XOR<Enumerable<UserCreateWithoutUserTypesInput>, Enumerable<UserUncheckedCreateWithoutUserTypesInput>>
+    connectOrCreate?: Enumerable<UserCreateOrConnectWithoutUserTypesInput>
     connect?: Enumerable<UserWhereUniqueInput>
   }
 
-  export type UserUpdateManyWithoutTypeNestedInput = {
-    create?: XOR<Enumerable<UserCreateWithoutTypeInput>, Enumerable<UserUncheckedCreateWithoutTypeInput>>
-    connectOrCreate?: Enumerable<UserCreateOrConnectWithoutTypeInput>
-    upsert?: Enumerable<UserUpsertWithWhereUniqueWithoutTypeInput>
-    createMany?: UserCreateManyTypeInputEnvelope
+  export type UserUpdateManyWithoutUserTypesNestedInput = {
+    create?: XOR<Enumerable<UserCreateWithoutUserTypesInput>, Enumerable<UserUncheckedCreateWithoutUserTypesInput>>
+    connectOrCreate?: Enumerable<UserCreateOrConnectWithoutUserTypesInput>
+    upsert?: Enumerable<UserUpsertWithWhereUniqueWithoutUserTypesInput>
     set?: Enumerable<UserWhereUniqueInput>
     disconnect?: Enumerable<UserWhereUniqueInput>
     delete?: Enumerable<UserWhereUniqueInput>
     connect?: Enumerable<UserWhereUniqueInput>
-    update?: Enumerable<UserUpdateWithWhereUniqueWithoutTypeInput>
-    updateMany?: Enumerable<UserUpdateManyWithWhereWithoutTypeInput>
+    update?: Enumerable<UserUpdateWithWhereUniqueWithoutUserTypesInput>
+    updateMany?: Enumerable<UserUpdateManyWithWhereWithoutUserTypesInput>
     deleteMany?: Enumerable<UserScalarWhereInput>
   }
 
-  export type UserUncheckedUpdateManyWithoutTypeNestedInput = {
-    create?: XOR<Enumerable<UserCreateWithoutTypeInput>, Enumerable<UserUncheckedCreateWithoutTypeInput>>
-    connectOrCreate?: Enumerable<UserCreateOrConnectWithoutTypeInput>
-    upsert?: Enumerable<UserUpsertWithWhereUniqueWithoutTypeInput>
-    createMany?: UserCreateManyTypeInputEnvelope
+  export type UserUncheckedUpdateManyWithoutUserTypesNestedInput = {
+    create?: XOR<Enumerable<UserCreateWithoutUserTypesInput>, Enumerable<UserUncheckedCreateWithoutUserTypesInput>>
+    connectOrCreate?: Enumerable<UserCreateOrConnectWithoutUserTypesInput>
+    upsert?: Enumerable<UserUpsertWithWhereUniqueWithoutUserTypesInput>
     set?: Enumerable<UserWhereUniqueInput>
     disconnect?: Enumerable<UserWhereUniqueInput>
     delete?: Enumerable<UserWhereUniqueInput>
     connect?: Enumerable<UserWhereUniqueInput>
-    update?: Enumerable<UserUpdateWithWhereUniqueWithoutTypeInput>
-    updateMany?: Enumerable<UserUpdateManyWithWhereWithoutTypeInput>
+    update?: Enumerable<UserUpdateWithWhereUniqueWithoutUserTypesInput>
+    updateMany?: Enumerable<UserUpdateManyWithWhereWithoutUserTypesInput>
     deleteMany?: Enumerable<UserScalarWhereInput>
+  }
+
+  export type CityCreateNestedManyWithoutCountryInput = {
+    create?: XOR<Enumerable<CityCreateWithoutCountryInput>, Enumerable<CityUncheckedCreateWithoutCountryInput>>
+    connectOrCreate?: Enumerable<CityCreateOrConnectWithoutCountryInput>
+    createMany?: CityCreateManyCountryInputEnvelope
+    connect?: Enumerable<CityWhereUniqueInput>
+  }
+
+  export type CityUncheckedCreateNestedManyWithoutCountryInput = {
+    create?: XOR<Enumerable<CityCreateWithoutCountryInput>, Enumerable<CityUncheckedCreateWithoutCountryInput>>
+    connectOrCreate?: Enumerable<CityCreateOrConnectWithoutCountryInput>
+    createMany?: CityCreateManyCountryInputEnvelope
+    connect?: Enumerable<CityWhereUniqueInput>
+  }
+
+  export type CityUpdateManyWithoutCountryNestedInput = {
+    create?: XOR<Enumerable<CityCreateWithoutCountryInput>, Enumerable<CityUncheckedCreateWithoutCountryInput>>
+    connectOrCreate?: Enumerable<CityCreateOrConnectWithoutCountryInput>
+    upsert?: Enumerable<CityUpsertWithWhereUniqueWithoutCountryInput>
+    createMany?: CityCreateManyCountryInputEnvelope
+    set?: Enumerable<CityWhereUniqueInput>
+    disconnect?: Enumerable<CityWhereUniqueInput>
+    delete?: Enumerable<CityWhereUniqueInput>
+    connect?: Enumerable<CityWhereUniqueInput>
+    update?: Enumerable<CityUpdateWithWhereUniqueWithoutCountryInput>
+    updateMany?: Enumerable<CityUpdateManyWithWhereWithoutCountryInput>
+    deleteMany?: Enumerable<CityScalarWhereInput>
+  }
+
+  export type CityUncheckedUpdateManyWithoutCountryNestedInput = {
+    create?: XOR<Enumerable<CityCreateWithoutCountryInput>, Enumerable<CityUncheckedCreateWithoutCountryInput>>
+    connectOrCreate?: Enumerable<CityCreateOrConnectWithoutCountryInput>
+    upsert?: Enumerable<CityUpsertWithWhereUniqueWithoutCountryInput>
+    createMany?: CityCreateManyCountryInputEnvelope
+    set?: Enumerable<CityWhereUniqueInput>
+    disconnect?: Enumerable<CityWhereUniqueInput>
+    delete?: Enumerable<CityWhereUniqueInput>
+    connect?: Enumerable<CityWhereUniqueInput>
+    update?: Enumerable<CityUpdateWithWhereUniqueWithoutCountryInput>
+    updateMany?: Enumerable<CityUpdateManyWithWhereWithoutCountryInput>
+    deleteMany?: Enumerable<CityScalarWhereInput>
+  }
+
+  export type CountryCreateNestedOneWithoutCitiesInput = {
+    create?: XOR<CountryCreateWithoutCitiesInput, CountryUncheckedCreateWithoutCitiesInput>
+    connectOrCreate?: CountryCreateOrConnectWithoutCitiesInput
+    connect?: CountryWhereUniqueInput
+  }
+
+  export type PostOfficeCreateNestedManyWithoutCityInput = {
+    create?: XOR<Enumerable<PostOfficeCreateWithoutCityInput>, Enumerable<PostOfficeUncheckedCreateWithoutCityInput>>
+    connectOrCreate?: Enumerable<PostOfficeCreateOrConnectWithoutCityInput>
+    createMany?: PostOfficeCreateManyCityInputEnvelope
+    connect?: Enumerable<PostOfficeWhereUniqueInput>
+  }
+
+  export type PostOfficeUncheckedCreateNestedManyWithoutCityInput = {
+    create?: XOR<Enumerable<PostOfficeCreateWithoutCityInput>, Enumerable<PostOfficeUncheckedCreateWithoutCityInput>>
+    connectOrCreate?: Enumerable<PostOfficeCreateOrConnectWithoutCityInput>
+    createMany?: PostOfficeCreateManyCityInputEnvelope
+    connect?: Enumerable<PostOfficeWhereUniqueInput>
+  }
+
+  export type CountryUpdateOneRequiredWithoutCitiesNestedInput = {
+    create?: XOR<CountryCreateWithoutCitiesInput, CountryUncheckedCreateWithoutCitiesInput>
+    connectOrCreate?: CountryCreateOrConnectWithoutCitiesInput
+    upsert?: CountryUpsertWithoutCitiesInput
+    connect?: CountryWhereUniqueInput
+    update?: XOR<CountryUpdateWithoutCitiesInput, CountryUncheckedUpdateWithoutCitiesInput>
+  }
+
+  export type PostOfficeUpdateManyWithoutCityNestedInput = {
+    create?: XOR<Enumerable<PostOfficeCreateWithoutCityInput>, Enumerable<PostOfficeUncheckedCreateWithoutCityInput>>
+    connectOrCreate?: Enumerable<PostOfficeCreateOrConnectWithoutCityInput>
+    upsert?: Enumerable<PostOfficeUpsertWithWhereUniqueWithoutCityInput>
+    createMany?: PostOfficeCreateManyCityInputEnvelope
+    set?: Enumerable<PostOfficeWhereUniqueInput>
+    disconnect?: Enumerable<PostOfficeWhereUniqueInput>
+    delete?: Enumerable<PostOfficeWhereUniqueInput>
+    connect?: Enumerable<PostOfficeWhereUniqueInput>
+    update?: Enumerable<PostOfficeUpdateWithWhereUniqueWithoutCityInput>
+    updateMany?: Enumerable<PostOfficeUpdateManyWithWhereWithoutCityInput>
+    deleteMany?: Enumerable<PostOfficeScalarWhereInput>
+  }
+
+  export type PostOfficeUncheckedUpdateManyWithoutCityNestedInput = {
+    create?: XOR<Enumerable<PostOfficeCreateWithoutCityInput>, Enumerable<PostOfficeUncheckedCreateWithoutCityInput>>
+    connectOrCreate?: Enumerable<PostOfficeCreateOrConnectWithoutCityInput>
+    upsert?: Enumerable<PostOfficeUpsertWithWhereUniqueWithoutCityInput>
+    createMany?: PostOfficeCreateManyCityInputEnvelope
+    set?: Enumerable<PostOfficeWhereUniqueInput>
+    disconnect?: Enumerable<PostOfficeWhereUniqueInput>
+    delete?: Enumerable<PostOfficeWhereUniqueInput>
+    connect?: Enumerable<PostOfficeWhereUniqueInput>
+    update?: Enumerable<PostOfficeUpdateWithWhereUniqueWithoutCityInput>
+    updateMany?: Enumerable<PostOfficeUpdateManyWithWhereWithoutCityInput>
+    deleteMany?: Enumerable<PostOfficeScalarWhereInput>
+  }
+
+  export type CityCreateNestedOneWithoutPostOfficesInput = {
+    create?: XOR<CityCreateWithoutPostOfficesInput, CityUncheckedCreateWithoutPostOfficesInput>
+    connectOrCreate?: CityCreateOrConnectWithoutPostOfficesInput
+    connect?: CityWhereUniqueInput
+  }
+
+  export type CityUpdateOneRequiredWithoutPostOfficesNestedInput = {
+    create?: XOR<CityCreateWithoutPostOfficesInput, CityUncheckedCreateWithoutPostOfficesInput>
+    connectOrCreate?: CityCreateOrConnectWithoutPostOfficesInput
+    upsert?: CityUpsertWithoutPostOfficesInput
+    connect?: CityWhereUniqueInput
+    update?: XOR<CityUpdateWithoutPostOfficesInput, CityUncheckedUpdateWithoutPostOfficesInput>
   }
 
   export type NestedStringFilter = {
@@ -3563,49 +7443,58 @@ export namespace Prisma {
     not?: NestedIntNullableFilter | number | null
   }
 
-  export type UserTypeCreateWithoutUserInput = {
+  export type UserTypeCreateWithoutUsersInput = {
     id?: string
-    type?: string
+    name?: string
     createdAt?: Date | string
+    createdBy?: string | null
     updatedAt?: Date | string
-    updatedBy: string
+    updatedBy?: string | null
   }
 
-  export type UserTypeUncheckedCreateWithoutUserInput = {
+  export type UserTypeUncheckedCreateWithoutUsersInput = {
     id?: string
-    type?: string
+    name?: string
     createdAt?: Date | string
+    createdBy?: string | null
     updatedAt?: Date | string
-    updatedBy: string
+    updatedBy?: string | null
   }
 
-  export type UserTypeCreateOrConnectWithoutUserInput = {
+  export type UserTypeCreateOrConnectWithoutUsersInput = {
     where: UserTypeWhereUniqueInput
-    create: XOR<UserTypeCreateWithoutUserInput, UserTypeUncheckedCreateWithoutUserInput>
+    create: XOR<UserTypeCreateWithoutUsersInput, UserTypeUncheckedCreateWithoutUsersInput>
   }
 
-  export type UserTypeUpsertWithoutUserInput = {
-    update: XOR<UserTypeUpdateWithoutUserInput, UserTypeUncheckedUpdateWithoutUserInput>
-    create: XOR<UserTypeCreateWithoutUserInput, UserTypeUncheckedCreateWithoutUserInput>
+  export type UserTypeUpsertWithWhereUniqueWithoutUsersInput = {
+    where: UserTypeWhereUniqueInput
+    update: XOR<UserTypeUpdateWithoutUsersInput, UserTypeUncheckedUpdateWithoutUsersInput>
+    create: XOR<UserTypeCreateWithoutUsersInput, UserTypeUncheckedCreateWithoutUsersInput>
   }
 
-  export type UserTypeUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: StringFieldUpdateOperationsInput | string
+  export type UserTypeUpdateWithWhereUniqueWithoutUsersInput = {
+    where: UserTypeWhereUniqueInput
+    data: XOR<UserTypeUpdateWithoutUsersInput, UserTypeUncheckedUpdateWithoutUsersInput>
   }
 
-  export type UserTypeUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: StringFieldUpdateOperationsInput | string
+  export type UserTypeUpdateManyWithWhereWithoutUsersInput = {
+    where: UserTypeScalarWhereInput
+    data: XOR<UserTypeUpdateManyMutationInput, UserTypeUncheckedUpdateManyWithoutUserTypesInput>
   }
 
-  export type UserCreateWithoutTypeInput = {
+  export type UserTypeScalarWhereInput = {
+    AND?: Enumerable<UserTypeScalarWhereInput>
+    OR?: Enumerable<UserTypeScalarWhereInput>
+    NOT?: Enumerable<UserTypeScalarWhereInput>
+    id?: StringFilter | string
+    name?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    createdBy?: StringNullableFilter | string | null
+    updatedAt?: DateTimeFilter | Date | string
+    updatedBy?: StringNullableFilter | string | null
+  }
+
+  export type UserCreateWithoutUserTypesInput = {
     id?: string
     email: string
     password: string
@@ -3616,11 +7505,12 @@ export namespace Prisma {
     isDeleted?: boolean
     isSignedIn?: boolean
     createdAt?: Date | string
+    createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
   }
 
-  export type UserUncheckedCreateWithoutTypeInput = {
+  export type UserUncheckedCreateWithoutUserTypesInput = {
     id?: string
     email: string
     password: string
@@ -3631,34 +7521,30 @@ export namespace Prisma {
     isDeleted?: boolean
     isSignedIn?: boolean
     createdAt?: Date | string
+    createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
   }
 
-  export type UserCreateOrConnectWithoutTypeInput = {
+  export type UserCreateOrConnectWithoutUserTypesInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutTypeInput, UserUncheckedCreateWithoutTypeInput>
+    create: XOR<UserCreateWithoutUserTypesInput, UserUncheckedCreateWithoutUserTypesInput>
   }
 
-  export type UserCreateManyTypeInputEnvelope = {
-    data: Enumerable<UserCreateManyTypeInput>
-    skipDuplicates?: boolean
-  }
-
-  export type UserUpsertWithWhereUniqueWithoutTypeInput = {
+  export type UserUpsertWithWhereUniqueWithoutUserTypesInput = {
     where: UserWhereUniqueInput
-    update: XOR<UserUpdateWithoutTypeInput, UserUncheckedUpdateWithoutTypeInput>
-    create: XOR<UserCreateWithoutTypeInput, UserUncheckedCreateWithoutTypeInput>
+    update: XOR<UserUpdateWithoutUserTypesInput, UserUncheckedUpdateWithoutUserTypesInput>
+    create: XOR<UserCreateWithoutUserTypesInput, UserUncheckedCreateWithoutUserTypesInput>
   }
 
-  export type UserUpdateWithWhereUniqueWithoutTypeInput = {
+  export type UserUpdateWithWhereUniqueWithoutUserTypesInput = {
     where: UserWhereUniqueInput
-    data: XOR<UserUpdateWithoutTypeInput, UserUncheckedUpdateWithoutTypeInput>
+    data: XOR<UserUpdateWithoutUserTypesInput, UserUncheckedUpdateWithoutUserTypesInput>
   }
 
-  export type UserUpdateManyWithWhereWithoutTypeInput = {
+  export type UserUpdateManyWithWhereWithoutUserTypesInput = {
     where: UserScalarWhereInput
-    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutUserInput>
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutUsersInput>
   }
 
   export type UserScalarWhereInput = {
@@ -3675,57 +7561,260 @@ export namespace Prisma {
     isDeleted?: BoolFilter | boolean
     isSignedIn?: BoolFilter | boolean
     createdAt?: DateTimeFilter | Date | string
+    createdBy?: StringNullableFilter | string | null
     updatedAt?: DateTimeFilter | Date | string
     updatedBy?: StringNullableFilter | string | null
-    userTypeId?: StringNullableFilter | string | null
   }
 
-  export type UserCreateManyTypeInput = {
+  export type CityCreateWithoutCountryInput = {
     id?: string
-    email: string
-    password: string
-    firstName: string
-    lastName: string
-    isGoogleAuth?: boolean
-    isEmailVerified?: boolean
-    isDeleted?: boolean
-    isSignedIn?: boolean
+    name: string
     createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy: string
+    postOffices?: PostOfficeCreateNestedManyWithoutCityInput
+  }
+
+  export type CityUncheckedCreateWithoutCountryInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy: string
+    postOffices?: PostOfficeUncheckedCreateNestedManyWithoutCityInput
+  }
+
+  export type CityCreateOrConnectWithoutCountryInput = {
+    where: CityWhereUniqueInput
+    create: XOR<CityCreateWithoutCountryInput, CityUncheckedCreateWithoutCountryInput>
+  }
+
+  export type CityCreateManyCountryInputEnvelope = {
+    data: Enumerable<CityCreateManyCountryInput>
+    skipDuplicates?: boolean
+  }
+
+  export type CityUpsertWithWhereUniqueWithoutCountryInput = {
+    where: CityWhereUniqueInput
+    update: XOR<CityUpdateWithoutCountryInput, CityUncheckedUpdateWithoutCountryInput>
+    create: XOR<CityCreateWithoutCountryInput, CityUncheckedCreateWithoutCountryInput>
+  }
+
+  export type CityUpdateWithWhereUniqueWithoutCountryInput = {
+    where: CityWhereUniqueInput
+    data: XOR<CityUpdateWithoutCountryInput, CityUncheckedUpdateWithoutCountryInput>
+  }
+
+  export type CityUpdateManyWithWhereWithoutCountryInput = {
+    where: CityScalarWhereInput
+    data: XOR<CityUpdateManyMutationInput, CityUncheckedUpdateManyWithoutCitiesInput>
+  }
+
+  export type CityScalarWhereInput = {
+    AND?: Enumerable<CityScalarWhereInput>
+    OR?: Enumerable<CityScalarWhereInput>
+    NOT?: Enumerable<CityScalarWhereInput>
+    id?: StringFilter | string
+    name?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    createdBy?: StringNullableFilter | string | null
+    updatedAt?: DateTimeFilter | Date | string
+    updatedBy?: StringFilter | string
+    countryId?: StringFilter | string
+  }
+
+  export type CountryCreateWithoutCitiesInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
   }
 
-  export type UserUpdateWithoutTypeInput = {
+  export type CountryUncheckedCreateWithoutCitiesInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type CountryCreateOrConnectWithoutCitiesInput = {
+    where: CountryWhereUniqueInput
+    create: XOR<CountryCreateWithoutCitiesInput, CountryUncheckedCreateWithoutCitiesInput>
+  }
+
+  export type PostOfficeCreateWithoutCityInput = {
+    id?: string
+    name: string
+    poAddress: string
+    poContact: string
+    poManagerId: string
+    poContactPerson: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    updatedBy: string
+  }
+
+  export type PostOfficeUncheckedCreateWithoutCityInput = {
+    id?: string
+    name: string
+    poAddress: string
+    poContact: string
+    poManagerId: string
+    poContactPerson: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    updatedBy: string
+  }
+
+  export type PostOfficeCreateOrConnectWithoutCityInput = {
+    where: PostOfficeWhereUniqueInput
+    create: XOR<PostOfficeCreateWithoutCityInput, PostOfficeUncheckedCreateWithoutCityInput>
+  }
+
+  export type PostOfficeCreateManyCityInputEnvelope = {
+    data: Enumerable<PostOfficeCreateManyCityInput>
+    skipDuplicates?: boolean
+  }
+
+  export type CountryUpsertWithoutCitiesInput = {
+    update: XOR<CountryUpdateWithoutCitiesInput, CountryUncheckedUpdateWithoutCitiesInput>
+    create: XOR<CountryCreateWithoutCitiesInput, CountryUncheckedCreateWithoutCitiesInput>
+  }
+
+  export type CountryUpdateWithoutCitiesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
-    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    isSignedIn?: BoolFieldUpdateOperationsInput | boolean
+    name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type UserUncheckedUpdateWithoutTypeInput = {
+  export type CountryUncheckedUpdateWithoutCitiesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
-    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    isSignedIn?: BoolFieldUpdateOperationsInput | boolean
+    name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type UserUncheckedUpdateManyWithoutUserInput = {
+  export type PostOfficeUpsertWithWhereUniqueWithoutCityInput = {
+    where: PostOfficeWhereUniqueInput
+    update: XOR<PostOfficeUpdateWithoutCityInput, PostOfficeUncheckedUpdateWithoutCityInput>
+    create: XOR<PostOfficeCreateWithoutCityInput, PostOfficeUncheckedCreateWithoutCityInput>
+  }
+
+  export type PostOfficeUpdateWithWhereUniqueWithoutCityInput = {
+    where: PostOfficeWhereUniqueInput
+    data: XOR<PostOfficeUpdateWithoutCityInput, PostOfficeUncheckedUpdateWithoutCityInput>
+  }
+
+  export type PostOfficeUpdateManyWithWhereWithoutCityInput = {
+    where: PostOfficeScalarWhereInput
+    data: XOR<PostOfficeUpdateManyMutationInput, PostOfficeUncheckedUpdateManyWithoutPostOfficesInput>
+  }
+
+  export type PostOfficeScalarWhereInput = {
+    AND?: Enumerable<PostOfficeScalarWhereInput>
+    OR?: Enumerable<PostOfficeScalarWhereInput>
+    NOT?: Enumerable<PostOfficeScalarWhereInput>
+    id?: StringFilter | string
+    name?: StringFilter | string
+    poAddress?: StringFilter | string
+    poContact?: StringFilter | string
+    poManagerId?: StringFilter | string
+    poContactPerson?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeFilter | Date | string
+    updatedBy?: StringFilter | string
+    cityId?: StringFilter | string
+  }
+
+  export type CityCreateWithoutPostOfficesInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy: string
+    Country: CountryCreateNestedOneWithoutCitiesInput
+  }
+
+  export type CityUncheckedCreateWithoutPostOfficesInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy: string
+    countryId: string
+  }
+
+  export type CityCreateOrConnectWithoutPostOfficesInput = {
+    where: CityWhereUniqueInput
+    create: XOR<CityCreateWithoutPostOfficesInput, CityUncheckedCreateWithoutPostOfficesInput>
+  }
+
+  export type CityUpsertWithoutPostOfficesInput = {
+    update: XOR<CityUpdateWithoutPostOfficesInput, CityUncheckedUpdateWithoutPostOfficesInput>
+    create: XOR<CityCreateWithoutPostOfficesInput, CityUncheckedCreateWithoutPostOfficesInput>
+  }
+
+  export type CityUpdateWithoutPostOfficesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: StringFieldUpdateOperationsInput | string
+    Country?: CountryUpdateOneRequiredWithoutCitiesNestedInput
+  }
+
+  export type CityUncheckedUpdateWithoutPostOfficesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: StringFieldUpdateOperationsInput | string
+    countryId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type UserTypeUpdateWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserTypeUncheckedUpdateWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserTypeUncheckedUpdateManyWithoutUserTypesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserUpdateWithoutUserTypesInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
@@ -3736,8 +7825,127 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     isSignedIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserUncheckedUpdateWithoutUserTypesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isSignedIn?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserUncheckedUpdateManyWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isSignedIn?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CityCreateManyCountryInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy: string
+  }
+
+  export type CityUpdateWithoutCountryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: StringFieldUpdateOperationsInput | string
+    postOffices?: PostOfficeUpdateManyWithoutCityNestedInput
+  }
+
+  export type CityUncheckedUpdateWithoutCountryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: StringFieldUpdateOperationsInput | string
+    postOffices?: PostOfficeUncheckedUpdateManyWithoutCityNestedInput
+  }
+
+  export type CityUncheckedUpdateManyWithoutCitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PostOfficeCreateManyCityInput = {
+    id?: string
+    name: string
+    poAddress: string
+    poContact: string
+    poManagerId: string
+    poContactPerson: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    updatedBy: string
+  }
+
+  export type PostOfficeUpdateWithoutCityInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    poAddress?: StringFieldUpdateOperationsInput | string
+    poContact?: StringFieldUpdateOperationsInput | string
+    poManagerId?: StringFieldUpdateOperationsInput | string
+    poContactPerson?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PostOfficeUncheckedUpdateWithoutCityInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    poAddress?: StringFieldUpdateOperationsInput | string
+    poContact?: StringFieldUpdateOperationsInput | string
+    poManagerId?: StringFieldUpdateOperationsInput | string
+    poContactPerson?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PostOfficeUncheckedUpdateManyWithoutPostOfficesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    poAddress?: StringFieldUpdateOperationsInput | string
+    poContact?: StringFieldUpdateOperationsInput | string
+    poManagerId?: StringFieldUpdateOperationsInput | string
+    poContactPerson?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: StringFieldUpdateOperationsInput | string
   }
 
 

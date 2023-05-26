@@ -1,17 +1,13 @@
 import { Context } from '../../../deps.ts'
 import { prisma } from '../../../helpers/prismaConfig.ts'
-import UserType from '../../../models/Users/UserType.ts'
 
 const getUserTypes = async (ctx: Context) => {
 	try {
-		const userTypes: UserType[] = await prisma.userType.findMany({
-			select: {
-				id: true,
-				type: true,
-				updatedAt: true,
+		const userTypes = await prisma.userType.findMany({
+			include: {
+				users: true,
 			},
 		})
-
 		if (userTypes.length > 0) {
 			ctx.response.status = 200
 			ctx.response.body = {

@@ -13,27 +13,69 @@ datasource db {
 }
 
 model User {
-  id                    String            @id @unique @default(uuid())
-  email                 String            @unique
-  password              String
-  firstName              String
-  lastName              String
-  isGoogleAuth          Boolean          @default(false)
-  isEmailVerified        Boolean          @default(false)
-  isDeleted             Boolean          @default(false)
-  isSignedIn            Boolean          @default(false)
-  createdAt             DateTime         @default(now())
-  updatedAt             DateTime         @updatedAt
-  updatedBy             String?
-  userTypeId            String?
-  type                  UserType?        @relation(fields: [userTypeId], references: [id])
+  id              String     @id @unique @default(uuid())
+  email           String     @unique
+  password        String
+  firstName       String
+  lastName        String
+  isGoogleAuth    Boolean    @default(false)
+  isEmailVerified Boolean    @default(false)
+  isDeleted       Boolean    @default(false)
+  isSignedIn      Boolean    @default(false)
+  createdAt       DateTime   @default(now())
+  createdBy       String?
+  updatedAt       DateTime   @updatedAt
+  updatedBy       String?
+
+  userTypes       UserType[]
 }
 
 model UserType {
-  id                    String            @id @unique @default(uuid())
-  type                  String            @default("customer")
-  createdAt             DateTime          @default(now())
-  updatedAt             DateTime          @updatedAt
-  updatedBy             String
-  User                  User[]
+  id        String   @id @unique @default(uuid())
+  name      String   @default("customer")
+  createdAt DateTime @default(now())
+  createdBy String?
+  updatedAt DateTime @updatedAt
+  updatedBy String?
+
+  users     User[]
+}
+
+model Country {
+  id        String   @id @unique @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  createdBy String?
+  updatedAt DateTime @updatedAt
+  updatedBy String?
+
+  cities    City[]
+}
+
+model City {
+  id        String   @id @unique @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  createdBy String?
+  updatedAt DateTime @updatedAt
+  updatedBy String
+
+  countryId  String
+  Country    Country      @relation(fields: [countryId], references: [id])
+  postOffices PostOffice[]
+}
+
+model PostOffice {
+  id              String   @id @unique @default(uuid())
+  name            String
+  poAddress       String
+  poContact       String
+  poManagerId     String
+  poContactPerson String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  updatedBy       String
+
+  cityId          String
+  city            City     @relation(fields: [cityId], references: [id])
 }

@@ -7,19 +7,8 @@ const getUsers = async (ctx: Context) => {
 			where: {
 				isDeleted: false,
 			},
-			select: {
-				id: true,
-				email: true,
-				firstName: true,
-				lastName: true,
-				isGoogleAuth: true,
-				isEmailVerified: true,
-				isDeleted: true,
-				isSignedIn: true,
-				createdAt: true,
-				updatedAt: true,
-				updatedBy: true,
-				userTypeId: true,
+			include: {
+				userTypes: true,
 			},
 		})
 
