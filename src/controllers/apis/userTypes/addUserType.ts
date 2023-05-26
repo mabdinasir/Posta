@@ -7,11 +7,14 @@ const addUserType = async (ctx: Context) => {
 	const userTypes: UserType[] = await body.value
 
 	try {
-		if (!userTypes || userTypes.length === 0) {
+		if (
+			!userTypes || userTypes.length === 0 ||
+			userTypes.some((userType) => !userType.name)
+		) {
 			ctx.response.status = 400
 			ctx.response.body = {
 				success: false,
-				message: 'Body is missing or empty!',
+				message: 'Invalid user type(s) provided!',
 			}
 			return
 		}
