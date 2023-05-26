@@ -113,6 +113,7 @@ exports.Prisma.PostOfficeScalarFieldEnum = {
   poManagerId: 'poManagerId',
   poContactPerson: 'poContactPerson',
   createdAt: 'createdAt',
+  createdBy: 'createdBy',
   updatedAt: 'updatedAt',
   updatedBy: 'updatedBy',
   cityId: 'cityId'

@@ -3,7 +3,7 @@
  * Client
 **/
 
-import * as runtime from './runtime/library';
+import * as runtime from './runtime/data-proxy';
 type UnwrapPromise<P extends any> = P extends Promise<infer R> ? R : P
 type UnwrapTuple<Tuple extends readonly unknown[]> = {
   [K in keyof Tuple]: K extends `${number}` ? Tuple[K] extends Prisma.PrismaPromise<infer X> ? X : UnwrapPromise<Tuple[K]> : UnwrapPromise<Tuple[K]>
@@ -84,6 +84,7 @@ export type PostOffice = {
   poManagerId: string
   poContactPerson: string
   createdAt: Date
+  createdBy: string | null
   updatedAt: Date
   updatedBy: string
   cityId: string
@@ -4196,14 +4197,14 @@ export namespace Prisma {
     updatedAt?: boolean
     updatedBy?: boolean
     countryId?: boolean
-    Country?: boolean | CountryArgs
+    country?: boolean | CountryArgs
     postOffices?: boolean | City$postOfficesArgs
     _count?: boolean | CityCountOutputTypeArgs
   }
 
 
   export type CityInclude = {
-    Country?: boolean | CountryArgs
+    country?: boolean | CountryArgs
     postOffices?: boolean | City$postOfficesArgs
     _count?: boolean | CityCountOutputTypeArgs
   }
@@ -4215,14 +4216,14 @@ export namespace Prisma {
     S extends { include: any } & (CityArgs | CityFindManyArgs)
     ? City  & {
     [P in TruthyKeys<S['include']>]:
-        P extends 'Country' ? CountryGetPayload<S['include'][P]> :
+        P extends 'country' ? CountryGetPayload<S['include'][P]> :
         P extends 'postOffices' ? Array < PostOfficeGetPayload<S['include'][P]>>  :
         P extends '_count' ? CityCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : S extends { select: any } & (CityArgs | CityFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
-        P extends 'Country' ? CountryGetPayload<S['select'][P]> :
+        P extends 'country' ? CountryGetPayload<S['select'][P]> :
         P extends 'postOffices' ? Array < PostOfficeGetPayload<S['select'][P]>>  :
         P extends '_count' ? CityCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof City ? City[P] : never
   } 
@@ -4596,7 +4597,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
     constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
 
-    Country<T extends CountryArgs= {}>(args?: Subset<T, CountryArgs>): Prisma__CountryClient<CountryGetPayload<T> | Null>;
+    country<T extends CountryArgs= {}>(args?: Subset<T, CountryArgs>): Prisma__CountryClient<CountryGetPayload<T> | Null>;
 
     postOffices<T extends City$postOfficesArgs= {}>(args?: Subset<T, City$postOfficesArgs>): Prisma.PrismaPromise<Array<PostOfficeGetPayload<T>>| Null>;
 
@@ -5011,6 +5012,7 @@ export namespace Prisma {
     poManagerId: string | null
     poContactPerson: string | null
     createdAt: Date | null
+    createdBy: string | null
     updatedAt: Date | null
     updatedBy: string | null
     cityId: string | null
@@ -5024,6 +5026,7 @@ export namespace Prisma {
     poManagerId: string | null
     poContactPerson: string | null
     createdAt: Date | null
+    createdBy: string | null
     updatedAt: Date | null
     updatedBy: string | null
     cityId: string | null
@@ -5037,6 +5040,7 @@ export namespace Prisma {
     poManagerId: number
     poContactPerson: number
     createdAt: number
+    createdBy: number
     updatedAt: number
     updatedBy: number
     cityId: number
@@ -5052,6 +5056,7 @@ export namespace Prisma {
     poManagerId?: true
     poContactPerson?: true
     createdAt?: true
+    createdBy?: true
     updatedAt?: true
     updatedBy?: true
     cityId?: true
@@ -5065,6 +5070,7 @@ export namespace Prisma {
     poManagerId?: true
     poContactPerson?: true
     createdAt?: true
+    createdBy?: true
     updatedAt?: true
     updatedBy?: true
     cityId?: true
@@ -5078,6 +5084,7 @@ export namespace Prisma {
     poManagerId?: true
     poContactPerson?: true
     createdAt?: true
+    createdBy?: true
     updatedAt?: true
     updatedBy?: true
     cityId?: true
@@ -5165,6 +5172,7 @@ export namespace Prisma {
     poManagerId: string
     poContactPerson: string
     createdAt: Date
+    createdBy: string | null
     updatedAt: Date
     updatedBy: string
     cityId: string
@@ -5195,6 +5203,7 @@ export namespace Prisma {
     poManagerId?: boolean
     poContactPerson?: boolean
     createdAt?: boolean
+    createdBy?: boolean
     updatedAt?: boolean
     updatedBy?: boolean
     cityId?: boolean
@@ -6003,6 +6012,7 @@ export namespace Prisma {
     poManagerId: 'poManagerId',
     poContactPerson: 'poContactPerson',
     createdAt: 'createdAt',
+    createdBy: 'createdBy',
     updatedAt: 'updatedAt',
     updatedBy: 'updatedBy',
     cityId: 'cityId'
@@ -6266,7 +6276,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter | Date | string
     updatedBy?: StringFilter | string
     countryId?: StringFilter | string
-    Country?: XOR<CountryRelationFilter, CountryWhereInput>
+    country?: XOR<CountryRelationFilter, CountryWhereInput>
     postOffices?: PostOfficeListRelationFilter
   }
 
@@ -6278,7 +6288,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     updatedBy?: SortOrder
     countryId?: SortOrder
-    Country?: CountryOrderByWithRelationInput
+    country?: CountryOrderByWithRelationInput
     postOffices?: PostOfficeOrderByRelationAggregateInput
   }
 
@@ -6323,6 +6333,7 @@ export namespace Prisma {
     poManagerId?: StringFilter | string
     poContactPerson?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
+    createdBy?: StringNullableFilter | string | null
     updatedAt?: DateTimeFilter | Date | string
     updatedBy?: StringFilter | string
     cityId?: StringFilter | string
@@ -6337,6 +6348,7 @@ export namespace Prisma {
     poManagerId?: SortOrder
     poContactPerson?: SortOrder
     createdAt?: SortOrder
+    createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
     cityId?: SortOrder
@@ -6355,6 +6367,7 @@ export namespace Prisma {
     poManagerId?: SortOrder
     poContactPerson?: SortOrder
     createdAt?: SortOrder
+    createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
     cityId?: SortOrder
@@ -6374,6 +6387,7 @@ export namespace Prisma {
     poManagerId?: StringWithAggregatesFilter | string
     poContactPerson?: StringWithAggregatesFilter | string
     createdAt?: DateTimeWithAggregatesFilter | Date | string
+    createdBy?: StringNullableWithAggregatesFilter | string | null
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
     updatedBy?: StringWithAggregatesFilter | string
     cityId?: StringWithAggregatesFilter | string
@@ -6636,7 +6650,7 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy: string
-    Country: CountryCreateNestedOneWithoutCitiesInput
+    country: CountryCreateNestedOneWithoutCitiesInput
     postOffices?: PostOfficeCreateNestedManyWithoutCityInput
   }
 
@@ -6658,7 +6672,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: StringFieldUpdateOperationsInput | string
-    Country?: CountryUpdateOneRequiredWithoutCitiesNestedInput
+    country?: CountryUpdateOneRequiredWithoutCitiesNestedInput
     postOffices?: PostOfficeUpdateManyWithoutCityNestedInput
   }
 
@@ -6710,6 +6724,7 @@ export namespace Prisma {
     poManagerId: string
     poContactPerson: string
     createdAt?: Date | string
+    createdBy?: string | null
     updatedAt?: Date | string
     updatedBy: string
     city: CityCreateNestedOneWithoutPostOfficesInput
@@ -6723,6 +6738,7 @@ export namespace Prisma {
     poManagerId: string
     poContactPerson: string
     createdAt?: Date | string
+    createdBy?: string | null
     updatedAt?: Date | string
     updatedBy: string
     cityId: string
@@ -6736,6 +6752,7 @@ export namespace Prisma {
     poManagerId?: StringFieldUpdateOperationsInput | string
     poContactPerson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: StringFieldUpdateOperationsInput | string
     city?: CityUpdateOneRequiredWithoutPostOfficesNestedInput
@@ -6749,6 +6766,7 @@ export namespace Prisma {
     poManagerId?: StringFieldUpdateOperationsInput | string
     poContactPerson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: StringFieldUpdateOperationsInput | string
     cityId?: StringFieldUpdateOperationsInput | string
@@ -6762,6 +6780,7 @@ export namespace Prisma {
     poManagerId: string
     poContactPerson: string
     createdAt?: Date | string
+    createdBy?: string | null
     updatedAt?: Date | string
     updatedBy: string
     cityId: string
@@ -6775,6 +6794,7 @@ export namespace Prisma {
     poManagerId?: StringFieldUpdateOperationsInput | string
     poContactPerson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: StringFieldUpdateOperationsInput | string
   }
@@ -6787,6 +6807,7 @@ export namespace Prisma {
     poManagerId?: StringFieldUpdateOperationsInput | string
     poContactPerson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: StringFieldUpdateOperationsInput | string
     cityId?: StringFieldUpdateOperationsInput | string
@@ -7086,6 +7107,7 @@ export namespace Prisma {
     poManagerId?: SortOrder
     poContactPerson?: SortOrder
     createdAt?: SortOrder
+    createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
     cityId?: SortOrder
@@ -7099,6 +7121,7 @@ export namespace Prisma {
     poManagerId?: SortOrder
     poContactPerson?: SortOrder
     createdAt?: SortOrder
+    createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
     cityId?: SortOrder
@@ -7112,6 +7135,7 @@ export namespace Prisma {
     poManagerId?: SortOrder
     poContactPerson?: SortOrder
     createdAt?: SortOrder
+    createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
     cityId?: SortOrder
@@ -7656,6 +7680,7 @@ export namespace Prisma {
     poManagerId: string
     poContactPerson: string
     createdAt?: Date | string
+    createdBy?: string | null
     updatedAt?: Date | string
     updatedBy: string
   }
@@ -7668,6 +7693,7 @@ export namespace Prisma {
     poManagerId: string
     poContactPerson: string
     createdAt?: Date | string
+    createdBy?: string | null
     updatedAt?: Date | string
     updatedBy: string
   }
@@ -7732,6 +7758,7 @@ export namespace Prisma {
     poManagerId?: StringFilter | string
     poContactPerson?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
+    createdBy?: StringNullableFilter | string | null
     updatedAt?: DateTimeFilter | Date | string
     updatedBy?: StringFilter | string
     cityId?: StringFilter | string
@@ -7744,7 +7771,7 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy: string
-    Country: CountryCreateNestedOneWithoutCitiesInput
+    country: CountryCreateNestedOneWithoutCitiesInput
   }
 
   export type CityUncheckedCreateWithoutPostOfficesInput = {
@@ -7774,7 +7801,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: StringFieldUpdateOperationsInput | string
-    Country?: CountryUpdateOneRequiredWithoutCitiesNestedInput
+    country?: CountryUpdateOneRequiredWithoutCitiesNestedInput
   }
 
   export type CityUncheckedUpdateWithoutPostOfficesInput = {
@@ -7908,6 +7935,7 @@ export namespace Prisma {
     poManagerId: string
     poContactPerson: string
     createdAt?: Date | string
+    createdBy?: string | null
     updatedAt?: Date | string
     updatedBy: string
   }
@@ -7920,6 +7948,7 @@ export namespace Prisma {
     poManagerId?: StringFieldUpdateOperationsInput | string
     poContactPerson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: StringFieldUpdateOperationsInput | string
   }
@@ -7932,6 +7961,7 @@ export namespace Prisma {
     poManagerId?: StringFieldUpdateOperationsInput | string
     poContactPerson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: StringFieldUpdateOperationsInput | string
   }
@@ -7944,6 +7974,7 @@ export namespace Prisma {
     poManagerId?: StringFieldUpdateOperationsInput | string
     poContactPerson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: StringFieldUpdateOperationsInput | string
   }
