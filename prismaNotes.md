@@ -17,3 +17,6 @@ Run migration:
 
 To seed DB:
       deno run -A prisma/userSeed.ts
+
+To generate ER Diagram using prisma-erd-generator:
+      npx prisma generate
