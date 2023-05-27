@@ -13,11 +13,11 @@ const Prisma = {}
 exports.Prisma = Prisma
 
 /**
- * Prisma Client JS version: 4.14.1
+ * Prisma Client JS version: 4.14.0
  * Query Engine version: d9a4c5988f480fa576d43970d5a23641aa77bc9c
  */
 Prisma.prismaVersion = {
-  client: "4.14.1",
+  client: "4.14.0",
   engine: "d9a4c5988f480fa576d43970d5a23641aa77bc9c"
 }
 
@@ -135,6 +135,23 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.ServiceAvailableScalarFieldEnum = {
+  id: 'id',
+  locationId: 'locationId',
+  serviceId: 'serviceId'
+};
+
+exports.Prisma.ServiceScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -179,7 +196,9 @@ exports.Prisma.ModelName = {
   Country: 'Country',
   City: 'City',
   PostOffice: 'PostOffice',
-  Location: 'Location'
+  Location: 'Location',
+  Service: 'Service',
+  ServiceAvailable: 'ServiceAvailable'
 };
 
 /**

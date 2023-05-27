@@ -3,7 +3,7 @@
  * Client
 **/
 
-import * as runtime from './runtime/library';
+import * as runtime from './runtime/data-proxy';
 type UnwrapPromise<P extends any> = P extends Promise<infer R> ? R : P
 type UnwrapTuple<Tuple extends readonly unknown[]> = {
   [K in keyof Tuple]: K extends `${number}` ? Tuple[K] extends Prisma.PrismaPromise<infer X> ? X : UnwrapPromise<Tuple[K]> : UnwrapPromise<Tuple[K]>
@@ -103,6 +103,31 @@ export type Location = {
   updatedAt: Date
   updatedBy: string | null
   postOfficeInChargeId: string
+}
+
+/**
+ * Model Service
+ * 
+ */
+export type Service = {
+  id: string
+  name: string
+  description: string | null
+  isActive: boolean
+  createdAt: Date
+  createdBy: string | null
+  updatedAt: Date
+  updatedBy: string | null
+}
+
+/**
+ * Model ServiceAvailable
+ * 
+ */
+export type ServiceAvailable = {
+  id: string
+  locationId: string
+  serviceId: string
 }
 
 
@@ -282,6 +307,26 @@ export class PrismaClient<
     * ```
     */
   get location(): Prisma.LocationDelegate<GlobalReject>;
+
+  /**
+   * `prisma.service`: Exposes CRUD operations for the **Service** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Services
+    * const services = await prisma.service.findMany()
+    * ```
+    */
+  get service(): Prisma.ServiceDelegate<GlobalReject>;
+
+  /**
+   * `prisma.serviceAvailable`: Exposes CRUD operations for the **ServiceAvailable** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ServiceAvailables
+    * const serviceAvailables = await prisma.serviceAvailable.findMany()
+    * ```
+    */
+  get serviceAvailable(): Prisma.ServiceAvailableDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
@@ -325,7 +370,7 @@ export namespace Prisma {
 
 
   /**
-   * Prisma Client JS version: 4.14.1
+   * Prisma Client JS version: 4.14.0
    * Query Engine version: d9a4c5988f480fa576d43970d5a23641aa77bc9c
    */
   export type PrismaVersion = {
@@ -756,7 +801,9 @@ export namespace Prisma {
     Country: 'Country',
     City: 'City',
     PostOffice: 'PostOffice',
-    Location: 'Location'
+    Location: 'Location',
+    Service: 'Service',
+    ServiceAvailable: 'ServiceAvailable'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1128,6 +1175,92 @@ export namespace Prisma {
      * Select specific fields to fetch from the PostOfficeCountOutputType
      */
     select?: PostOfficeCountOutputTypeSelect | null
+  }
+
+
+
+  /**
+   * Count Type LocationCountOutputType
+   */
+
+
+  export type LocationCountOutputType = {
+    servicesAvailable: number
+  }
+
+  export type LocationCountOutputTypeSelect = {
+    servicesAvailable?: boolean
+  }
+
+  export type LocationCountOutputTypeGetPayload<S extends boolean | null | undefined | LocationCountOutputTypeArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? LocationCountOutputType :
+    S extends undefined ? never :
+    S extends { include: any } & (LocationCountOutputTypeArgs)
+    ? LocationCountOutputType 
+    : S extends { select: any } & (LocationCountOutputTypeArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+    P extends keyof LocationCountOutputType ? LocationCountOutputType[P] : never
+  } 
+      : LocationCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * LocationCountOutputType without action
+   */
+  export type LocationCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the LocationCountOutputType
+     */
+    select?: LocationCountOutputTypeSelect | null
+  }
+
+
+
+  /**
+   * Count Type ServiceCountOutputType
+   */
+
+
+  export type ServiceCountOutputType = {
+    locationsAvailable: number
+  }
+
+  export type ServiceCountOutputTypeSelect = {
+    locationsAvailable?: boolean
+  }
+
+  export type ServiceCountOutputTypeGetPayload<S extends boolean | null | undefined | ServiceCountOutputTypeArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? ServiceCountOutputType :
+    S extends undefined ? never :
+    S extends { include: any } & (ServiceCountOutputTypeArgs)
+    ? ServiceCountOutputType 
+    : S extends { select: any } & (ServiceCountOutputTypeArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+    P extends keyof ServiceCountOutputType ? ServiceCountOutputType[P] : never
+  } 
+      : ServiceCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * ServiceCountOutputType without action
+   */
+  export type ServiceCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the ServiceCountOutputType
+     */
+    select?: ServiceCountOutputTypeSelect | null
   }
 
 
@@ -6263,11 +6396,15 @@ export namespace Prisma {
     updatedBy?: boolean
     postOfficeInChargeId?: boolean
     postOfficeInCharge?: boolean | PostOfficeArgs
+    servicesAvailable?: boolean | Location$servicesAvailableArgs
+    _count?: boolean | LocationCountOutputTypeArgs
   }
 
 
   export type LocationInclude = {
     postOfficeInCharge?: boolean | PostOfficeArgs
+    servicesAvailable?: boolean | Location$servicesAvailableArgs
+    _count?: boolean | LocationCountOutputTypeArgs
   }
 
   export type LocationGetPayload<S extends boolean | null | undefined | LocationArgs> =
@@ -6277,12 +6414,16 @@ export namespace Prisma {
     S extends { include: any } & (LocationArgs | LocationFindManyArgs)
     ? Location  & {
     [P in TruthyKeys<S['include']>]:
-        P extends 'postOfficeInCharge' ? PostOfficeGetPayload<S['include'][P]> :  never
+        P extends 'postOfficeInCharge' ? PostOfficeGetPayload<S['include'][P]> :
+        P extends 'servicesAvailable' ? Array < ServiceAvailableGetPayload<S['include'][P]>>  :
+        P extends '_count' ? LocationCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : S extends { select: any } & (LocationArgs | LocationFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
-        P extends 'postOfficeInCharge' ? PostOfficeGetPayload<S['select'][P]> :  P extends keyof Location ? Location[P] : never
+        P extends 'postOfficeInCharge' ? PostOfficeGetPayload<S['select'][P]> :
+        P extends 'servicesAvailable' ? Array < ServiceAvailableGetPayload<S['select'][P]>>  :
+        P extends '_count' ? LocationCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Location ? Location[P] : never
   } 
       : Location
 
@@ -6656,6 +6797,8 @@ export namespace Prisma {
 
     postOfficeInCharge<T extends PostOfficeArgs= {}>(args?: Subset<T, PostOfficeArgs>): Prisma__PostOfficeClient<PostOfficeGetPayload<T> | Null>;
 
+    servicesAvailable<T extends Location$servicesAvailableArgs= {}>(args?: Subset<T, Location$servicesAvailableArgs>): Prisma.PrismaPromise<Array<ServiceAvailableGetPayload<T>>| Null>;
+
     private get _document();
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -7012,6 +7155,27 @@ export namespace Prisma {
 
 
   /**
+   * Location.servicesAvailable
+   */
+  export type Location$servicesAvailableArgs = {
+    /**
+     * Select specific fields to fetch from the ServiceAvailable
+     */
+    select?: ServiceAvailableSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceAvailableInclude | null
+    where?: ServiceAvailableWhereInput
+    orderBy?: Enumerable<ServiceAvailableOrderByWithRelationInput>
+    cursor?: ServiceAvailableWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<ServiceAvailableScalarFieldEnum>
+  }
+
+
+  /**
    * Location without action
    */
   export type LocationArgs = {
@@ -7023,6 +7187,1907 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well.
      */
     include?: LocationInclude | null
+  }
+
+
+
+  /**
+   * Model Service
+   */
+
+
+  export type AggregateService = {
+    _count: ServiceCountAggregateOutputType | null
+    _min: ServiceMinAggregateOutputType | null
+    _max: ServiceMaxAggregateOutputType | null
+  }
+
+  export type ServiceMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+  }
+
+  export type ServiceMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+  }
+
+  export type ServiceCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    isActive: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    _all: number
+  }
+
+
+  export type ServiceMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+  }
+
+  export type ServiceMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+  }
+
+  export type ServiceCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    _all?: true
+  }
+
+  export type ServiceAggregateArgs = {
+    /**
+     * Filter which Service to aggregate.
+     */
+    where?: ServiceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Services to fetch.
+     */
+    orderBy?: Enumerable<ServiceOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ServiceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Services from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Services.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Services
+    **/
+    _count?: true | ServiceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ServiceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ServiceMaxAggregateInputType
+  }
+
+  export type GetServiceAggregateType<T extends ServiceAggregateArgs> = {
+        [P in keyof T & keyof AggregateService]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateService[P]>
+      : GetScalarType<T[P], AggregateService[P]>
+  }
+
+
+
+
+  export type ServiceGroupByArgs = {
+    where?: ServiceWhereInput
+    orderBy?: Enumerable<ServiceOrderByWithAggregationInput>
+    by: ServiceScalarFieldEnum[]
+    having?: ServiceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ServiceCountAggregateInputType | true
+    _min?: ServiceMinAggregateInputType
+    _max?: ServiceMaxAggregateInputType
+  }
+
+
+  export type ServiceGroupByOutputType = {
+    id: string
+    name: string
+    description: string | null
+    isActive: boolean
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    _count: ServiceCountAggregateOutputType | null
+    _min: ServiceMinAggregateOutputType | null
+    _max: ServiceMaxAggregateOutputType | null
+  }
+
+  type GetServiceGroupByPayload<T extends ServiceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<ServiceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ServiceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ServiceGroupByOutputType[P]>
+            : GetScalarType<T[P], ServiceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ServiceSelect = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    locationsAvailable?: boolean | Service$locationsAvailableArgs
+    _count?: boolean | ServiceCountOutputTypeArgs
+  }
+
+
+  export type ServiceInclude = {
+    locationsAvailable?: boolean | Service$locationsAvailableArgs
+    _count?: boolean | ServiceCountOutputTypeArgs
+  }
+
+  export type ServiceGetPayload<S extends boolean | null | undefined | ServiceArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? Service :
+    S extends undefined ? never :
+    S extends { include: any } & (ServiceArgs | ServiceFindManyArgs)
+    ? Service  & {
+    [P in TruthyKeys<S['include']>]:
+        P extends 'locationsAvailable' ? Array < ServiceAvailableGetPayload<S['include'][P]>>  :
+        P extends '_count' ? ServiceCountOutputTypeGetPayload<S['include'][P]> :  never
+  } 
+    : S extends { select: any } & (ServiceArgs | ServiceFindManyArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+        P extends 'locationsAvailable' ? Array < ServiceAvailableGetPayload<S['select'][P]>>  :
+        P extends '_count' ? ServiceCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Service ? Service[P] : never
+  } 
+      : Service
+
+
+  type ServiceCountArgs = 
+    Omit<ServiceFindManyArgs, 'select' | 'include'> & {
+      select?: ServiceCountAggregateInputType | true
+    }
+
+  export interface ServiceDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
+    /**
+     * Find zero or one Service that matches the filter.
+     * @param {ServiceFindUniqueArgs} args - Arguments to find a Service
+     * @example
+     * // Get one Service
+     * const service = await prisma.service.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends ServiceFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, ServiceFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Service'> extends True ? Prisma__ServiceClient<ServiceGetPayload<T>> : Prisma__ServiceClient<ServiceGetPayload<T> | null, null>
+
+    /**
+     * Find one Service that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {ServiceFindUniqueOrThrowArgs} args - Arguments to find a Service
+     * @example
+     * // Get one Service
+     * const service = await prisma.service.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends ServiceFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, ServiceFindUniqueOrThrowArgs>
+    ): Prisma__ServiceClient<ServiceGetPayload<T>>
+
+    /**
+     * Find the first Service that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceFindFirstArgs} args - Arguments to find a Service
+     * @example
+     * // Get one Service
+     * const service = await prisma.service.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends ServiceFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, ServiceFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Service'> extends True ? Prisma__ServiceClient<ServiceGetPayload<T>> : Prisma__ServiceClient<ServiceGetPayload<T> | null, null>
+
+    /**
+     * Find the first Service that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceFindFirstOrThrowArgs} args - Arguments to find a Service
+     * @example
+     * // Get one Service
+     * const service = await prisma.service.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends ServiceFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, ServiceFindFirstOrThrowArgs>
+    ): Prisma__ServiceClient<ServiceGetPayload<T>>
+
+    /**
+     * Find zero or more Services that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Services
+     * const services = await prisma.service.findMany()
+     * 
+     * // Get first 10 Services
+     * const services = await prisma.service.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const serviceWithIdOnly = await prisma.service.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends ServiceFindManyArgs>(
+      args?: SelectSubset<T, ServiceFindManyArgs>
+    ): Prisma.PrismaPromise<Array<ServiceGetPayload<T>>>
+
+    /**
+     * Create a Service.
+     * @param {ServiceCreateArgs} args - Arguments to create a Service.
+     * @example
+     * // Create one Service
+     * const Service = await prisma.service.create({
+     *   data: {
+     *     // ... data to create a Service
+     *   }
+     * })
+     * 
+    **/
+    create<T extends ServiceCreateArgs>(
+      args: SelectSubset<T, ServiceCreateArgs>
+    ): Prisma__ServiceClient<ServiceGetPayload<T>>
+
+    /**
+     * Create many Services.
+     *     @param {ServiceCreateManyArgs} args - Arguments to create many Services.
+     *     @example
+     *     // Create many Services
+     *     const service = await prisma.service.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends ServiceCreateManyArgs>(
+      args?: SelectSubset<T, ServiceCreateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Service.
+     * @param {ServiceDeleteArgs} args - Arguments to delete one Service.
+     * @example
+     * // Delete one Service
+     * const Service = await prisma.service.delete({
+     *   where: {
+     *     // ... filter to delete one Service
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends ServiceDeleteArgs>(
+      args: SelectSubset<T, ServiceDeleteArgs>
+    ): Prisma__ServiceClient<ServiceGetPayload<T>>
+
+    /**
+     * Update one Service.
+     * @param {ServiceUpdateArgs} args - Arguments to update one Service.
+     * @example
+     * // Update one Service
+     * const service = await prisma.service.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends ServiceUpdateArgs>(
+      args: SelectSubset<T, ServiceUpdateArgs>
+    ): Prisma__ServiceClient<ServiceGetPayload<T>>
+
+    /**
+     * Delete zero or more Services.
+     * @param {ServiceDeleteManyArgs} args - Arguments to filter Services to delete.
+     * @example
+     * // Delete a few Services
+     * const { count } = await prisma.service.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends ServiceDeleteManyArgs>(
+      args?: SelectSubset<T, ServiceDeleteManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Services.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Services
+     * const service = await prisma.service.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends ServiceUpdateManyArgs>(
+      args: SelectSubset<T, ServiceUpdateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Service.
+     * @param {ServiceUpsertArgs} args - Arguments to update or create a Service.
+     * @example
+     * // Update or create a Service
+     * const service = await prisma.service.upsert({
+     *   create: {
+     *     // ... data to create a Service
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Service we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends ServiceUpsertArgs>(
+      args: SelectSubset<T, ServiceUpsertArgs>
+    ): Prisma__ServiceClient<ServiceGetPayload<T>>
+
+    /**
+     * Count the number of Services.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceCountArgs} args - Arguments to filter Services to count.
+     * @example
+     * // Count the number of Services
+     * const count = await prisma.service.count({
+     *   where: {
+     *     // ... the filter for the Services we want to count
+     *   }
+     * })
+    **/
+    count<T extends ServiceCountArgs>(
+      args?: Subset<T, ServiceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ServiceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Service.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ServiceAggregateArgs>(args: Subset<T, ServiceAggregateArgs>): Prisma.PrismaPromise<GetServiceAggregateType<T>>
+
+    /**
+     * Group by Service.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ServiceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ServiceGroupByArgs['orderBy'] }
+        : { orderBy?: ServiceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ServiceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetServiceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Service.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__ServiceClient<T, Null = never> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    locationsAvailable<T extends Service$locationsAvailableArgs= {}>(args?: Subset<T, Service$locationsAvailableArgs>): Prisma.PrismaPromise<Array<ServiceAvailableGetPayload<T>>| Null>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * Service base type for findUnique actions
+   */
+  export type ServiceFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the Service
+     */
+    select?: ServiceSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceInclude | null
+    /**
+     * Filter, which Service to fetch.
+     */
+    where: ServiceWhereUniqueInput
+  }
+
+  /**
+   * Service findUnique
+   */
+  export interface ServiceFindUniqueArgs extends ServiceFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * Service findUniqueOrThrow
+   */
+  export type ServiceFindUniqueOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the Service
+     */
+    select?: ServiceSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceInclude | null
+    /**
+     * Filter, which Service to fetch.
+     */
+    where: ServiceWhereUniqueInput
+  }
+
+
+  /**
+   * Service base type for findFirst actions
+   */
+  export type ServiceFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the Service
+     */
+    select?: ServiceSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceInclude | null
+    /**
+     * Filter, which Service to fetch.
+     */
+    where?: ServiceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Services to fetch.
+     */
+    orderBy?: Enumerable<ServiceOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Services.
+     */
+    cursor?: ServiceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Services from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Services.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Services.
+     */
+    distinct?: Enumerable<ServiceScalarFieldEnum>
+  }
+
+  /**
+   * Service findFirst
+   */
+  export interface ServiceFindFirstArgs extends ServiceFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * Service findFirstOrThrow
+   */
+  export type ServiceFindFirstOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the Service
+     */
+    select?: ServiceSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceInclude | null
+    /**
+     * Filter, which Service to fetch.
+     */
+    where?: ServiceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Services to fetch.
+     */
+    orderBy?: Enumerable<ServiceOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Services.
+     */
+    cursor?: ServiceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Services from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Services.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Services.
+     */
+    distinct?: Enumerable<ServiceScalarFieldEnum>
+  }
+
+
+  /**
+   * Service findMany
+   */
+  export type ServiceFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the Service
+     */
+    select?: ServiceSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceInclude | null
+    /**
+     * Filter, which Services to fetch.
+     */
+    where?: ServiceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Services to fetch.
+     */
+    orderBy?: Enumerable<ServiceOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Services.
+     */
+    cursor?: ServiceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Services from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Services.
+     */
+    skip?: number
+    distinct?: Enumerable<ServiceScalarFieldEnum>
+  }
+
+
+  /**
+   * Service create
+   */
+  export type ServiceCreateArgs = {
+    /**
+     * Select specific fields to fetch from the Service
+     */
+    select?: ServiceSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceInclude | null
+    /**
+     * The data needed to create a Service.
+     */
+    data: XOR<ServiceCreateInput, ServiceUncheckedCreateInput>
+  }
+
+
+  /**
+   * Service createMany
+   */
+  export type ServiceCreateManyArgs = {
+    /**
+     * The data used to create many Services.
+     */
+    data: Enumerable<ServiceCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * Service update
+   */
+  export type ServiceUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the Service
+     */
+    select?: ServiceSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceInclude | null
+    /**
+     * The data needed to update a Service.
+     */
+    data: XOR<ServiceUpdateInput, ServiceUncheckedUpdateInput>
+    /**
+     * Choose, which Service to update.
+     */
+    where: ServiceWhereUniqueInput
+  }
+
+
+  /**
+   * Service updateMany
+   */
+  export type ServiceUpdateManyArgs = {
+    /**
+     * The data used to update Services.
+     */
+    data: XOR<ServiceUpdateManyMutationInput, ServiceUncheckedUpdateManyInput>
+    /**
+     * Filter which Services to update
+     */
+    where?: ServiceWhereInput
+  }
+
+
+  /**
+   * Service upsert
+   */
+  export type ServiceUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the Service
+     */
+    select?: ServiceSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceInclude | null
+    /**
+     * The filter to search for the Service to update in case it exists.
+     */
+    where: ServiceWhereUniqueInput
+    /**
+     * In case the Service found by the `where` argument doesn't exist, create a new Service with this data.
+     */
+    create: XOR<ServiceCreateInput, ServiceUncheckedCreateInput>
+    /**
+     * In case the Service was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ServiceUpdateInput, ServiceUncheckedUpdateInput>
+  }
+
+
+  /**
+   * Service delete
+   */
+  export type ServiceDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the Service
+     */
+    select?: ServiceSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceInclude | null
+    /**
+     * Filter which Service to delete.
+     */
+    where: ServiceWhereUniqueInput
+  }
+
+
+  /**
+   * Service deleteMany
+   */
+  export type ServiceDeleteManyArgs = {
+    /**
+     * Filter which Services to delete
+     */
+    where?: ServiceWhereInput
+  }
+
+
+  /**
+   * Service.locationsAvailable
+   */
+  export type Service$locationsAvailableArgs = {
+    /**
+     * Select specific fields to fetch from the ServiceAvailable
+     */
+    select?: ServiceAvailableSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceAvailableInclude | null
+    where?: ServiceAvailableWhereInput
+    orderBy?: Enumerable<ServiceAvailableOrderByWithRelationInput>
+    cursor?: ServiceAvailableWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<ServiceAvailableScalarFieldEnum>
+  }
+
+
+  /**
+   * Service without action
+   */
+  export type ServiceArgs = {
+    /**
+     * Select specific fields to fetch from the Service
+     */
+    select?: ServiceSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceInclude | null
+  }
+
+
+
+  /**
+   * Model ServiceAvailable
+   */
+
+
+  export type AggregateServiceAvailable = {
+    _count: ServiceAvailableCountAggregateOutputType | null
+    _min: ServiceAvailableMinAggregateOutputType | null
+    _max: ServiceAvailableMaxAggregateOutputType | null
+  }
+
+  export type ServiceAvailableMinAggregateOutputType = {
+    id: string | null
+    locationId: string | null
+    serviceId: string | null
+  }
+
+  export type ServiceAvailableMaxAggregateOutputType = {
+    id: string | null
+    locationId: string | null
+    serviceId: string | null
+  }
+
+  export type ServiceAvailableCountAggregateOutputType = {
+    id: number
+    locationId: number
+    serviceId: number
+    _all: number
+  }
+
+
+  export type ServiceAvailableMinAggregateInputType = {
+    id?: true
+    locationId?: true
+    serviceId?: true
+  }
+
+  export type ServiceAvailableMaxAggregateInputType = {
+    id?: true
+    locationId?: true
+    serviceId?: true
+  }
+
+  export type ServiceAvailableCountAggregateInputType = {
+    id?: true
+    locationId?: true
+    serviceId?: true
+    _all?: true
+  }
+
+  export type ServiceAvailableAggregateArgs = {
+    /**
+     * Filter which ServiceAvailable to aggregate.
+     */
+    where?: ServiceAvailableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServiceAvailables to fetch.
+     */
+    orderBy?: Enumerable<ServiceAvailableOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ServiceAvailableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServiceAvailables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServiceAvailables.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ServiceAvailables
+    **/
+    _count?: true | ServiceAvailableCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ServiceAvailableMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ServiceAvailableMaxAggregateInputType
+  }
+
+  export type GetServiceAvailableAggregateType<T extends ServiceAvailableAggregateArgs> = {
+        [P in keyof T & keyof AggregateServiceAvailable]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateServiceAvailable[P]>
+      : GetScalarType<T[P], AggregateServiceAvailable[P]>
+  }
+
+
+
+
+  export type ServiceAvailableGroupByArgs = {
+    where?: ServiceAvailableWhereInput
+    orderBy?: Enumerable<ServiceAvailableOrderByWithAggregationInput>
+    by: ServiceAvailableScalarFieldEnum[]
+    having?: ServiceAvailableScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ServiceAvailableCountAggregateInputType | true
+    _min?: ServiceAvailableMinAggregateInputType
+    _max?: ServiceAvailableMaxAggregateInputType
+  }
+
+
+  export type ServiceAvailableGroupByOutputType = {
+    id: string
+    locationId: string
+    serviceId: string
+    _count: ServiceAvailableCountAggregateOutputType | null
+    _min: ServiceAvailableMinAggregateOutputType | null
+    _max: ServiceAvailableMaxAggregateOutputType | null
+  }
+
+  type GetServiceAvailableGroupByPayload<T extends ServiceAvailableGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<ServiceAvailableGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ServiceAvailableGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ServiceAvailableGroupByOutputType[P]>
+            : GetScalarType<T[P], ServiceAvailableGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ServiceAvailableSelect = {
+    id?: boolean
+    locationId?: boolean
+    serviceId?: boolean
+    location?: boolean | LocationArgs
+    service?: boolean | ServiceArgs
+  }
+
+
+  export type ServiceAvailableInclude = {
+    location?: boolean | LocationArgs
+    service?: boolean | ServiceArgs
+  }
+
+  export type ServiceAvailableGetPayload<S extends boolean | null | undefined | ServiceAvailableArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? ServiceAvailable :
+    S extends undefined ? never :
+    S extends { include: any } & (ServiceAvailableArgs | ServiceAvailableFindManyArgs)
+    ? ServiceAvailable  & {
+    [P in TruthyKeys<S['include']>]:
+        P extends 'location' ? LocationGetPayload<S['include'][P]> :
+        P extends 'service' ? ServiceGetPayload<S['include'][P]> :  never
+  } 
+    : S extends { select: any } & (ServiceAvailableArgs | ServiceAvailableFindManyArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+        P extends 'location' ? LocationGetPayload<S['select'][P]> :
+        P extends 'service' ? ServiceGetPayload<S['select'][P]> :  P extends keyof ServiceAvailable ? ServiceAvailable[P] : never
+  } 
+      : ServiceAvailable
+
+
+  type ServiceAvailableCountArgs = 
+    Omit<ServiceAvailableFindManyArgs, 'select' | 'include'> & {
+      select?: ServiceAvailableCountAggregateInputType | true
+    }
+
+  export interface ServiceAvailableDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
+    /**
+     * Find zero or one ServiceAvailable that matches the filter.
+     * @param {ServiceAvailableFindUniqueArgs} args - Arguments to find a ServiceAvailable
+     * @example
+     * // Get one ServiceAvailable
+     * const serviceAvailable = await prisma.serviceAvailable.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends ServiceAvailableFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, ServiceAvailableFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'ServiceAvailable'> extends True ? Prisma__ServiceAvailableClient<ServiceAvailableGetPayload<T>> : Prisma__ServiceAvailableClient<ServiceAvailableGetPayload<T> | null, null>
+
+    /**
+     * Find one ServiceAvailable that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {ServiceAvailableFindUniqueOrThrowArgs} args - Arguments to find a ServiceAvailable
+     * @example
+     * // Get one ServiceAvailable
+     * const serviceAvailable = await prisma.serviceAvailable.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends ServiceAvailableFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, ServiceAvailableFindUniqueOrThrowArgs>
+    ): Prisma__ServiceAvailableClient<ServiceAvailableGetPayload<T>>
+
+    /**
+     * Find the first ServiceAvailable that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceAvailableFindFirstArgs} args - Arguments to find a ServiceAvailable
+     * @example
+     * // Get one ServiceAvailable
+     * const serviceAvailable = await prisma.serviceAvailable.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends ServiceAvailableFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, ServiceAvailableFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'ServiceAvailable'> extends True ? Prisma__ServiceAvailableClient<ServiceAvailableGetPayload<T>> : Prisma__ServiceAvailableClient<ServiceAvailableGetPayload<T> | null, null>
+
+    /**
+     * Find the first ServiceAvailable that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceAvailableFindFirstOrThrowArgs} args - Arguments to find a ServiceAvailable
+     * @example
+     * // Get one ServiceAvailable
+     * const serviceAvailable = await prisma.serviceAvailable.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends ServiceAvailableFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, ServiceAvailableFindFirstOrThrowArgs>
+    ): Prisma__ServiceAvailableClient<ServiceAvailableGetPayload<T>>
+
+    /**
+     * Find zero or more ServiceAvailables that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceAvailableFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ServiceAvailables
+     * const serviceAvailables = await prisma.serviceAvailable.findMany()
+     * 
+     * // Get first 10 ServiceAvailables
+     * const serviceAvailables = await prisma.serviceAvailable.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const serviceAvailableWithIdOnly = await prisma.serviceAvailable.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends ServiceAvailableFindManyArgs>(
+      args?: SelectSubset<T, ServiceAvailableFindManyArgs>
+    ): Prisma.PrismaPromise<Array<ServiceAvailableGetPayload<T>>>
+
+    /**
+     * Create a ServiceAvailable.
+     * @param {ServiceAvailableCreateArgs} args - Arguments to create a ServiceAvailable.
+     * @example
+     * // Create one ServiceAvailable
+     * const ServiceAvailable = await prisma.serviceAvailable.create({
+     *   data: {
+     *     // ... data to create a ServiceAvailable
+     *   }
+     * })
+     * 
+    **/
+    create<T extends ServiceAvailableCreateArgs>(
+      args: SelectSubset<T, ServiceAvailableCreateArgs>
+    ): Prisma__ServiceAvailableClient<ServiceAvailableGetPayload<T>>
+
+    /**
+     * Create many ServiceAvailables.
+     *     @param {ServiceAvailableCreateManyArgs} args - Arguments to create many ServiceAvailables.
+     *     @example
+     *     // Create many ServiceAvailables
+     *     const serviceAvailable = await prisma.serviceAvailable.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends ServiceAvailableCreateManyArgs>(
+      args?: SelectSubset<T, ServiceAvailableCreateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a ServiceAvailable.
+     * @param {ServiceAvailableDeleteArgs} args - Arguments to delete one ServiceAvailable.
+     * @example
+     * // Delete one ServiceAvailable
+     * const ServiceAvailable = await prisma.serviceAvailable.delete({
+     *   where: {
+     *     // ... filter to delete one ServiceAvailable
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends ServiceAvailableDeleteArgs>(
+      args: SelectSubset<T, ServiceAvailableDeleteArgs>
+    ): Prisma__ServiceAvailableClient<ServiceAvailableGetPayload<T>>
+
+    /**
+     * Update one ServiceAvailable.
+     * @param {ServiceAvailableUpdateArgs} args - Arguments to update one ServiceAvailable.
+     * @example
+     * // Update one ServiceAvailable
+     * const serviceAvailable = await prisma.serviceAvailable.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends ServiceAvailableUpdateArgs>(
+      args: SelectSubset<T, ServiceAvailableUpdateArgs>
+    ): Prisma__ServiceAvailableClient<ServiceAvailableGetPayload<T>>
+
+    /**
+     * Delete zero or more ServiceAvailables.
+     * @param {ServiceAvailableDeleteManyArgs} args - Arguments to filter ServiceAvailables to delete.
+     * @example
+     * // Delete a few ServiceAvailables
+     * const { count } = await prisma.serviceAvailable.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends ServiceAvailableDeleteManyArgs>(
+      args?: SelectSubset<T, ServiceAvailableDeleteManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ServiceAvailables.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceAvailableUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ServiceAvailables
+     * const serviceAvailable = await prisma.serviceAvailable.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends ServiceAvailableUpdateManyArgs>(
+      args: SelectSubset<T, ServiceAvailableUpdateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ServiceAvailable.
+     * @param {ServiceAvailableUpsertArgs} args - Arguments to update or create a ServiceAvailable.
+     * @example
+     * // Update or create a ServiceAvailable
+     * const serviceAvailable = await prisma.serviceAvailable.upsert({
+     *   create: {
+     *     // ... data to create a ServiceAvailable
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ServiceAvailable we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends ServiceAvailableUpsertArgs>(
+      args: SelectSubset<T, ServiceAvailableUpsertArgs>
+    ): Prisma__ServiceAvailableClient<ServiceAvailableGetPayload<T>>
+
+    /**
+     * Count the number of ServiceAvailables.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceAvailableCountArgs} args - Arguments to filter ServiceAvailables to count.
+     * @example
+     * // Count the number of ServiceAvailables
+     * const count = await prisma.serviceAvailable.count({
+     *   where: {
+     *     // ... the filter for the ServiceAvailables we want to count
+     *   }
+     * })
+    **/
+    count<T extends ServiceAvailableCountArgs>(
+      args?: Subset<T, ServiceAvailableCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ServiceAvailableCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ServiceAvailable.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceAvailableAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ServiceAvailableAggregateArgs>(args: Subset<T, ServiceAvailableAggregateArgs>): Prisma.PrismaPromise<GetServiceAvailableAggregateType<T>>
+
+    /**
+     * Group by ServiceAvailable.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceAvailableGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ServiceAvailableGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ServiceAvailableGroupByArgs['orderBy'] }
+        : { orderBy?: ServiceAvailableGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ServiceAvailableGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetServiceAvailableGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ServiceAvailable.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__ServiceAvailableClient<T, Null = never> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    location<T extends LocationArgs= {}>(args?: Subset<T, LocationArgs>): Prisma__LocationClient<LocationGetPayload<T> | Null>;
+
+    service<T extends ServiceArgs= {}>(args?: Subset<T, ServiceArgs>): Prisma__ServiceClient<ServiceGetPayload<T> | Null>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * ServiceAvailable base type for findUnique actions
+   */
+  export type ServiceAvailableFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the ServiceAvailable
+     */
+    select?: ServiceAvailableSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceAvailableInclude | null
+    /**
+     * Filter, which ServiceAvailable to fetch.
+     */
+    where: ServiceAvailableWhereUniqueInput
+  }
+
+  /**
+   * ServiceAvailable findUnique
+   */
+  export interface ServiceAvailableFindUniqueArgs extends ServiceAvailableFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * ServiceAvailable findUniqueOrThrow
+   */
+  export type ServiceAvailableFindUniqueOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the ServiceAvailable
+     */
+    select?: ServiceAvailableSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceAvailableInclude | null
+    /**
+     * Filter, which ServiceAvailable to fetch.
+     */
+    where: ServiceAvailableWhereUniqueInput
+  }
+
+
+  /**
+   * ServiceAvailable base type for findFirst actions
+   */
+  export type ServiceAvailableFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the ServiceAvailable
+     */
+    select?: ServiceAvailableSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceAvailableInclude | null
+    /**
+     * Filter, which ServiceAvailable to fetch.
+     */
+    where?: ServiceAvailableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServiceAvailables to fetch.
+     */
+    orderBy?: Enumerable<ServiceAvailableOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ServiceAvailables.
+     */
+    cursor?: ServiceAvailableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServiceAvailables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServiceAvailables.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ServiceAvailables.
+     */
+    distinct?: Enumerable<ServiceAvailableScalarFieldEnum>
+  }
+
+  /**
+   * ServiceAvailable findFirst
+   */
+  export interface ServiceAvailableFindFirstArgs extends ServiceAvailableFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * ServiceAvailable findFirstOrThrow
+   */
+  export type ServiceAvailableFindFirstOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the ServiceAvailable
+     */
+    select?: ServiceAvailableSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceAvailableInclude | null
+    /**
+     * Filter, which ServiceAvailable to fetch.
+     */
+    where?: ServiceAvailableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServiceAvailables to fetch.
+     */
+    orderBy?: Enumerable<ServiceAvailableOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ServiceAvailables.
+     */
+    cursor?: ServiceAvailableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServiceAvailables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServiceAvailables.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ServiceAvailables.
+     */
+    distinct?: Enumerable<ServiceAvailableScalarFieldEnum>
+  }
+
+
+  /**
+   * ServiceAvailable findMany
+   */
+  export type ServiceAvailableFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the ServiceAvailable
+     */
+    select?: ServiceAvailableSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceAvailableInclude | null
+    /**
+     * Filter, which ServiceAvailables to fetch.
+     */
+    where?: ServiceAvailableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServiceAvailables to fetch.
+     */
+    orderBy?: Enumerable<ServiceAvailableOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ServiceAvailables.
+     */
+    cursor?: ServiceAvailableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServiceAvailables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServiceAvailables.
+     */
+    skip?: number
+    distinct?: Enumerable<ServiceAvailableScalarFieldEnum>
+  }
+
+
+  /**
+   * ServiceAvailable create
+   */
+  export type ServiceAvailableCreateArgs = {
+    /**
+     * Select specific fields to fetch from the ServiceAvailable
+     */
+    select?: ServiceAvailableSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceAvailableInclude | null
+    /**
+     * The data needed to create a ServiceAvailable.
+     */
+    data: XOR<ServiceAvailableCreateInput, ServiceAvailableUncheckedCreateInput>
+  }
+
+
+  /**
+   * ServiceAvailable createMany
+   */
+  export type ServiceAvailableCreateManyArgs = {
+    /**
+     * The data used to create many ServiceAvailables.
+     */
+    data: Enumerable<ServiceAvailableCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * ServiceAvailable update
+   */
+  export type ServiceAvailableUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the ServiceAvailable
+     */
+    select?: ServiceAvailableSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceAvailableInclude | null
+    /**
+     * The data needed to update a ServiceAvailable.
+     */
+    data: XOR<ServiceAvailableUpdateInput, ServiceAvailableUncheckedUpdateInput>
+    /**
+     * Choose, which ServiceAvailable to update.
+     */
+    where: ServiceAvailableWhereUniqueInput
+  }
+
+
+  /**
+   * ServiceAvailable updateMany
+   */
+  export type ServiceAvailableUpdateManyArgs = {
+    /**
+     * The data used to update ServiceAvailables.
+     */
+    data: XOR<ServiceAvailableUpdateManyMutationInput, ServiceAvailableUncheckedUpdateManyInput>
+    /**
+     * Filter which ServiceAvailables to update
+     */
+    where?: ServiceAvailableWhereInput
+  }
+
+
+  /**
+   * ServiceAvailable upsert
+   */
+  export type ServiceAvailableUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the ServiceAvailable
+     */
+    select?: ServiceAvailableSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceAvailableInclude | null
+    /**
+     * The filter to search for the ServiceAvailable to update in case it exists.
+     */
+    where: ServiceAvailableWhereUniqueInput
+    /**
+     * In case the ServiceAvailable found by the `where` argument doesn't exist, create a new ServiceAvailable with this data.
+     */
+    create: XOR<ServiceAvailableCreateInput, ServiceAvailableUncheckedCreateInput>
+    /**
+     * In case the ServiceAvailable was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ServiceAvailableUpdateInput, ServiceAvailableUncheckedUpdateInput>
+  }
+
+
+  /**
+   * ServiceAvailable delete
+   */
+  export type ServiceAvailableDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the ServiceAvailable
+     */
+    select?: ServiceAvailableSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceAvailableInclude | null
+    /**
+     * Filter which ServiceAvailable to delete.
+     */
+    where: ServiceAvailableWhereUniqueInput
+  }
+
+
+  /**
+   * ServiceAvailable deleteMany
+   */
+  export type ServiceAvailableDeleteManyArgs = {
+    /**
+     * Filter which ServiceAvailables to delete
+     */
+    where?: ServiceAvailableWhereInput
+  }
+
+
+  /**
+   * ServiceAvailable without action
+   */
+  export type ServiceAvailableArgs = {
+    /**
+     * Select specific fields to fetch from the ServiceAvailable
+     */
+    select?: ServiceAvailableSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceAvailableInclude | null
   }
 
 
@@ -7096,6 +9161,29 @@ export namespace Prisma {
   };
 
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+  export const ServiceAvailableScalarFieldEnum: {
+    id: 'id',
+    locationId: 'locationId',
+    serviceId: 'serviceId'
+  };
+
+  export type ServiceAvailableScalarFieldEnum = (typeof ServiceAvailableScalarFieldEnum)[keyof typeof ServiceAvailableScalarFieldEnum]
+
+
+  export const ServiceScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy'
+  };
+
+  export type ServiceScalarFieldEnum = (typeof ServiceScalarFieldEnum)[keyof typeof ServiceScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -7477,6 +9565,7 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter | string | null
     postOfficeInChargeId?: StringFilter | string
     postOfficeInCharge?: XOR<PostOfficeRelationFilter, PostOfficeWhereInput>
+    servicesAvailable?: ServiceAvailableListRelationFilter
   }
 
   export type LocationOrderByWithRelationInput = {
@@ -7489,6 +9578,7 @@ export namespace Prisma {
     updatedBy?: SortOrder
     postOfficeInChargeId?: SortOrder
     postOfficeInCharge?: PostOfficeOrderByWithRelationInput
+    servicesAvailable?: ServiceAvailableOrderByRelationAggregateInput
   }
 
   export type LocationWhereUniqueInput = {
@@ -7522,6 +9612,107 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
     updatedBy?: StringNullableWithAggregatesFilter | string | null
     postOfficeInChargeId?: StringWithAggregatesFilter | string
+  }
+
+  export type ServiceWhereInput = {
+    AND?: Enumerable<ServiceWhereInput>
+    OR?: Enumerable<ServiceWhereInput>
+    NOT?: Enumerable<ServiceWhereInput>
+    id?: StringFilter | string
+    name?: StringFilter | string
+    description?: StringNullableFilter | string | null
+    isActive?: BoolFilter | boolean
+    createdAt?: DateTimeFilter | Date | string
+    createdBy?: StringNullableFilter | string | null
+    updatedAt?: DateTimeFilter | Date | string
+    updatedBy?: StringNullableFilter | string | null
+    locationsAvailable?: ServiceAvailableListRelationFilter
+  }
+
+  export type ServiceOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    locationsAvailable?: ServiceAvailableOrderByRelationAggregateInput
+  }
+
+  export type ServiceWhereUniqueInput = {
+    id?: string
+    name?: string
+  }
+
+  export type ServiceOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    _count?: ServiceCountOrderByAggregateInput
+    _max?: ServiceMaxOrderByAggregateInput
+    _min?: ServiceMinOrderByAggregateInput
+  }
+
+  export type ServiceScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<ServiceScalarWhereWithAggregatesInput>
+    OR?: Enumerable<ServiceScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<ServiceScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    name?: StringWithAggregatesFilter | string
+    description?: StringNullableWithAggregatesFilter | string | null
+    isActive?: BoolWithAggregatesFilter | boolean
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+    createdBy?: StringNullableWithAggregatesFilter | string | null
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter | string | null
+  }
+
+  export type ServiceAvailableWhereInput = {
+    AND?: Enumerable<ServiceAvailableWhereInput>
+    OR?: Enumerable<ServiceAvailableWhereInput>
+    NOT?: Enumerable<ServiceAvailableWhereInput>
+    id?: StringFilter | string
+    locationId?: StringFilter | string
+    serviceId?: StringFilter | string
+    location?: XOR<LocationRelationFilter, LocationWhereInput>
+    service?: XOR<ServiceRelationFilter, ServiceWhereInput>
+  }
+
+  export type ServiceAvailableOrderByWithRelationInput = {
+    id?: SortOrder
+    locationId?: SortOrder
+    serviceId?: SortOrder
+    location?: LocationOrderByWithRelationInput
+    service?: ServiceOrderByWithRelationInput
+  }
+
+  export type ServiceAvailableWhereUniqueInput = {
+    id?: string
+  }
+
+  export type ServiceAvailableOrderByWithAggregationInput = {
+    id?: SortOrder
+    locationId?: SortOrder
+    serviceId?: SortOrder
+    _count?: ServiceAvailableCountOrderByAggregateInput
+    _max?: ServiceAvailableMaxOrderByAggregateInput
+    _min?: ServiceAvailableMinOrderByAggregateInput
+  }
+
+  export type ServiceAvailableScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<ServiceAvailableScalarWhereWithAggregatesInput>
+    OR?: Enumerable<ServiceAvailableScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<ServiceAvailableScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    locationId?: StringWithAggregatesFilter | string
+    serviceId?: StringWithAggregatesFilter | string
   }
 
   export type UserCreateInput = {
@@ -7957,6 +10148,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     updatedBy?: string | null
     postOfficeInCharge: PostOfficeCreateNestedOneWithoutLocationsInput
+    servicesAvailable?: ServiceAvailableCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUncheckedCreateInput = {
@@ -7968,6 +10160,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     updatedBy?: string | null
     postOfficeInChargeId: string
+    servicesAvailable?: ServiceAvailableUncheckedCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUpdateInput = {
@@ -7979,6 +10172,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInCharge?: PostOfficeUpdateOneRequiredWithoutLocationsNestedInput
+    servicesAvailable?: ServiceAvailableUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationUncheckedUpdateInput = {
@@ -7990,6 +10184,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
+    servicesAvailable?: ServiceAvailableUncheckedUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationCreateManyInput = {
@@ -8022,6 +10217,127 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ServiceCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    locationsAvailable?: ServiceAvailableCreateNestedManyWithoutServiceInput
+  }
+
+  export type ServiceUncheckedCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    locationsAvailable?: ServiceAvailableUncheckedCreateNestedManyWithoutServiceInput
+  }
+
+  export type ServiceUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    locationsAvailable?: ServiceAvailableUpdateManyWithoutServiceNestedInput
+  }
+
+  export type ServiceUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    locationsAvailable?: ServiceAvailableUncheckedUpdateManyWithoutServiceNestedInput
+  }
+
+  export type ServiceCreateManyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type ServiceUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ServiceUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ServiceAvailableCreateInput = {
+    id?: string
+    location: LocationCreateNestedOneWithoutServicesAvailableInput
+    service: ServiceCreateNestedOneWithoutLocationsAvailableInput
+  }
+
+  export type ServiceAvailableUncheckedCreateInput = {
+    id?: string
+    locationId: string
+    serviceId: string
+  }
+
+  export type ServiceAvailableUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    location?: LocationUpdateOneRequiredWithoutServicesAvailableNestedInput
+    service?: ServiceUpdateOneRequiredWithoutLocationsAvailableNestedInput
+  }
+
+  export type ServiceAvailableUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ServiceAvailableCreateManyInput = {
+    id?: string
+    locationId: string
+    serviceId: string
+  }
+
+  export type ServiceAvailableUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ServiceAvailableUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter = {
@@ -8367,6 +10683,16 @@ export namespace Prisma {
     isNot?: PostOfficeWhereInput
   }
 
+  export type ServiceAvailableListRelationFilter = {
+    every?: ServiceAvailableWhereInput
+    some?: ServiceAvailableWhereInput
+    none?: ServiceAvailableWhereInput
+  }
+
+  export type ServiceAvailableOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type LocationCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -8398,6 +10724,67 @@ export namespace Prisma {
     updatedAt?: SortOrder
     updatedBy?: SortOrder
     postOfficeInChargeId?: SortOrder
+  }
+
+  export type ServiceCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type ServiceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type ServiceMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type LocationRelationFilter = {
+    is?: LocationWhereInput
+    isNot?: LocationWhereInput
+  }
+
+  export type ServiceRelationFilter = {
+    is?: ServiceWhereInput
+    isNot?: ServiceWhereInput
+  }
+
+  export type ServiceAvailableCountOrderByAggregateInput = {
+    id?: SortOrder
+    locationId?: SortOrder
+    serviceId?: SortOrder
+  }
+
+  export type ServiceAvailableMaxOrderByAggregateInput = {
+    id?: SortOrder
+    locationId?: SortOrder
+    serviceId?: SortOrder
+  }
+
+  export type ServiceAvailableMinOrderByAggregateInput = {
+    id?: SortOrder
+    locationId?: SortOrder
+    serviceId?: SortOrder
   }
 
   export type UserTypeCreateNestedManyWithoutUsersInput = {
@@ -8652,12 +11039,124 @@ export namespace Prisma {
     connect?: PostOfficeWhereUniqueInput
   }
 
+  export type ServiceAvailableCreateNestedManyWithoutLocationInput = {
+    create?: XOR<Enumerable<ServiceAvailableCreateWithoutLocationInput>, Enumerable<ServiceAvailableUncheckedCreateWithoutLocationInput>>
+    connectOrCreate?: Enumerable<ServiceAvailableCreateOrConnectWithoutLocationInput>
+    createMany?: ServiceAvailableCreateManyLocationInputEnvelope
+    connect?: Enumerable<ServiceAvailableWhereUniqueInput>
+  }
+
+  export type ServiceAvailableUncheckedCreateNestedManyWithoutLocationInput = {
+    create?: XOR<Enumerable<ServiceAvailableCreateWithoutLocationInput>, Enumerable<ServiceAvailableUncheckedCreateWithoutLocationInput>>
+    connectOrCreate?: Enumerable<ServiceAvailableCreateOrConnectWithoutLocationInput>
+    createMany?: ServiceAvailableCreateManyLocationInputEnvelope
+    connect?: Enumerable<ServiceAvailableWhereUniqueInput>
+  }
+
   export type PostOfficeUpdateOneRequiredWithoutLocationsNestedInput = {
     create?: XOR<PostOfficeCreateWithoutLocationsInput, PostOfficeUncheckedCreateWithoutLocationsInput>
     connectOrCreate?: PostOfficeCreateOrConnectWithoutLocationsInput
     upsert?: PostOfficeUpsertWithoutLocationsInput
     connect?: PostOfficeWhereUniqueInput
     update?: XOR<PostOfficeUpdateWithoutLocationsInput, PostOfficeUncheckedUpdateWithoutLocationsInput>
+  }
+
+  export type ServiceAvailableUpdateManyWithoutLocationNestedInput = {
+    create?: XOR<Enumerable<ServiceAvailableCreateWithoutLocationInput>, Enumerable<ServiceAvailableUncheckedCreateWithoutLocationInput>>
+    connectOrCreate?: Enumerable<ServiceAvailableCreateOrConnectWithoutLocationInput>
+    upsert?: Enumerable<ServiceAvailableUpsertWithWhereUniqueWithoutLocationInput>
+    createMany?: ServiceAvailableCreateManyLocationInputEnvelope
+    set?: Enumerable<ServiceAvailableWhereUniqueInput>
+    disconnect?: Enumerable<ServiceAvailableWhereUniqueInput>
+    delete?: Enumerable<ServiceAvailableWhereUniqueInput>
+    connect?: Enumerable<ServiceAvailableWhereUniqueInput>
+    update?: Enumerable<ServiceAvailableUpdateWithWhereUniqueWithoutLocationInput>
+    updateMany?: Enumerable<ServiceAvailableUpdateManyWithWhereWithoutLocationInput>
+    deleteMany?: Enumerable<ServiceAvailableScalarWhereInput>
+  }
+
+  export type ServiceAvailableUncheckedUpdateManyWithoutLocationNestedInput = {
+    create?: XOR<Enumerable<ServiceAvailableCreateWithoutLocationInput>, Enumerable<ServiceAvailableUncheckedCreateWithoutLocationInput>>
+    connectOrCreate?: Enumerable<ServiceAvailableCreateOrConnectWithoutLocationInput>
+    upsert?: Enumerable<ServiceAvailableUpsertWithWhereUniqueWithoutLocationInput>
+    createMany?: ServiceAvailableCreateManyLocationInputEnvelope
+    set?: Enumerable<ServiceAvailableWhereUniqueInput>
+    disconnect?: Enumerable<ServiceAvailableWhereUniqueInput>
+    delete?: Enumerable<ServiceAvailableWhereUniqueInput>
+    connect?: Enumerable<ServiceAvailableWhereUniqueInput>
+    update?: Enumerable<ServiceAvailableUpdateWithWhereUniqueWithoutLocationInput>
+    updateMany?: Enumerable<ServiceAvailableUpdateManyWithWhereWithoutLocationInput>
+    deleteMany?: Enumerable<ServiceAvailableScalarWhereInput>
+  }
+
+  export type ServiceAvailableCreateNestedManyWithoutServiceInput = {
+    create?: XOR<Enumerable<ServiceAvailableCreateWithoutServiceInput>, Enumerable<ServiceAvailableUncheckedCreateWithoutServiceInput>>
+    connectOrCreate?: Enumerable<ServiceAvailableCreateOrConnectWithoutServiceInput>
+    createMany?: ServiceAvailableCreateManyServiceInputEnvelope
+    connect?: Enumerable<ServiceAvailableWhereUniqueInput>
+  }
+
+  export type ServiceAvailableUncheckedCreateNestedManyWithoutServiceInput = {
+    create?: XOR<Enumerable<ServiceAvailableCreateWithoutServiceInput>, Enumerable<ServiceAvailableUncheckedCreateWithoutServiceInput>>
+    connectOrCreate?: Enumerable<ServiceAvailableCreateOrConnectWithoutServiceInput>
+    createMany?: ServiceAvailableCreateManyServiceInputEnvelope
+    connect?: Enumerable<ServiceAvailableWhereUniqueInput>
+  }
+
+  export type ServiceAvailableUpdateManyWithoutServiceNestedInput = {
+    create?: XOR<Enumerable<ServiceAvailableCreateWithoutServiceInput>, Enumerable<ServiceAvailableUncheckedCreateWithoutServiceInput>>
+    connectOrCreate?: Enumerable<ServiceAvailableCreateOrConnectWithoutServiceInput>
+    upsert?: Enumerable<ServiceAvailableUpsertWithWhereUniqueWithoutServiceInput>
+    createMany?: ServiceAvailableCreateManyServiceInputEnvelope
+    set?: Enumerable<ServiceAvailableWhereUniqueInput>
+    disconnect?: Enumerable<ServiceAvailableWhereUniqueInput>
+    delete?: Enumerable<ServiceAvailableWhereUniqueInput>
+    connect?: Enumerable<ServiceAvailableWhereUniqueInput>
+    update?: Enumerable<ServiceAvailableUpdateWithWhereUniqueWithoutServiceInput>
+    updateMany?: Enumerable<ServiceAvailableUpdateManyWithWhereWithoutServiceInput>
+    deleteMany?: Enumerable<ServiceAvailableScalarWhereInput>
+  }
+
+  export type ServiceAvailableUncheckedUpdateManyWithoutServiceNestedInput = {
+    create?: XOR<Enumerable<ServiceAvailableCreateWithoutServiceInput>, Enumerable<ServiceAvailableUncheckedCreateWithoutServiceInput>>
+    connectOrCreate?: Enumerable<ServiceAvailableCreateOrConnectWithoutServiceInput>
+    upsert?: Enumerable<ServiceAvailableUpsertWithWhereUniqueWithoutServiceInput>
+    createMany?: ServiceAvailableCreateManyServiceInputEnvelope
+    set?: Enumerable<ServiceAvailableWhereUniqueInput>
+    disconnect?: Enumerable<ServiceAvailableWhereUniqueInput>
+    delete?: Enumerable<ServiceAvailableWhereUniqueInput>
+    connect?: Enumerable<ServiceAvailableWhereUniqueInput>
+    update?: Enumerable<ServiceAvailableUpdateWithWhereUniqueWithoutServiceInput>
+    updateMany?: Enumerable<ServiceAvailableUpdateManyWithWhereWithoutServiceInput>
+    deleteMany?: Enumerable<ServiceAvailableScalarWhereInput>
+  }
+
+  export type LocationCreateNestedOneWithoutServicesAvailableInput = {
+    create?: XOR<LocationCreateWithoutServicesAvailableInput, LocationUncheckedCreateWithoutServicesAvailableInput>
+    connectOrCreate?: LocationCreateOrConnectWithoutServicesAvailableInput
+    connect?: LocationWhereUniqueInput
+  }
+
+  export type ServiceCreateNestedOneWithoutLocationsAvailableInput = {
+    create?: XOR<ServiceCreateWithoutLocationsAvailableInput, ServiceUncheckedCreateWithoutLocationsAvailableInput>
+    connectOrCreate?: ServiceCreateOrConnectWithoutLocationsAvailableInput
+    connect?: ServiceWhereUniqueInput
+  }
+
+  export type LocationUpdateOneRequiredWithoutServicesAvailableNestedInput = {
+    create?: XOR<LocationCreateWithoutServicesAvailableInput, LocationUncheckedCreateWithoutServicesAvailableInput>
+    connectOrCreate?: LocationCreateOrConnectWithoutServicesAvailableInput
+    upsert?: LocationUpsertWithoutServicesAvailableInput
+    connect?: LocationWhereUniqueInput
+    update?: XOR<LocationUpdateWithoutServicesAvailableInput, LocationUncheckedUpdateWithoutServicesAvailableInput>
+  }
+
+  export type ServiceUpdateOneRequiredWithoutLocationsAvailableNestedInput = {
+    create?: XOR<ServiceCreateWithoutLocationsAvailableInput, ServiceUncheckedCreateWithoutLocationsAvailableInput>
+    connectOrCreate?: ServiceCreateOrConnectWithoutLocationsAvailableInput
+    upsert?: ServiceUpsertWithoutLocationsAvailableInput
+    connect?: ServiceWhereUniqueInput
+    update?: XOR<ServiceUpdateWithoutLocationsAvailableInput, ServiceUncheckedUpdateWithoutLocationsAvailableInput>
   }
 
   export type NestedStringFilter = {
@@ -9114,6 +11613,7 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
+    servicesAvailable?: ServiceAvailableCreateNestedManyWithoutLocationInput
   }
 
   export type LocationUncheckedCreateWithoutPostOfficeInChargeInput = {
@@ -9124,6 +11624,7 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
+    servicesAvailable?: ServiceAvailableUncheckedCreateNestedManyWithoutLocationInput
   }
 
   export type LocationCreateOrConnectWithoutPostOfficeInChargeInput = {
@@ -9224,6 +11725,26 @@ export namespace Prisma {
     create: XOR<PostOfficeCreateWithoutLocationsInput, PostOfficeUncheckedCreateWithoutLocationsInput>
   }
 
+  export type ServiceAvailableCreateWithoutLocationInput = {
+    id?: string
+    service: ServiceCreateNestedOneWithoutLocationsAvailableInput
+  }
+
+  export type ServiceAvailableUncheckedCreateWithoutLocationInput = {
+    id?: string
+    serviceId: string
+  }
+
+  export type ServiceAvailableCreateOrConnectWithoutLocationInput = {
+    where: ServiceAvailableWhereUniqueInput
+    create: XOR<ServiceAvailableCreateWithoutLocationInput, ServiceAvailableUncheckedCreateWithoutLocationInput>
+  }
+
+  export type ServiceAvailableCreateManyLocationInputEnvelope = {
+    data: Enumerable<ServiceAvailableCreateManyLocationInput>
+    skipDuplicates?: boolean
+  }
+
   export type PostOfficeUpsertWithoutLocationsInput = {
     update: XOR<PostOfficeUpdateWithoutLocationsInput, PostOfficeUncheckedUpdateWithoutLocationsInput>
     create: XOR<PostOfficeCreateWithoutLocationsInput, PostOfficeUncheckedCreateWithoutLocationsInput>
@@ -9255,6 +11776,175 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: StringFieldUpdateOperationsInput | string
     cityId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ServiceAvailableUpsertWithWhereUniqueWithoutLocationInput = {
+    where: ServiceAvailableWhereUniqueInput
+    update: XOR<ServiceAvailableUpdateWithoutLocationInput, ServiceAvailableUncheckedUpdateWithoutLocationInput>
+    create: XOR<ServiceAvailableCreateWithoutLocationInput, ServiceAvailableUncheckedCreateWithoutLocationInput>
+  }
+
+  export type ServiceAvailableUpdateWithWhereUniqueWithoutLocationInput = {
+    where: ServiceAvailableWhereUniqueInput
+    data: XOR<ServiceAvailableUpdateWithoutLocationInput, ServiceAvailableUncheckedUpdateWithoutLocationInput>
+  }
+
+  export type ServiceAvailableUpdateManyWithWhereWithoutLocationInput = {
+    where: ServiceAvailableScalarWhereInput
+    data: XOR<ServiceAvailableUpdateManyMutationInput, ServiceAvailableUncheckedUpdateManyWithoutServicesAvailableInput>
+  }
+
+  export type ServiceAvailableScalarWhereInput = {
+    AND?: Enumerable<ServiceAvailableScalarWhereInput>
+    OR?: Enumerable<ServiceAvailableScalarWhereInput>
+    NOT?: Enumerable<ServiceAvailableScalarWhereInput>
+    id?: StringFilter | string
+    locationId?: StringFilter | string
+    serviceId?: StringFilter | string
+  }
+
+  export type ServiceAvailableCreateWithoutServiceInput = {
+    id?: string
+    location: LocationCreateNestedOneWithoutServicesAvailableInput
+  }
+
+  export type ServiceAvailableUncheckedCreateWithoutServiceInput = {
+    id?: string
+    locationId: string
+  }
+
+  export type ServiceAvailableCreateOrConnectWithoutServiceInput = {
+    where: ServiceAvailableWhereUniqueInput
+    create: XOR<ServiceAvailableCreateWithoutServiceInput, ServiceAvailableUncheckedCreateWithoutServiceInput>
+  }
+
+  export type ServiceAvailableCreateManyServiceInputEnvelope = {
+    data: Enumerable<ServiceAvailableCreateManyServiceInput>
+    skipDuplicates?: boolean
+  }
+
+  export type ServiceAvailableUpsertWithWhereUniqueWithoutServiceInput = {
+    where: ServiceAvailableWhereUniqueInput
+    update: XOR<ServiceAvailableUpdateWithoutServiceInput, ServiceAvailableUncheckedUpdateWithoutServiceInput>
+    create: XOR<ServiceAvailableCreateWithoutServiceInput, ServiceAvailableUncheckedCreateWithoutServiceInput>
+  }
+
+  export type ServiceAvailableUpdateWithWhereUniqueWithoutServiceInput = {
+    where: ServiceAvailableWhereUniqueInput
+    data: XOR<ServiceAvailableUpdateWithoutServiceInput, ServiceAvailableUncheckedUpdateWithoutServiceInput>
+  }
+
+  export type ServiceAvailableUpdateManyWithWhereWithoutServiceInput = {
+    where: ServiceAvailableScalarWhereInput
+    data: XOR<ServiceAvailableUpdateManyMutationInput, ServiceAvailableUncheckedUpdateManyWithoutLocationsAvailableInput>
+  }
+
+  export type LocationCreateWithoutServicesAvailableInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    postOfficeInCharge: PostOfficeCreateNestedOneWithoutLocationsInput
+  }
+
+  export type LocationUncheckedCreateWithoutServicesAvailableInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    postOfficeInChargeId: string
+  }
+
+  export type LocationCreateOrConnectWithoutServicesAvailableInput = {
+    where: LocationWhereUniqueInput
+    create: XOR<LocationCreateWithoutServicesAvailableInput, LocationUncheckedCreateWithoutServicesAvailableInput>
+  }
+
+  export type ServiceCreateWithoutLocationsAvailableInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type ServiceUncheckedCreateWithoutLocationsAvailableInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type ServiceCreateOrConnectWithoutLocationsAvailableInput = {
+    where: ServiceWhereUniqueInput
+    create: XOR<ServiceCreateWithoutLocationsAvailableInput, ServiceUncheckedCreateWithoutLocationsAvailableInput>
+  }
+
+  export type LocationUpsertWithoutServicesAvailableInput = {
+    update: XOR<LocationUpdateWithoutServicesAvailableInput, LocationUncheckedUpdateWithoutServicesAvailableInput>
+    create: XOR<LocationCreateWithoutServicesAvailableInput, LocationUncheckedCreateWithoutServicesAvailableInput>
+  }
+
+  export type LocationUpdateWithoutServicesAvailableInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    postOfficeInCharge?: PostOfficeUpdateOneRequiredWithoutLocationsNestedInput
+  }
+
+  export type LocationUncheckedUpdateWithoutServicesAvailableInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ServiceUpsertWithoutLocationsAvailableInput = {
+    update: XOR<ServiceUpdateWithoutLocationsAvailableInput, ServiceUncheckedUpdateWithoutLocationsAvailableInput>
+    create: XOR<ServiceCreateWithoutLocationsAvailableInput, ServiceUncheckedCreateWithoutLocationsAvailableInput>
+  }
+
+  export type ServiceUpdateWithoutLocationsAvailableInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ServiceUncheckedUpdateWithoutLocationsAvailableInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserTypeUpdateWithoutUsersInput = {
@@ -9442,6 +12132,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    servicesAvailable?: ServiceAvailableUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutPostOfficeInChargeInput = {
@@ -9452,6 +12143,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    servicesAvailable?: ServiceAvailableUncheckedUpdateManyWithoutLocationNestedInput
   }
 
   export type LocationUncheckedUpdateManyWithoutLocationsInput = {
@@ -9462,6 +12154,46 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ServiceAvailableCreateManyLocationInput = {
+    id?: string
+    serviceId: string
+  }
+
+  export type ServiceAvailableUpdateWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    service?: ServiceUpdateOneRequiredWithoutLocationsAvailableNestedInput
+  }
+
+  export type ServiceAvailableUncheckedUpdateWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ServiceAvailableUncheckedUpdateManyWithoutServicesAvailableInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ServiceAvailableCreateManyServiceInput = {
+    id?: string
+    locationId: string
+  }
+
+  export type ServiceAvailableUpdateWithoutServiceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    location?: LocationUpdateOneRequiredWithoutServicesAvailableNestedInput
+  }
+
+  export type ServiceAvailableUncheckedUpdateWithoutServiceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ServiceAvailableUncheckedUpdateManyWithoutLocationsAvailableInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    locationId?: StringFieldUpdateOperationsInput | string
   }
 
 
