@@ -3,7 +3,7 @@
  * Client
 **/
 
-import * as runtime from './runtime/data-proxy';
+import * as runtime from './runtime/library';
 type UnwrapPromise<P extends any> = P extends Promise<infer R> ? R : P
 type UnwrapTuple<Tuple extends readonly unknown[]> = {
   [K in keyof Tuple]: K extends `${number}` ? Tuple[K] extends Prisma.PrismaPromise<infer X> ? X : UnwrapPromise<Tuple[K]> : UnwrapPromise<Tuple[K]>
@@ -79,15 +79,30 @@ export type City = {
 export type PostOffice = {
   id: string
   name: string
-  poAddress: string
-  poContact: string
-  poManagerId: string
-  poContactPerson: string
+  address: string
+  contact: string
+  managerId: string
+  contactPerson: string
   createdAt: Date
   createdBy: string | null
   updatedAt: Date
   updatedBy: string
   cityId: string
+}
+
+/**
+ * Model Location
+ * 
+ */
+export type Location = {
+  id: string
+  name: string
+  description: string | null
+  createdAt: Date
+  createdBy: string | null
+  updatedAt: Date
+  updatedBy: string | null
+  postOfficeInChargeId: string
 }
 
 
@@ -257,6 +272,16 @@ export class PrismaClient<
     * ```
     */
   get postOffice(): Prisma.PostOfficeDelegate<GlobalReject>;
+
+  /**
+   * `prisma.location`: Exposes CRUD operations for the **Location** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Locations
+    * const locations = await prisma.location.findMany()
+    * ```
+    */
+  get location(): Prisma.LocationDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
@@ -730,7 +755,8 @@ export namespace Prisma {
     UserType: 'UserType',
     Country: 'Country',
     City: 'City',
-    PostOffice: 'PostOffice'
+    PostOffice: 'PostOffice',
+    Location: 'Location'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1059,6 +1085,49 @@ export namespace Prisma {
      * Select specific fields to fetch from the CityCountOutputType
      */
     select?: CityCountOutputTypeSelect | null
+  }
+
+
+
+  /**
+   * Count Type PostOfficeCountOutputType
+   */
+
+
+  export type PostOfficeCountOutputType = {
+    locations: number
+  }
+
+  export type PostOfficeCountOutputTypeSelect = {
+    locations?: boolean
+  }
+
+  export type PostOfficeCountOutputTypeGetPayload<S extends boolean | null | undefined | PostOfficeCountOutputTypeArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? PostOfficeCountOutputType :
+    S extends undefined ? never :
+    S extends { include: any } & (PostOfficeCountOutputTypeArgs)
+    ? PostOfficeCountOutputType 
+    : S extends { select: any } & (PostOfficeCountOutputTypeArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+    P extends keyof PostOfficeCountOutputType ? PostOfficeCountOutputType[P] : never
+  } 
+      : PostOfficeCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * PostOfficeCountOutputType without action
+   */
+  export type PostOfficeCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the PostOfficeCountOutputType
+     */
+    select?: PostOfficeCountOutputTypeSelect | null
   }
 
 
@@ -5007,10 +5076,10 @@ export namespace Prisma {
   export type PostOfficeMinAggregateOutputType = {
     id: string | null
     name: string | null
-    poAddress: string | null
-    poContact: string | null
-    poManagerId: string | null
-    poContactPerson: string | null
+    address: string | null
+    contact: string | null
+    managerId: string | null
+    contactPerson: string | null
     createdAt: Date | null
     createdBy: string | null
     updatedAt: Date | null
@@ -5021,10 +5090,10 @@ export namespace Prisma {
   export type PostOfficeMaxAggregateOutputType = {
     id: string | null
     name: string | null
-    poAddress: string | null
-    poContact: string | null
-    poManagerId: string | null
-    poContactPerson: string | null
+    address: string | null
+    contact: string | null
+    managerId: string | null
+    contactPerson: string | null
     createdAt: Date | null
     createdBy: string | null
     updatedAt: Date | null
@@ -5035,10 +5104,10 @@ export namespace Prisma {
   export type PostOfficeCountAggregateOutputType = {
     id: number
     name: number
-    poAddress: number
-    poContact: number
-    poManagerId: number
-    poContactPerson: number
+    address: number
+    contact: number
+    managerId: number
+    contactPerson: number
     createdAt: number
     createdBy: number
     updatedAt: number
@@ -5051,10 +5120,10 @@ export namespace Prisma {
   export type PostOfficeMinAggregateInputType = {
     id?: true
     name?: true
-    poAddress?: true
-    poContact?: true
-    poManagerId?: true
-    poContactPerson?: true
+    address?: true
+    contact?: true
+    managerId?: true
+    contactPerson?: true
     createdAt?: true
     createdBy?: true
     updatedAt?: true
@@ -5065,10 +5134,10 @@ export namespace Prisma {
   export type PostOfficeMaxAggregateInputType = {
     id?: true
     name?: true
-    poAddress?: true
-    poContact?: true
-    poManagerId?: true
-    poContactPerson?: true
+    address?: true
+    contact?: true
+    managerId?: true
+    contactPerson?: true
     createdAt?: true
     createdBy?: true
     updatedAt?: true
@@ -5079,10 +5148,10 @@ export namespace Prisma {
   export type PostOfficeCountAggregateInputType = {
     id?: true
     name?: true
-    poAddress?: true
-    poContact?: true
-    poManagerId?: true
-    poContactPerson?: true
+    address?: true
+    contact?: true
+    managerId?: true
+    contactPerson?: true
     createdAt?: true
     createdBy?: true
     updatedAt?: true
@@ -5167,10 +5236,10 @@ export namespace Prisma {
   export type PostOfficeGroupByOutputType = {
     id: string
     name: string
-    poAddress: string
-    poContact: string
-    poManagerId: string
-    poContactPerson: string
+    address: string
+    contact: string
+    managerId: string
+    contactPerson: string
     createdAt: Date
     createdBy: string | null
     updatedAt: Date
@@ -5198,21 +5267,25 @@ export namespace Prisma {
   export type PostOfficeSelect = {
     id?: boolean
     name?: boolean
-    poAddress?: boolean
-    poContact?: boolean
-    poManagerId?: boolean
-    poContactPerson?: boolean
+    address?: boolean
+    contact?: boolean
+    managerId?: boolean
+    contactPerson?: boolean
     createdAt?: boolean
     createdBy?: boolean
     updatedAt?: boolean
     updatedBy?: boolean
     cityId?: boolean
     city?: boolean | CityArgs
+    locations?: boolean | PostOffice$locationsArgs
+    _count?: boolean | PostOfficeCountOutputTypeArgs
   }
 
 
   export type PostOfficeInclude = {
     city?: boolean | CityArgs
+    locations?: boolean | PostOffice$locationsArgs
+    _count?: boolean | PostOfficeCountOutputTypeArgs
   }
 
   export type PostOfficeGetPayload<S extends boolean | null | undefined | PostOfficeArgs> =
@@ -5222,12 +5295,16 @@ export namespace Prisma {
     S extends { include: any } & (PostOfficeArgs | PostOfficeFindManyArgs)
     ? PostOffice  & {
     [P in TruthyKeys<S['include']>]:
-        P extends 'city' ? CityGetPayload<S['include'][P]> :  never
+        P extends 'city' ? CityGetPayload<S['include'][P]> :
+        P extends 'locations' ? Array < LocationGetPayload<S['include'][P]>>  :
+        P extends '_count' ? PostOfficeCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : S extends { select: any } & (PostOfficeArgs | PostOfficeFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
-        P extends 'city' ? CityGetPayload<S['select'][P]> :  P extends keyof PostOffice ? PostOffice[P] : never
+        P extends 'city' ? CityGetPayload<S['select'][P]> :
+        P extends 'locations' ? Array < LocationGetPayload<S['select'][P]>>  :
+        P extends '_count' ? PostOfficeCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof PostOffice ? PostOffice[P] : never
   } 
       : PostOffice
 
@@ -5601,6 +5678,8 @@ export namespace Prisma {
 
     city<T extends CityArgs= {}>(args?: Subset<T, CityArgs>): Prisma__CityClient<CityGetPayload<T> | Null>;
 
+    locations<T extends PostOffice$locationsArgs= {}>(args?: Subset<T, PostOffice$locationsArgs>): Prisma.PrismaPromise<Array<LocationGetPayload<T>>| Null>;
+
     private get _document();
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -5957,6 +6036,27 @@ export namespace Prisma {
 
 
   /**
+   * PostOffice.locations
+   */
+  export type PostOffice$locationsArgs = {
+    /**
+     * Select specific fields to fetch from the Location
+     */
+    select?: LocationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationInclude | null
+    where?: LocationWhereInput
+    orderBy?: Enumerable<LocationOrderByWithRelationInput>
+    cursor?: LocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<LocationScalarFieldEnum>
+  }
+
+
+  /**
    * PostOffice without action
    */
   export type PostOfficeArgs = {
@@ -5968,6 +6068,961 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well.
      */
     include?: PostOfficeInclude | null
+  }
+
+
+
+  /**
+   * Model Location
+   */
+
+
+  export type AggregateLocation = {
+    _count: LocationCountAggregateOutputType | null
+    _min: LocationMinAggregateOutputType | null
+    _max: LocationMaxAggregateOutputType | null
+  }
+
+  export type LocationMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    postOfficeInChargeId: string | null
+  }
+
+  export type LocationMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+    postOfficeInChargeId: string | null
+  }
+
+  export type LocationCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    postOfficeInChargeId: number
+    _all: number
+  }
+
+
+  export type LocationMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    postOfficeInChargeId?: true
+  }
+
+  export type LocationMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    postOfficeInChargeId?: true
+  }
+
+  export type LocationCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    postOfficeInChargeId?: true
+    _all?: true
+  }
+
+  export type LocationAggregateArgs = {
+    /**
+     * Filter which Location to aggregate.
+     */
+    where?: LocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Locations to fetch.
+     */
+    orderBy?: Enumerable<LocationOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Locations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Locations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Locations
+    **/
+    _count?: true | LocationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LocationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LocationMaxAggregateInputType
+  }
+
+  export type GetLocationAggregateType<T extends LocationAggregateArgs> = {
+        [P in keyof T & keyof AggregateLocation]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLocation[P]>
+      : GetScalarType<T[P], AggregateLocation[P]>
+  }
+
+
+
+
+  export type LocationGroupByArgs = {
+    where?: LocationWhereInput
+    orderBy?: Enumerable<LocationOrderByWithAggregationInput>
+    by: LocationScalarFieldEnum[]
+    having?: LocationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LocationCountAggregateInputType | true
+    _min?: LocationMinAggregateInputType
+    _max?: LocationMaxAggregateInputType
+  }
+
+
+  export type LocationGroupByOutputType = {
+    id: string
+    name: string
+    description: string | null
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    postOfficeInChargeId: string
+    _count: LocationCountAggregateOutputType | null
+    _min: LocationMinAggregateOutputType | null
+    _max: LocationMaxAggregateOutputType | null
+  }
+
+  type GetLocationGroupByPayload<T extends LocationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<LocationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LocationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LocationGroupByOutputType[P]>
+            : GetScalarType<T[P], LocationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LocationSelect = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    postOfficeInChargeId?: boolean
+    postOfficeInCharge?: boolean | PostOfficeArgs
+  }
+
+
+  export type LocationInclude = {
+    postOfficeInCharge?: boolean | PostOfficeArgs
+  }
+
+  export type LocationGetPayload<S extends boolean | null | undefined | LocationArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? Location :
+    S extends undefined ? never :
+    S extends { include: any } & (LocationArgs | LocationFindManyArgs)
+    ? Location  & {
+    [P in TruthyKeys<S['include']>]:
+        P extends 'postOfficeInCharge' ? PostOfficeGetPayload<S['include'][P]> :  never
+  } 
+    : S extends { select: any } & (LocationArgs | LocationFindManyArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+        P extends 'postOfficeInCharge' ? PostOfficeGetPayload<S['select'][P]> :  P extends keyof Location ? Location[P] : never
+  } 
+      : Location
+
+
+  type LocationCountArgs = 
+    Omit<LocationFindManyArgs, 'select' | 'include'> & {
+      select?: LocationCountAggregateInputType | true
+    }
+
+  export interface LocationDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
+    /**
+     * Find zero or one Location that matches the filter.
+     * @param {LocationFindUniqueArgs} args - Arguments to find a Location
+     * @example
+     * // Get one Location
+     * const location = await prisma.location.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends LocationFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, LocationFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Location'> extends True ? Prisma__LocationClient<LocationGetPayload<T>> : Prisma__LocationClient<LocationGetPayload<T> | null, null>
+
+    /**
+     * Find one Location that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {LocationFindUniqueOrThrowArgs} args - Arguments to find a Location
+     * @example
+     * // Get one Location
+     * const location = await prisma.location.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends LocationFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, LocationFindUniqueOrThrowArgs>
+    ): Prisma__LocationClient<LocationGetPayload<T>>
+
+    /**
+     * Find the first Location that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LocationFindFirstArgs} args - Arguments to find a Location
+     * @example
+     * // Get one Location
+     * const location = await prisma.location.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends LocationFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, LocationFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Location'> extends True ? Prisma__LocationClient<LocationGetPayload<T>> : Prisma__LocationClient<LocationGetPayload<T> | null, null>
+
+    /**
+     * Find the first Location that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LocationFindFirstOrThrowArgs} args - Arguments to find a Location
+     * @example
+     * // Get one Location
+     * const location = await prisma.location.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends LocationFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, LocationFindFirstOrThrowArgs>
+    ): Prisma__LocationClient<LocationGetPayload<T>>
+
+    /**
+     * Find zero or more Locations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LocationFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Locations
+     * const locations = await prisma.location.findMany()
+     * 
+     * // Get first 10 Locations
+     * const locations = await prisma.location.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const locationWithIdOnly = await prisma.location.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends LocationFindManyArgs>(
+      args?: SelectSubset<T, LocationFindManyArgs>
+    ): Prisma.PrismaPromise<Array<LocationGetPayload<T>>>
+
+    /**
+     * Create a Location.
+     * @param {LocationCreateArgs} args - Arguments to create a Location.
+     * @example
+     * // Create one Location
+     * const Location = await prisma.location.create({
+     *   data: {
+     *     // ... data to create a Location
+     *   }
+     * })
+     * 
+    **/
+    create<T extends LocationCreateArgs>(
+      args: SelectSubset<T, LocationCreateArgs>
+    ): Prisma__LocationClient<LocationGetPayload<T>>
+
+    /**
+     * Create many Locations.
+     *     @param {LocationCreateManyArgs} args - Arguments to create many Locations.
+     *     @example
+     *     // Create many Locations
+     *     const location = await prisma.location.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends LocationCreateManyArgs>(
+      args?: SelectSubset<T, LocationCreateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Location.
+     * @param {LocationDeleteArgs} args - Arguments to delete one Location.
+     * @example
+     * // Delete one Location
+     * const Location = await prisma.location.delete({
+     *   where: {
+     *     // ... filter to delete one Location
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends LocationDeleteArgs>(
+      args: SelectSubset<T, LocationDeleteArgs>
+    ): Prisma__LocationClient<LocationGetPayload<T>>
+
+    /**
+     * Update one Location.
+     * @param {LocationUpdateArgs} args - Arguments to update one Location.
+     * @example
+     * // Update one Location
+     * const location = await prisma.location.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends LocationUpdateArgs>(
+      args: SelectSubset<T, LocationUpdateArgs>
+    ): Prisma__LocationClient<LocationGetPayload<T>>
+
+    /**
+     * Delete zero or more Locations.
+     * @param {LocationDeleteManyArgs} args - Arguments to filter Locations to delete.
+     * @example
+     * // Delete a few Locations
+     * const { count } = await prisma.location.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends LocationDeleteManyArgs>(
+      args?: SelectSubset<T, LocationDeleteManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Locations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LocationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Locations
+     * const location = await prisma.location.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends LocationUpdateManyArgs>(
+      args: SelectSubset<T, LocationUpdateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Location.
+     * @param {LocationUpsertArgs} args - Arguments to update or create a Location.
+     * @example
+     * // Update or create a Location
+     * const location = await prisma.location.upsert({
+     *   create: {
+     *     // ... data to create a Location
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Location we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends LocationUpsertArgs>(
+      args: SelectSubset<T, LocationUpsertArgs>
+    ): Prisma__LocationClient<LocationGetPayload<T>>
+
+    /**
+     * Count the number of Locations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LocationCountArgs} args - Arguments to filter Locations to count.
+     * @example
+     * // Count the number of Locations
+     * const count = await prisma.location.count({
+     *   where: {
+     *     // ... the filter for the Locations we want to count
+     *   }
+     * })
+    **/
+    count<T extends LocationCountArgs>(
+      args?: Subset<T, LocationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LocationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Location.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LocationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LocationAggregateArgs>(args: Subset<T, LocationAggregateArgs>): Prisma.PrismaPromise<GetLocationAggregateType<T>>
+
+    /**
+     * Group by Location.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LocationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LocationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LocationGroupByArgs['orderBy'] }
+        : { orderBy?: LocationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LocationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLocationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Location.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__LocationClient<T, Null = never> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    postOfficeInCharge<T extends PostOfficeArgs= {}>(args?: Subset<T, PostOfficeArgs>): Prisma__PostOfficeClient<PostOfficeGetPayload<T> | Null>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * Location base type for findUnique actions
+   */
+  export type LocationFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the Location
+     */
+    select?: LocationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationInclude | null
+    /**
+     * Filter, which Location to fetch.
+     */
+    where: LocationWhereUniqueInput
+  }
+
+  /**
+   * Location findUnique
+   */
+  export interface LocationFindUniqueArgs extends LocationFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * Location findUniqueOrThrow
+   */
+  export type LocationFindUniqueOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the Location
+     */
+    select?: LocationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationInclude | null
+    /**
+     * Filter, which Location to fetch.
+     */
+    where: LocationWhereUniqueInput
+  }
+
+
+  /**
+   * Location base type for findFirst actions
+   */
+  export type LocationFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the Location
+     */
+    select?: LocationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationInclude | null
+    /**
+     * Filter, which Location to fetch.
+     */
+    where?: LocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Locations to fetch.
+     */
+    orderBy?: Enumerable<LocationOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Locations.
+     */
+    cursor?: LocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Locations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Locations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Locations.
+     */
+    distinct?: Enumerable<LocationScalarFieldEnum>
+  }
+
+  /**
+   * Location findFirst
+   */
+  export interface LocationFindFirstArgs extends LocationFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * Location findFirstOrThrow
+   */
+  export type LocationFindFirstOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the Location
+     */
+    select?: LocationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationInclude | null
+    /**
+     * Filter, which Location to fetch.
+     */
+    where?: LocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Locations to fetch.
+     */
+    orderBy?: Enumerable<LocationOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Locations.
+     */
+    cursor?: LocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Locations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Locations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Locations.
+     */
+    distinct?: Enumerable<LocationScalarFieldEnum>
+  }
+
+
+  /**
+   * Location findMany
+   */
+  export type LocationFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the Location
+     */
+    select?: LocationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationInclude | null
+    /**
+     * Filter, which Locations to fetch.
+     */
+    where?: LocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Locations to fetch.
+     */
+    orderBy?: Enumerable<LocationOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Locations.
+     */
+    cursor?: LocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Locations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Locations.
+     */
+    skip?: number
+    distinct?: Enumerable<LocationScalarFieldEnum>
+  }
+
+
+  /**
+   * Location create
+   */
+  export type LocationCreateArgs = {
+    /**
+     * Select specific fields to fetch from the Location
+     */
+    select?: LocationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationInclude | null
+    /**
+     * The data needed to create a Location.
+     */
+    data: XOR<LocationCreateInput, LocationUncheckedCreateInput>
+  }
+
+
+  /**
+   * Location createMany
+   */
+  export type LocationCreateManyArgs = {
+    /**
+     * The data used to create many Locations.
+     */
+    data: Enumerable<LocationCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * Location update
+   */
+  export type LocationUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the Location
+     */
+    select?: LocationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationInclude | null
+    /**
+     * The data needed to update a Location.
+     */
+    data: XOR<LocationUpdateInput, LocationUncheckedUpdateInput>
+    /**
+     * Choose, which Location to update.
+     */
+    where: LocationWhereUniqueInput
+  }
+
+
+  /**
+   * Location updateMany
+   */
+  export type LocationUpdateManyArgs = {
+    /**
+     * The data used to update Locations.
+     */
+    data: XOR<LocationUpdateManyMutationInput, LocationUncheckedUpdateManyInput>
+    /**
+     * Filter which Locations to update
+     */
+    where?: LocationWhereInput
+  }
+
+
+  /**
+   * Location upsert
+   */
+  export type LocationUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the Location
+     */
+    select?: LocationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationInclude | null
+    /**
+     * The filter to search for the Location to update in case it exists.
+     */
+    where: LocationWhereUniqueInput
+    /**
+     * In case the Location found by the `where` argument doesn't exist, create a new Location with this data.
+     */
+    create: XOR<LocationCreateInput, LocationUncheckedCreateInput>
+    /**
+     * In case the Location was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LocationUpdateInput, LocationUncheckedUpdateInput>
+  }
+
+
+  /**
+   * Location delete
+   */
+  export type LocationDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the Location
+     */
+    select?: LocationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationInclude | null
+    /**
+     * Filter which Location to delete.
+     */
+    where: LocationWhereUniqueInput
+  }
+
+
+  /**
+   * Location deleteMany
+   */
+  export type LocationDeleteManyArgs = {
+    /**
+     * Filter which Locations to delete
+     */
+    where?: LocationWhereInput
+  }
+
+
+  /**
+   * Location without action
+   */
+  export type LocationArgs = {
+    /**
+     * Select specific fields to fetch from the Location
+     */
+    select?: LocationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationInclude | null
   }
 
 
@@ -6004,13 +7059,27 @@ export namespace Prisma {
   export type CountryScalarFieldEnum = (typeof CountryScalarFieldEnum)[keyof typeof CountryScalarFieldEnum]
 
 
+  export const LocationScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy',
+    postOfficeInChargeId: 'postOfficeInChargeId'
+  };
+
+  export type LocationScalarFieldEnum = (typeof LocationScalarFieldEnum)[keyof typeof LocationScalarFieldEnum]
+
+
   export const PostOfficeScalarFieldEnum: {
     id: 'id',
     name: 'name',
-    poAddress: 'poAddress',
-    poContact: 'poContact',
-    poManagerId: 'poManagerId',
-    poContactPerson: 'poContactPerson',
+    address: 'address',
+    contact: 'contact',
+    managerId: 'managerId',
+    contactPerson: 'contactPerson',
     createdAt: 'createdAt',
     createdBy: 'createdBy',
     updatedAt: 'updatedAt',
@@ -6328,31 +7397,33 @@ export namespace Prisma {
     NOT?: Enumerable<PostOfficeWhereInput>
     id?: StringFilter | string
     name?: StringFilter | string
-    poAddress?: StringFilter | string
-    poContact?: StringFilter | string
-    poManagerId?: StringFilter | string
-    poContactPerson?: StringFilter | string
+    address?: StringFilter | string
+    contact?: StringFilter | string
+    managerId?: StringFilter | string
+    contactPerson?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
     createdBy?: StringNullableFilter | string | null
     updatedAt?: DateTimeFilter | Date | string
     updatedBy?: StringFilter | string
     cityId?: StringFilter | string
     city?: XOR<CityRelationFilter, CityWhereInput>
+    locations?: LocationListRelationFilter
   }
 
   export type PostOfficeOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
-    poAddress?: SortOrder
-    poContact?: SortOrder
-    poManagerId?: SortOrder
-    poContactPerson?: SortOrder
+    address?: SortOrder
+    contact?: SortOrder
+    managerId?: SortOrder
+    contactPerson?: SortOrder
     createdAt?: SortOrder
     createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
     cityId?: SortOrder
     city?: CityOrderByWithRelationInput
+    locations?: LocationOrderByRelationAggregateInput
   }
 
   export type PostOfficeWhereUniqueInput = {
@@ -6362,10 +7433,10 @@ export namespace Prisma {
   export type PostOfficeOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
-    poAddress?: SortOrder
-    poContact?: SortOrder
-    poManagerId?: SortOrder
-    poContactPerson?: SortOrder
+    address?: SortOrder
+    contact?: SortOrder
+    managerId?: SortOrder
+    contactPerson?: SortOrder
     createdAt?: SortOrder
     createdBy?: SortOrder
     updatedAt?: SortOrder
@@ -6382,15 +7453,75 @@ export namespace Prisma {
     NOT?: Enumerable<PostOfficeScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
     name?: StringWithAggregatesFilter | string
-    poAddress?: StringWithAggregatesFilter | string
-    poContact?: StringWithAggregatesFilter | string
-    poManagerId?: StringWithAggregatesFilter | string
-    poContactPerson?: StringWithAggregatesFilter | string
+    address?: StringWithAggregatesFilter | string
+    contact?: StringWithAggregatesFilter | string
+    managerId?: StringWithAggregatesFilter | string
+    contactPerson?: StringWithAggregatesFilter | string
     createdAt?: DateTimeWithAggregatesFilter | Date | string
     createdBy?: StringNullableWithAggregatesFilter | string | null
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
     updatedBy?: StringWithAggregatesFilter | string
     cityId?: StringWithAggregatesFilter | string
+  }
+
+  export type LocationWhereInput = {
+    AND?: Enumerable<LocationWhereInput>
+    OR?: Enumerable<LocationWhereInput>
+    NOT?: Enumerable<LocationWhereInput>
+    id?: StringFilter | string
+    name?: StringFilter | string
+    description?: StringNullableFilter | string | null
+    createdAt?: DateTimeFilter | Date | string
+    createdBy?: StringNullableFilter | string | null
+    updatedAt?: DateTimeFilter | Date | string
+    updatedBy?: StringNullableFilter | string | null
+    postOfficeInChargeId?: StringFilter | string
+    postOfficeInCharge?: XOR<PostOfficeRelationFilter, PostOfficeWhereInput>
+  }
+
+  export type LocationOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    postOfficeInChargeId?: SortOrder
+    postOfficeInCharge?: PostOfficeOrderByWithRelationInput
+  }
+
+  export type LocationWhereUniqueInput = {
+    id?: string
+    name?: string
+  }
+
+  export type LocationOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    postOfficeInChargeId?: SortOrder
+    _count?: LocationCountOrderByAggregateInput
+    _max?: LocationMaxOrderByAggregateInput
+    _min?: LocationMinOrderByAggregateInput
+  }
+
+  export type LocationScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<LocationScalarWhereWithAggregatesInput>
+    OR?: Enumerable<LocationScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<LocationScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    name?: StringWithAggregatesFilter | string
+    description?: StringNullableWithAggregatesFilter | string | null
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+    createdBy?: StringNullableWithAggregatesFilter | string | null
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter | string | null
+    postOfficeInChargeId?: StringWithAggregatesFilter | string
   }
 
   export type UserCreateInput = {
@@ -6719,66 +7850,70 @@ export namespace Prisma {
   export type PostOfficeCreateInput = {
     id?: string
     name: string
-    poAddress: string
-    poContact: string
-    poManagerId: string
-    poContactPerson: string
+    address: string
+    contact: string
+    managerId: string
+    contactPerson: string
     createdAt?: Date | string
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy: string
     city: CityCreateNestedOneWithoutPostOfficesInput
+    locations?: LocationCreateNestedManyWithoutPostOfficeInChargeInput
   }
 
   export type PostOfficeUncheckedCreateInput = {
     id?: string
     name: string
-    poAddress: string
-    poContact: string
-    poManagerId: string
-    poContactPerson: string
+    address: string
+    contact: string
+    managerId: string
+    contactPerson: string
     createdAt?: Date | string
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy: string
     cityId: string
+    locations?: LocationUncheckedCreateNestedManyWithoutPostOfficeInChargeInput
   }
 
   export type PostOfficeUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    poAddress?: StringFieldUpdateOperationsInput | string
-    poContact?: StringFieldUpdateOperationsInput | string
-    poManagerId?: StringFieldUpdateOperationsInput | string
-    poContactPerson?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    contact?: StringFieldUpdateOperationsInput | string
+    managerId?: StringFieldUpdateOperationsInput | string
+    contactPerson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: StringFieldUpdateOperationsInput | string
     city?: CityUpdateOneRequiredWithoutPostOfficesNestedInput
+    locations?: LocationUpdateManyWithoutPostOfficeInChargeNestedInput
   }
 
   export type PostOfficeUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    poAddress?: StringFieldUpdateOperationsInput | string
-    poContact?: StringFieldUpdateOperationsInput | string
-    poManagerId?: StringFieldUpdateOperationsInput | string
-    poContactPerson?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    contact?: StringFieldUpdateOperationsInput | string
+    managerId?: StringFieldUpdateOperationsInput | string
+    contactPerson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: StringFieldUpdateOperationsInput | string
     cityId?: StringFieldUpdateOperationsInput | string
+    locations?: LocationUncheckedUpdateManyWithoutPostOfficeInChargeNestedInput
   }
 
   export type PostOfficeCreateManyInput = {
     id?: string
     name: string
-    poAddress: string
-    poContact: string
-    poManagerId: string
-    poContactPerson: string
+    address: string
+    contact: string
+    managerId: string
+    contactPerson: string
     createdAt?: Date | string
     createdBy?: string | null
     updatedAt?: Date | string
@@ -6789,10 +7924,10 @@ export namespace Prisma {
   export type PostOfficeUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    poAddress?: StringFieldUpdateOperationsInput | string
-    poContact?: StringFieldUpdateOperationsInput | string
-    poManagerId?: StringFieldUpdateOperationsInput | string
-    poContactPerson?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    contact?: StringFieldUpdateOperationsInput | string
+    managerId?: StringFieldUpdateOperationsInput | string
+    contactPerson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6802,15 +7937,91 @@ export namespace Prisma {
   export type PostOfficeUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    poAddress?: StringFieldUpdateOperationsInput | string
-    poContact?: StringFieldUpdateOperationsInput | string
-    poManagerId?: StringFieldUpdateOperationsInput | string
-    poContactPerson?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    contact?: StringFieldUpdateOperationsInput | string
+    managerId?: StringFieldUpdateOperationsInput | string
+    contactPerson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: StringFieldUpdateOperationsInput | string
     cityId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type LocationCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    postOfficeInCharge: PostOfficeCreateNestedOneWithoutLocationsInput
+  }
+
+  export type LocationUncheckedCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    postOfficeInChargeId: string
+  }
+
+  export type LocationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    postOfficeInCharge?: PostOfficeUpdateOneRequiredWithoutLocationsNestedInput
+  }
+
+  export type LocationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type LocationCreateManyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    postOfficeInChargeId: string
+  }
+
+  export type LocationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type LocationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter = {
@@ -7099,13 +8310,23 @@ export namespace Prisma {
     isNot?: CityWhereInput
   }
 
+  export type LocationListRelationFilter = {
+    every?: LocationWhereInput
+    some?: LocationWhereInput
+    none?: LocationWhereInput
+  }
+
+  export type LocationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type PostOfficeCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    poAddress?: SortOrder
-    poContact?: SortOrder
-    poManagerId?: SortOrder
-    poContactPerson?: SortOrder
+    address?: SortOrder
+    contact?: SortOrder
+    managerId?: SortOrder
+    contactPerson?: SortOrder
     createdAt?: SortOrder
     createdBy?: SortOrder
     updatedAt?: SortOrder
@@ -7116,10 +8337,10 @@ export namespace Prisma {
   export type PostOfficeMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    poAddress?: SortOrder
-    poContact?: SortOrder
-    poManagerId?: SortOrder
-    poContactPerson?: SortOrder
+    address?: SortOrder
+    contact?: SortOrder
+    managerId?: SortOrder
+    contactPerson?: SortOrder
     createdAt?: SortOrder
     createdBy?: SortOrder
     updatedAt?: SortOrder
@@ -7130,15 +8351,53 @@ export namespace Prisma {
   export type PostOfficeMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    poAddress?: SortOrder
-    poContact?: SortOrder
-    poManagerId?: SortOrder
-    poContactPerson?: SortOrder
+    address?: SortOrder
+    contact?: SortOrder
+    managerId?: SortOrder
+    contactPerson?: SortOrder
     createdAt?: SortOrder
     createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
     cityId?: SortOrder
+  }
+
+  export type PostOfficeRelationFilter = {
+    is?: PostOfficeWhereInput
+    isNot?: PostOfficeWhereInput
+  }
+
+  export type LocationCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    postOfficeInChargeId?: SortOrder
+  }
+
+  export type LocationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    postOfficeInChargeId?: SortOrder
+  }
+
+  export type LocationMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    postOfficeInChargeId?: SortOrder
   }
 
   export type UserTypeCreateNestedManyWithoutUsersInput = {
@@ -7337,12 +8596,68 @@ export namespace Prisma {
     connect?: CityWhereUniqueInput
   }
 
+  export type LocationCreateNestedManyWithoutPostOfficeInChargeInput = {
+    create?: XOR<Enumerable<LocationCreateWithoutPostOfficeInChargeInput>, Enumerable<LocationUncheckedCreateWithoutPostOfficeInChargeInput>>
+    connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutPostOfficeInChargeInput>
+    createMany?: LocationCreateManyPostOfficeInChargeInputEnvelope
+    connect?: Enumerable<LocationWhereUniqueInput>
+  }
+
+  export type LocationUncheckedCreateNestedManyWithoutPostOfficeInChargeInput = {
+    create?: XOR<Enumerable<LocationCreateWithoutPostOfficeInChargeInput>, Enumerable<LocationUncheckedCreateWithoutPostOfficeInChargeInput>>
+    connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutPostOfficeInChargeInput>
+    createMany?: LocationCreateManyPostOfficeInChargeInputEnvelope
+    connect?: Enumerable<LocationWhereUniqueInput>
+  }
+
   export type CityUpdateOneRequiredWithoutPostOfficesNestedInput = {
     create?: XOR<CityCreateWithoutPostOfficesInput, CityUncheckedCreateWithoutPostOfficesInput>
     connectOrCreate?: CityCreateOrConnectWithoutPostOfficesInput
     upsert?: CityUpsertWithoutPostOfficesInput
     connect?: CityWhereUniqueInput
     update?: XOR<CityUpdateWithoutPostOfficesInput, CityUncheckedUpdateWithoutPostOfficesInput>
+  }
+
+  export type LocationUpdateManyWithoutPostOfficeInChargeNestedInput = {
+    create?: XOR<Enumerable<LocationCreateWithoutPostOfficeInChargeInput>, Enumerable<LocationUncheckedCreateWithoutPostOfficeInChargeInput>>
+    connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutPostOfficeInChargeInput>
+    upsert?: Enumerable<LocationUpsertWithWhereUniqueWithoutPostOfficeInChargeInput>
+    createMany?: LocationCreateManyPostOfficeInChargeInputEnvelope
+    set?: Enumerable<LocationWhereUniqueInput>
+    disconnect?: Enumerable<LocationWhereUniqueInput>
+    delete?: Enumerable<LocationWhereUniqueInput>
+    connect?: Enumerable<LocationWhereUniqueInput>
+    update?: Enumerable<LocationUpdateWithWhereUniqueWithoutPostOfficeInChargeInput>
+    updateMany?: Enumerable<LocationUpdateManyWithWhereWithoutPostOfficeInChargeInput>
+    deleteMany?: Enumerable<LocationScalarWhereInput>
+  }
+
+  export type LocationUncheckedUpdateManyWithoutPostOfficeInChargeNestedInput = {
+    create?: XOR<Enumerable<LocationCreateWithoutPostOfficeInChargeInput>, Enumerable<LocationUncheckedCreateWithoutPostOfficeInChargeInput>>
+    connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutPostOfficeInChargeInput>
+    upsert?: Enumerable<LocationUpsertWithWhereUniqueWithoutPostOfficeInChargeInput>
+    createMany?: LocationCreateManyPostOfficeInChargeInputEnvelope
+    set?: Enumerable<LocationWhereUniqueInput>
+    disconnect?: Enumerable<LocationWhereUniqueInput>
+    delete?: Enumerable<LocationWhereUniqueInput>
+    connect?: Enumerable<LocationWhereUniqueInput>
+    update?: Enumerable<LocationUpdateWithWhereUniqueWithoutPostOfficeInChargeInput>
+    updateMany?: Enumerable<LocationUpdateManyWithWhereWithoutPostOfficeInChargeInput>
+    deleteMany?: Enumerable<LocationScalarWhereInput>
+  }
+
+  export type PostOfficeCreateNestedOneWithoutLocationsInput = {
+    create?: XOR<PostOfficeCreateWithoutLocationsInput, PostOfficeUncheckedCreateWithoutLocationsInput>
+    connectOrCreate?: PostOfficeCreateOrConnectWithoutLocationsInput
+    connect?: PostOfficeWhereUniqueInput
+  }
+
+  export type PostOfficeUpdateOneRequiredWithoutLocationsNestedInput = {
+    create?: XOR<PostOfficeCreateWithoutLocationsInput, PostOfficeUncheckedCreateWithoutLocationsInput>
+    connectOrCreate?: PostOfficeCreateOrConnectWithoutLocationsInput
+    upsert?: PostOfficeUpsertWithoutLocationsInput
+    connect?: PostOfficeWhereUniqueInput
+    update?: XOR<PostOfficeUpdateWithoutLocationsInput, PostOfficeUncheckedUpdateWithoutLocationsInput>
   }
 
   export type NestedStringFilter = {
@@ -7675,27 +8990,29 @@ export namespace Prisma {
   export type PostOfficeCreateWithoutCityInput = {
     id?: string
     name: string
-    poAddress: string
-    poContact: string
-    poManagerId: string
-    poContactPerson: string
+    address: string
+    contact: string
+    managerId: string
+    contactPerson: string
     createdAt?: Date | string
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy: string
+    locations?: LocationCreateNestedManyWithoutPostOfficeInChargeInput
   }
 
   export type PostOfficeUncheckedCreateWithoutCityInput = {
     id?: string
     name: string
-    poAddress: string
-    poContact: string
-    poManagerId: string
-    poContactPerson: string
+    address: string
+    contact: string
+    managerId: string
+    contactPerson: string
     createdAt?: Date | string
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy: string
+    locations?: LocationUncheckedCreateNestedManyWithoutPostOfficeInChargeInput
   }
 
   export type PostOfficeCreateOrConnectWithoutCityInput = {
@@ -7753,10 +9070,10 @@ export namespace Prisma {
     NOT?: Enumerable<PostOfficeScalarWhereInput>
     id?: StringFilter | string
     name?: StringFilter | string
-    poAddress?: StringFilter | string
-    poContact?: StringFilter | string
-    poManagerId?: StringFilter | string
-    poContactPerson?: StringFilter | string
+    address?: StringFilter | string
+    contact?: StringFilter | string
+    managerId?: StringFilter | string
+    contactPerson?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
     createdBy?: StringNullableFilter | string | null
     updatedAt?: DateTimeFilter | Date | string
@@ -7789,6 +9106,36 @@ export namespace Prisma {
     create: XOR<CityCreateWithoutPostOfficesInput, CityUncheckedCreateWithoutPostOfficesInput>
   }
 
+  export type LocationCreateWithoutPostOfficeInChargeInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type LocationUncheckedCreateWithoutPostOfficeInChargeInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type LocationCreateOrConnectWithoutPostOfficeInChargeInput = {
+    where: LocationWhereUniqueInput
+    create: XOR<LocationCreateWithoutPostOfficeInChargeInput, LocationUncheckedCreateWithoutPostOfficeInChargeInput>
+  }
+
+  export type LocationCreateManyPostOfficeInChargeInputEnvelope = {
+    data: Enumerable<LocationCreateManyPostOfficeInChargeInput>
+    skipDuplicates?: boolean
+  }
+
   export type CityUpsertWithoutPostOfficesInput = {
     update: XOR<CityUpdateWithoutPostOfficesInput, CityUncheckedUpdateWithoutPostOfficesInput>
     create: XOR<CityCreateWithoutPostOfficesInput, CityUncheckedCreateWithoutPostOfficesInput>
@@ -7812,6 +9159,102 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: StringFieldUpdateOperationsInput | string
     countryId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type LocationUpsertWithWhereUniqueWithoutPostOfficeInChargeInput = {
+    where: LocationWhereUniqueInput
+    update: XOR<LocationUpdateWithoutPostOfficeInChargeInput, LocationUncheckedUpdateWithoutPostOfficeInChargeInput>
+    create: XOR<LocationCreateWithoutPostOfficeInChargeInput, LocationUncheckedCreateWithoutPostOfficeInChargeInput>
+  }
+
+  export type LocationUpdateWithWhereUniqueWithoutPostOfficeInChargeInput = {
+    where: LocationWhereUniqueInput
+    data: XOR<LocationUpdateWithoutPostOfficeInChargeInput, LocationUncheckedUpdateWithoutPostOfficeInChargeInput>
+  }
+
+  export type LocationUpdateManyWithWhereWithoutPostOfficeInChargeInput = {
+    where: LocationScalarWhereInput
+    data: XOR<LocationUpdateManyMutationInput, LocationUncheckedUpdateManyWithoutLocationsInput>
+  }
+
+  export type LocationScalarWhereInput = {
+    AND?: Enumerable<LocationScalarWhereInput>
+    OR?: Enumerable<LocationScalarWhereInput>
+    NOT?: Enumerable<LocationScalarWhereInput>
+    id?: StringFilter | string
+    name?: StringFilter | string
+    description?: StringNullableFilter | string | null
+    createdAt?: DateTimeFilter | Date | string
+    createdBy?: StringNullableFilter | string | null
+    updatedAt?: DateTimeFilter | Date | string
+    updatedBy?: StringNullableFilter | string | null
+    postOfficeInChargeId?: StringFilter | string
+  }
+
+  export type PostOfficeCreateWithoutLocationsInput = {
+    id?: string
+    name: string
+    address: string
+    contact: string
+    managerId: string
+    contactPerson: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy: string
+    city: CityCreateNestedOneWithoutPostOfficesInput
+  }
+
+  export type PostOfficeUncheckedCreateWithoutLocationsInput = {
+    id?: string
+    name: string
+    address: string
+    contact: string
+    managerId: string
+    contactPerson: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy: string
+    cityId: string
+  }
+
+  export type PostOfficeCreateOrConnectWithoutLocationsInput = {
+    where: PostOfficeWhereUniqueInput
+    create: XOR<PostOfficeCreateWithoutLocationsInput, PostOfficeUncheckedCreateWithoutLocationsInput>
+  }
+
+  export type PostOfficeUpsertWithoutLocationsInput = {
+    update: XOR<PostOfficeUpdateWithoutLocationsInput, PostOfficeUncheckedUpdateWithoutLocationsInput>
+    create: XOR<PostOfficeCreateWithoutLocationsInput, PostOfficeUncheckedCreateWithoutLocationsInput>
+  }
+
+  export type PostOfficeUpdateWithoutLocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    contact?: StringFieldUpdateOperationsInput | string
+    managerId?: StringFieldUpdateOperationsInput | string
+    contactPerson?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: StringFieldUpdateOperationsInput | string
+    city?: CityUpdateOneRequiredWithoutPostOfficesNestedInput
+  }
+
+  export type PostOfficeUncheckedUpdateWithoutLocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    contact?: StringFieldUpdateOperationsInput | string
+    managerId?: StringFieldUpdateOperationsInput | string
+    contactPerson?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: StringFieldUpdateOperationsInput | string
+    cityId?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserTypeUpdateWithoutUsersInput = {
@@ -7930,10 +9373,10 @@ export namespace Prisma {
   export type PostOfficeCreateManyCityInput = {
     id?: string
     name: string
-    poAddress: string
-    poContact: string
-    poManagerId: string
-    poContactPerson: string
+    address: string
+    contact: string
+    managerId: string
+    contactPerson: string
     createdAt?: Date | string
     createdBy?: string | null
     updatedAt?: Date | string
@@ -7943,40 +9386,82 @@ export namespace Prisma {
   export type PostOfficeUpdateWithoutCityInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    poAddress?: StringFieldUpdateOperationsInput | string
-    poContact?: StringFieldUpdateOperationsInput | string
-    poManagerId?: StringFieldUpdateOperationsInput | string
-    poContactPerson?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    contact?: StringFieldUpdateOperationsInput | string
+    managerId?: StringFieldUpdateOperationsInput | string
+    contactPerson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: StringFieldUpdateOperationsInput | string
+    locations?: LocationUpdateManyWithoutPostOfficeInChargeNestedInput
   }
 
   export type PostOfficeUncheckedUpdateWithoutCityInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    poAddress?: StringFieldUpdateOperationsInput | string
-    poContact?: StringFieldUpdateOperationsInput | string
-    poManagerId?: StringFieldUpdateOperationsInput | string
-    poContactPerson?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    contact?: StringFieldUpdateOperationsInput | string
+    managerId?: StringFieldUpdateOperationsInput | string
+    contactPerson?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: StringFieldUpdateOperationsInput | string
+    locations?: LocationUncheckedUpdateManyWithoutPostOfficeInChargeNestedInput
+  }
+
+  export type PostOfficeUncheckedUpdateManyWithoutPostOfficesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    contact?: StringFieldUpdateOperationsInput | string
+    managerId?: StringFieldUpdateOperationsInput | string
+    contactPerson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: StringFieldUpdateOperationsInput | string
   }
 
-  export type PostOfficeUncheckedUpdateManyWithoutPostOfficesInput = {
+  export type LocationCreateManyPostOfficeInChargeInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type LocationUpdateWithoutPostOfficeInChargeInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    poAddress?: StringFieldUpdateOperationsInput | string
-    poContact?: StringFieldUpdateOperationsInput | string
-    poManagerId?: StringFieldUpdateOperationsInput | string
-    poContactPerson?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: StringFieldUpdateOperationsInput | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type LocationUncheckedUpdateWithoutPostOfficeInChargeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type LocationUncheckedUpdateManyWithoutLocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

@@ -236,6 +236,7 @@
   "npm": {
     "specifiers": {
       "@prisma/client@^4.14.0": "@prisma/client@4.14.0_prisma@4.14.0",
+      "prisma": "prisma@4.14.0",
       "prisma@^4.14.0": "prisma@4.14.0",
       "prisma@^4.5": "prisma@4.14.0"
     },

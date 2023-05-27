@@ -13,21 +13,21 @@ datasource db {
 }
 
 model User {
-  id              String     @id @unique @default(uuid())
-  email           String     @unique
+  id              String   @id @unique @default(uuid())
+  email           String   @unique
   password        String
   firstName       String
   lastName        String
-  isGoogleAuth    Boolean    @default(false)
-  isEmailVerified Boolean    @default(false)
-  isDeleted       Boolean    @default(false)
-  isSignedIn      Boolean    @default(false)
-  createdAt       DateTime   @default(now())
+  isGoogleAuth    Boolean  @default(false)
+  isEmailVerified Boolean  @default(false)
+  isDeleted       Boolean  @default(false)
+  isSignedIn      Boolean  @default(false)
+  createdAt       DateTime @default(now())
   createdBy       String?
-  updatedAt       DateTime   @updatedAt
+  updatedAt       DateTime @updatedAt
   updatedBy       String?
 
-  userTypes       UserType[]
+  userTypes UserType[]
 }
 
 model UserType {
@@ -38,7 +38,7 @@ model UserType {
   updatedAt DateTime @updatedAt
   updatedBy String?
 
-  users     User[]
+  users User[]
 }
 
 model Country {
@@ -49,34 +49,50 @@ model Country {
   updatedAt DateTime @updatedAt
   updatedBy String?
 
-  cities    City[]
+  cities City[]
 }
 
 model City {
-  id        String   @id @unique @default(uuid())
-  name      String
-  createdAt DateTime @default(now())
-  createdBy String?
-  updatedAt DateTime @updatedAt
-  updatedBy String
+  id                String              @id @unique @default(uuid())
+  name              String
+  createdAt         DateTime            @default(now())
+  createdBy         String?
+  updatedAt         DateTime            @updatedAt
+  updatedBy         String
 
-  countryId  String
-  country    Country      @relation(fields: [countryId], references: [id])
+  countryId   String
+  country     Country      @relation(fields: [countryId], references: [id])
   postOffices PostOffice[]
 }
 
 model PostOffice {
   id              String   @id @unique @default(uuid())
   name            String
-  poAddress       String
-  poContact       String
-  poManagerId     String
-  poContactPerson String
+  address         String
+  contact         String
+  managerId       String
+  contactPerson   String
   createdAt       DateTime @default(now())
   createdBy       String?
   updatedAt       DateTime @updatedAt
   updatedBy       String
 
-  cityId          String
-  city            City     @relation(fields: [cityId], references: [id])
+  cityId String
+  city   City   @relation(fields: [cityId], references: [id])
+
+  locations Location[]
+
+}
+
+model Location {
+  id                            String         @id @unique @default(uuid())
+  name                          String         @unique
+  description                   String?
+  createdAt                     DateTime       @default(now())
+  createdBy                     String?
+  updatedAt                     DateTime       @updatedAt
+  updatedBy                     String?
+
+  postOfficeInChargeId           String
+  postOfficeInCharge             PostOffice     @relation(fields: [postOfficeInChargeId], references: [id])
 }

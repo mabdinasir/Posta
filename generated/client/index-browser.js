@@ -105,13 +105,24 @@ exports.Prisma.CountryScalarFieldEnum = {
   updatedBy: 'updatedBy'
 };
 
+exports.Prisma.LocationScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy',
+  postOfficeInChargeId: 'postOfficeInChargeId'
+};
+
 exports.Prisma.PostOfficeScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  poAddress: 'poAddress',
-  poContact: 'poContact',
-  poManagerId: 'poManagerId',
-  poContactPerson: 'poContactPerson',
+  address: 'address',
+  contact: 'contact',
+  managerId: 'managerId',
+  contactPerson: 'contactPerson',
   createdAt: 'createdAt',
   createdBy: 'createdBy',
   updatedAt: 'updatedAt',
@@ -167,7 +178,8 @@ exports.Prisma.ModelName = {
   UserType: 'UserType',
   Country: 'Country',
   City: 'City',
-  PostOffice: 'PostOffice'
+  PostOffice: 'PostOffice',
+  Location: 'Location'
 };
 
 /**
