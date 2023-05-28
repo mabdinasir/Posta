@@ -87,19 +87,42 @@ model PostOffice {
 
   locations Location[]
 }
+
 model Location {
-  id          String     @id @unique @default(uuid())
-  name        String     @unique
+  id          String   @id @unique @default(uuid())
+  name        String   @unique
   description String?
-  createdAt   DateTime   @default(now())
+  createdAt   DateTime @default(now())
   createdBy   String?
-  updatedAt   DateTime   @updatedAt
+  updatedAt   DateTime @updatedAt
   updatedBy   String?
 
   postOfficeInChargeId String
-  postOfficeInCharge   PostOffice         @relation(fields: [postOfficeInChargeId], references: [id])
+  postOfficeInCharge   PostOffice @relation(fields: [postOfficeInChargeId], references: [id])
 
-  servicesAvailable   ServiceAvailable[]
+  LocationTypeId String
+  LocationType   LocationType @relation(fields: [LocationTypeId], references: [id])
+
+  serviceId String
+  services   Service @relation(fields: [serviceId], references: [id])
+
+  collectingOptions     CollectingOption[]
+  processingOptions     ProcessingOption[]
+
+  mailStart Mail[] @relation("MailLocationStart")
+  mailEnd Mail[] @relation("MailLocationEnd")
+}
+
+
+model LocationType {
+  id          String   @id @unique @default(uuid())
+  name        String   @unique
+  createdAt   DateTime @default(now())
+  createdBy   String?
+  updatedAt   DateTime @updatedAt
+  updatedBy   String?
+
+  location Location[]
 }
 
 model Service {
@@ -112,14 +135,57 @@ model Service {
   updatedAt   DateTime @updatedAt
   updatedBy   String?
 
-  locationsAvailable ServiceAvailable[]
+  location Location[]
 }
 
-model ServiceAvailable {
-  id          String   @id @unique @default(uuid())
-  location    Location  @relation(fields: [locationId], references: [id])
-  locationId  String
-  service     Service   @relation(fields: [serviceId], references: [id])
-  serviceId   String
+model CollectingOption {
+  id         String   @id @unique @default(uuid())
+  optionName String   @unique
+  createdAt  DateTime @default(now())
+  createdBy  String?
+  updatedAt  DateTime @updatedAt
+  updatedBy  String?
 
+  locations   Location[]
+}
+
+model ProcessingOption {
+  id         String   @id @unique @default(uuid())
+  optionName String   @unique
+  createdAt  DateTime @default(now())
+  createdBy  String?
+  updatedAt  DateTime @updatedAt
+  updatedBy  String?
+
+  locations   Location[]
+}
+
+model Mail {
+  id                  String        @id @unique @default(uuid())
+  mail_code           String        @unique
+  mail_category_id    String
+  recipient_address   String
+  sender_address      String
+  location_start_id   String
+  location_end_id     String?
+  time_inserted       DateTime      @default(now())
+  time_delivered      DateTime?
+
+  location_start      Location      @relation("MailLocationStart", fields: [location_start_id], references: [id])
+  location_end        Location?     @relation("MailLocationEnd", fields: [location_end_id], references: [id])
+
+  mailCarrierId       String
+  mailCarrier         MailCarrier   @relation(fields: [mailCarrierId], references: [id])
+}
+
+model MailCarrier {
+  id          String   @id @unique @default(uuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  createdBy   String?
+  updatedAt   DateTime @updatedAt
+  updatedBy   String?
+
+  mail Mail[]
 }

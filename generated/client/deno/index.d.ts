@@ -103,6 +103,21 @@ export type Location = {
   updatedAt: Date
   updatedBy: string | null
   postOfficeInChargeId: string
+  LocationTypeId: string
+  serviceId: string
+}
+
+/**
+ * Model LocationType
+ * 
+ */
+export type LocationType = {
+  id: string
+  name: string
+  createdAt: Date
+  createdBy: string | null
+  updatedAt: Date
+  updatedBy: string | null
 }
 
 /**
@@ -121,13 +136,60 @@ export type Service = {
 }
 
 /**
- * Model ServiceAvailable
+ * Model CollectingOption
  * 
  */
-export type ServiceAvailable = {
+export type CollectingOption = {
   id: string
-  locationId: string
-  serviceId: string
+  optionName: string
+  createdAt: Date
+  createdBy: string | null
+  updatedAt: Date
+  updatedBy: string | null
+}
+
+/**
+ * Model ProcessingOption
+ * 
+ */
+export type ProcessingOption = {
+  id: string
+  optionName: string
+  createdAt: Date
+  createdBy: string | null
+  updatedAt: Date
+  updatedBy: string | null
+}
+
+/**
+ * Model Mail
+ * 
+ */
+export type Mail = {
+  id: string
+  mail_code: string
+  mail_category_id: string
+  recipient_address: string
+  sender_address: string
+  location_start_id: string
+  location_end_id: string | null
+  time_inserted: Date
+  time_delivered: Date | null
+  mailCarrierId: string
+}
+
+/**
+ * Model MailCarrier
+ * 
+ */
+export type MailCarrier = {
+  id: string
+  name: string
+  description: string | null
+  createdAt: Date
+  createdBy: string | null
+  updatedAt: Date
+  updatedBy: string | null
 }
 
 
@@ -309,6 +371,16 @@ export class PrismaClient<
   get location(): Prisma.LocationDelegate<GlobalReject>;
 
   /**
+   * `prisma.locationType`: Exposes CRUD operations for the **LocationType** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LocationTypes
+    * const locationTypes = await prisma.locationType.findMany()
+    * ```
+    */
+  get locationType(): Prisma.LocationTypeDelegate<GlobalReject>;
+
+  /**
    * `prisma.service`: Exposes CRUD operations for the **Service** model.
     * Example usage:
     * ```ts
@@ -319,14 +391,44 @@ export class PrismaClient<
   get service(): Prisma.ServiceDelegate<GlobalReject>;
 
   /**
-   * `prisma.serviceAvailable`: Exposes CRUD operations for the **ServiceAvailable** model.
+   * `prisma.collectingOption`: Exposes CRUD operations for the **CollectingOption** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more ServiceAvailables
-    * const serviceAvailables = await prisma.serviceAvailable.findMany()
+    * // Fetch zero or more CollectingOptions
+    * const collectingOptions = await prisma.collectingOption.findMany()
     * ```
     */
-  get serviceAvailable(): Prisma.ServiceAvailableDelegate<GlobalReject>;
+  get collectingOption(): Prisma.CollectingOptionDelegate<GlobalReject>;
+
+  /**
+   * `prisma.processingOption`: Exposes CRUD operations for the **ProcessingOption** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ProcessingOptions
+    * const processingOptions = await prisma.processingOption.findMany()
+    * ```
+    */
+  get processingOption(): Prisma.ProcessingOptionDelegate<GlobalReject>;
+
+  /**
+   * `prisma.mail`: Exposes CRUD operations for the **Mail** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Mail
+    * const mail = await prisma.mail.findMany()
+    * ```
+    */
+  get mail(): Prisma.MailDelegate<GlobalReject>;
+
+  /**
+   * `prisma.mailCarrier`: Exposes CRUD operations for the **MailCarrier** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MailCarriers
+    * const mailCarriers = await prisma.mailCarrier.findMany()
+    * ```
+    */
+  get mailCarrier(): Prisma.MailCarrierDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
@@ -802,8 +904,12 @@ export namespace Prisma {
     City: 'City',
     PostOffice: 'PostOffice',
     Location: 'Location',
+    LocationType: 'LocationType',
     Service: 'Service',
-    ServiceAvailable: 'ServiceAvailable'
+    CollectingOption: 'CollectingOption',
+    ProcessingOption: 'ProcessingOption',
+    Mail: 'Mail',
+    MailCarrier: 'MailCarrier'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1185,11 +1291,17 @@ export namespace Prisma {
 
 
   export type LocationCountOutputType = {
-    servicesAvailable: number
+    collectingOptions: number
+    processingOptions: number
+    mailStart: number
+    mailEnd: number
   }
 
   export type LocationCountOutputTypeSelect = {
-    servicesAvailable?: boolean
+    collectingOptions?: boolean
+    processingOptions?: boolean
+    mailStart?: boolean
+    mailEnd?: boolean
   }
 
   export type LocationCountOutputTypeGetPayload<S extends boolean | null | undefined | LocationCountOutputTypeArgs> =
@@ -1223,16 +1335,59 @@ export namespace Prisma {
 
 
   /**
+   * Count Type LocationTypeCountOutputType
+   */
+
+
+  export type LocationTypeCountOutputType = {
+    location: number
+  }
+
+  export type LocationTypeCountOutputTypeSelect = {
+    location?: boolean
+  }
+
+  export type LocationTypeCountOutputTypeGetPayload<S extends boolean | null | undefined | LocationTypeCountOutputTypeArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? LocationTypeCountOutputType :
+    S extends undefined ? never :
+    S extends { include: any } & (LocationTypeCountOutputTypeArgs)
+    ? LocationTypeCountOutputType 
+    : S extends { select: any } & (LocationTypeCountOutputTypeArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+    P extends keyof LocationTypeCountOutputType ? LocationTypeCountOutputType[P] : never
+  } 
+      : LocationTypeCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * LocationTypeCountOutputType without action
+   */
+  export type LocationTypeCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the LocationTypeCountOutputType
+     */
+    select?: LocationTypeCountOutputTypeSelect | null
+  }
+
+
+
+  /**
    * Count Type ServiceCountOutputType
    */
 
 
   export type ServiceCountOutputType = {
-    locationsAvailable: number
+    location: number
   }
 
   export type ServiceCountOutputTypeSelect = {
-    locationsAvailable?: boolean
+    location?: boolean
   }
 
   export type ServiceCountOutputTypeGetPayload<S extends boolean | null | undefined | ServiceCountOutputTypeArgs> =
@@ -1261,6 +1416,135 @@ export namespace Prisma {
      * Select specific fields to fetch from the ServiceCountOutputType
      */
     select?: ServiceCountOutputTypeSelect | null
+  }
+
+
+
+  /**
+   * Count Type CollectingOptionCountOutputType
+   */
+
+
+  export type CollectingOptionCountOutputType = {
+    locations: number
+  }
+
+  export type CollectingOptionCountOutputTypeSelect = {
+    locations?: boolean
+  }
+
+  export type CollectingOptionCountOutputTypeGetPayload<S extends boolean | null | undefined | CollectingOptionCountOutputTypeArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? CollectingOptionCountOutputType :
+    S extends undefined ? never :
+    S extends { include: any } & (CollectingOptionCountOutputTypeArgs)
+    ? CollectingOptionCountOutputType 
+    : S extends { select: any } & (CollectingOptionCountOutputTypeArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+    P extends keyof CollectingOptionCountOutputType ? CollectingOptionCountOutputType[P] : never
+  } 
+      : CollectingOptionCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * CollectingOptionCountOutputType without action
+   */
+  export type CollectingOptionCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the CollectingOptionCountOutputType
+     */
+    select?: CollectingOptionCountOutputTypeSelect | null
+  }
+
+
+
+  /**
+   * Count Type ProcessingOptionCountOutputType
+   */
+
+
+  export type ProcessingOptionCountOutputType = {
+    locations: number
+  }
+
+  export type ProcessingOptionCountOutputTypeSelect = {
+    locations?: boolean
+  }
+
+  export type ProcessingOptionCountOutputTypeGetPayload<S extends boolean | null | undefined | ProcessingOptionCountOutputTypeArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? ProcessingOptionCountOutputType :
+    S extends undefined ? never :
+    S extends { include: any } & (ProcessingOptionCountOutputTypeArgs)
+    ? ProcessingOptionCountOutputType 
+    : S extends { select: any } & (ProcessingOptionCountOutputTypeArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+    P extends keyof ProcessingOptionCountOutputType ? ProcessingOptionCountOutputType[P] : never
+  } 
+      : ProcessingOptionCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * ProcessingOptionCountOutputType without action
+   */
+  export type ProcessingOptionCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the ProcessingOptionCountOutputType
+     */
+    select?: ProcessingOptionCountOutputTypeSelect | null
+  }
+
+
+
+  /**
+   * Count Type MailCarrierCountOutputType
+   */
+
+
+  export type MailCarrierCountOutputType = {
+    mail: number
+  }
+
+  export type MailCarrierCountOutputTypeSelect = {
+    mail?: boolean
+  }
+
+  export type MailCarrierCountOutputTypeGetPayload<S extends boolean | null | undefined | MailCarrierCountOutputTypeArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? MailCarrierCountOutputType :
+    S extends undefined ? never :
+    S extends { include: any } & (MailCarrierCountOutputTypeArgs)
+    ? MailCarrierCountOutputType 
+    : S extends { select: any } & (MailCarrierCountOutputTypeArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+    P extends keyof MailCarrierCountOutputType ? MailCarrierCountOutputType[P] : never
+  } 
+      : MailCarrierCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * MailCarrierCountOutputType without action
+   */
+  export type MailCarrierCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the MailCarrierCountOutputType
+     */
+    select?: MailCarrierCountOutputTypeSelect | null
   }
 
 
@@ -6225,6 +6509,8 @@ export namespace Prisma {
     updatedAt: Date | null
     updatedBy: string | null
     postOfficeInChargeId: string | null
+    LocationTypeId: string | null
+    serviceId: string | null
   }
 
   export type LocationMaxAggregateOutputType = {
@@ -6236,6 +6522,8 @@ export namespace Prisma {
     updatedAt: Date | null
     updatedBy: string | null
     postOfficeInChargeId: string | null
+    LocationTypeId: string | null
+    serviceId: string | null
   }
 
   export type LocationCountAggregateOutputType = {
@@ -6247,6 +6535,8 @@ export namespace Prisma {
     updatedAt: number
     updatedBy: number
     postOfficeInChargeId: number
+    LocationTypeId: number
+    serviceId: number
     _all: number
   }
 
@@ -6260,6 +6550,8 @@ export namespace Prisma {
     updatedAt?: true
     updatedBy?: true
     postOfficeInChargeId?: true
+    LocationTypeId?: true
+    serviceId?: true
   }
 
   export type LocationMaxAggregateInputType = {
@@ -6271,6 +6563,8 @@ export namespace Prisma {
     updatedAt?: true
     updatedBy?: true
     postOfficeInChargeId?: true
+    LocationTypeId?: true
+    serviceId?: true
   }
 
   export type LocationCountAggregateInputType = {
@@ -6282,6 +6576,8 @@ export namespace Prisma {
     updatedAt?: true
     updatedBy?: true
     postOfficeInChargeId?: true
+    LocationTypeId?: true
+    serviceId?: true
     _all?: true
   }
 
@@ -6367,6 +6663,8 @@ export namespace Prisma {
     updatedAt: Date
     updatedBy: string | null
     postOfficeInChargeId: string
+    LocationTypeId: string
+    serviceId: string
     _count: LocationCountAggregateOutputType | null
     _min: LocationMinAggregateOutputType | null
     _max: LocationMaxAggregateOutputType | null
@@ -6395,15 +6693,27 @@ export namespace Prisma {
     updatedAt?: boolean
     updatedBy?: boolean
     postOfficeInChargeId?: boolean
+    LocationTypeId?: boolean
+    serviceId?: boolean
     postOfficeInCharge?: boolean | PostOfficeArgs
-    servicesAvailable?: boolean | Location$servicesAvailableArgs
+    LocationType?: boolean | LocationTypeArgs
+    services?: boolean | ServiceArgs
+    collectingOptions?: boolean | Location$collectingOptionsArgs
+    processingOptions?: boolean | Location$processingOptionsArgs
+    mailStart?: boolean | Location$mailStartArgs
+    mailEnd?: boolean | Location$mailEndArgs
     _count?: boolean | LocationCountOutputTypeArgs
   }
 
 
   export type LocationInclude = {
     postOfficeInCharge?: boolean | PostOfficeArgs
-    servicesAvailable?: boolean | Location$servicesAvailableArgs
+    LocationType?: boolean | LocationTypeArgs
+    services?: boolean | ServiceArgs
+    collectingOptions?: boolean | Location$collectingOptionsArgs
+    processingOptions?: boolean | Location$processingOptionsArgs
+    mailStart?: boolean | Location$mailStartArgs
+    mailEnd?: boolean | Location$mailEndArgs
     _count?: boolean | LocationCountOutputTypeArgs
   }
 
@@ -6415,14 +6725,24 @@ export namespace Prisma {
     ? Location  & {
     [P in TruthyKeys<S['include']>]:
         P extends 'postOfficeInCharge' ? PostOfficeGetPayload<S['include'][P]> :
-        P extends 'servicesAvailable' ? Array < ServiceAvailableGetPayload<S['include'][P]>>  :
+        P extends 'LocationType' ? LocationTypeGetPayload<S['include'][P]> :
+        P extends 'services' ? ServiceGetPayload<S['include'][P]> :
+        P extends 'collectingOptions' ? Array < CollectingOptionGetPayload<S['include'][P]>>  :
+        P extends 'processingOptions' ? Array < ProcessingOptionGetPayload<S['include'][P]>>  :
+        P extends 'mailStart' ? Array < MailGetPayload<S['include'][P]>>  :
+        P extends 'mailEnd' ? Array < MailGetPayload<S['include'][P]>>  :
         P extends '_count' ? LocationCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : S extends { select: any } & (LocationArgs | LocationFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
         P extends 'postOfficeInCharge' ? PostOfficeGetPayload<S['select'][P]> :
-        P extends 'servicesAvailable' ? Array < ServiceAvailableGetPayload<S['select'][P]>>  :
+        P extends 'LocationType' ? LocationTypeGetPayload<S['select'][P]> :
+        P extends 'services' ? ServiceGetPayload<S['select'][P]> :
+        P extends 'collectingOptions' ? Array < CollectingOptionGetPayload<S['select'][P]>>  :
+        P extends 'processingOptions' ? Array < ProcessingOptionGetPayload<S['select'][P]>>  :
+        P extends 'mailStart' ? Array < MailGetPayload<S['select'][P]>>  :
+        P extends 'mailEnd' ? Array < MailGetPayload<S['select'][P]>>  :
         P extends '_count' ? LocationCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Location ? Location[P] : never
   } 
       : Location
@@ -6797,7 +7117,17 @@ export namespace Prisma {
 
     postOfficeInCharge<T extends PostOfficeArgs= {}>(args?: Subset<T, PostOfficeArgs>): Prisma__PostOfficeClient<PostOfficeGetPayload<T> | Null>;
 
-    servicesAvailable<T extends Location$servicesAvailableArgs= {}>(args?: Subset<T, Location$servicesAvailableArgs>): Prisma.PrismaPromise<Array<ServiceAvailableGetPayload<T>>| Null>;
+    LocationType<T extends LocationTypeArgs= {}>(args?: Subset<T, LocationTypeArgs>): Prisma__LocationTypeClient<LocationTypeGetPayload<T> | Null>;
+
+    services<T extends ServiceArgs= {}>(args?: Subset<T, ServiceArgs>): Prisma__ServiceClient<ServiceGetPayload<T> | Null>;
+
+    collectingOptions<T extends Location$collectingOptionsArgs= {}>(args?: Subset<T, Location$collectingOptionsArgs>): Prisma.PrismaPromise<Array<CollectingOptionGetPayload<T>>| Null>;
+
+    processingOptions<T extends Location$processingOptionsArgs= {}>(args?: Subset<T, Location$processingOptionsArgs>): Prisma.PrismaPromise<Array<ProcessingOptionGetPayload<T>>| Null>;
+
+    mailStart<T extends Location$mailStartArgs= {}>(args?: Subset<T, Location$mailStartArgs>): Prisma.PrismaPromise<Array<MailGetPayload<T>>| Null>;
+
+    mailEnd<T extends Location$mailEndArgs= {}>(args?: Subset<T, Location$mailEndArgs>): Prisma.PrismaPromise<Array<MailGetPayload<T>>| Null>;
 
     private get _document();
     /**
@@ -7155,23 +7485,86 @@ export namespace Prisma {
 
 
   /**
-   * Location.servicesAvailable
+   * Location.collectingOptions
    */
-  export type Location$servicesAvailableArgs = {
+  export type Location$collectingOptionsArgs = {
     /**
-     * Select specific fields to fetch from the ServiceAvailable
+     * Select specific fields to fetch from the CollectingOption
      */
-    select?: ServiceAvailableSelect | null
+    select?: CollectingOptionSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ServiceAvailableInclude | null
-    where?: ServiceAvailableWhereInput
-    orderBy?: Enumerable<ServiceAvailableOrderByWithRelationInput>
-    cursor?: ServiceAvailableWhereUniqueInput
+    include?: CollectingOptionInclude | null
+    where?: CollectingOptionWhereInput
+    orderBy?: Enumerable<CollectingOptionOrderByWithRelationInput>
+    cursor?: CollectingOptionWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: Enumerable<ServiceAvailableScalarFieldEnum>
+    distinct?: Enumerable<CollectingOptionScalarFieldEnum>
+  }
+
+
+  /**
+   * Location.processingOptions
+   */
+  export type Location$processingOptionsArgs = {
+    /**
+     * Select specific fields to fetch from the ProcessingOption
+     */
+    select?: ProcessingOptionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ProcessingOptionInclude | null
+    where?: ProcessingOptionWhereInput
+    orderBy?: Enumerable<ProcessingOptionOrderByWithRelationInput>
+    cursor?: ProcessingOptionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<ProcessingOptionScalarFieldEnum>
+  }
+
+
+  /**
+   * Location.mailStart
+   */
+  export type Location$mailStartArgs = {
+    /**
+     * Select specific fields to fetch from the Mail
+     */
+    select?: MailSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailInclude | null
+    where?: MailWhereInput
+    orderBy?: Enumerable<MailOrderByWithRelationInput>
+    cursor?: MailWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<MailScalarFieldEnum>
+  }
+
+
+  /**
+   * Location.mailEnd
+   */
+  export type Location$mailEndArgs = {
+    /**
+     * Select specific fields to fetch from the Mail
+     */
+    select?: MailSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailInclude | null
+    where?: MailWhereInput
+    orderBy?: Enumerable<MailOrderByWithRelationInput>
+    cursor?: MailWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<MailScalarFieldEnum>
   }
 
 
@@ -7187,6 +7580,970 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well.
      */
     include?: LocationInclude | null
+  }
+
+
+
+  /**
+   * Model LocationType
+   */
+
+
+  export type AggregateLocationType = {
+    _count: LocationTypeCountAggregateOutputType | null
+    _min: LocationTypeMinAggregateOutputType | null
+    _max: LocationTypeMaxAggregateOutputType | null
+  }
+
+  export type LocationTypeMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+  }
+
+  export type LocationTypeMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+  }
+
+  export type LocationTypeCountAggregateOutputType = {
+    id: number
+    name: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    _all: number
+  }
+
+
+  export type LocationTypeMinAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+  }
+
+  export type LocationTypeMaxAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+  }
+
+  export type LocationTypeCountAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    _all?: true
+  }
+
+  export type LocationTypeAggregateArgs = {
+    /**
+     * Filter which LocationType to aggregate.
+     */
+    where?: LocationTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LocationTypes to fetch.
+     */
+    orderBy?: Enumerable<LocationTypeOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LocationTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LocationTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LocationTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned LocationTypes
+    **/
+    _count?: true | LocationTypeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LocationTypeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LocationTypeMaxAggregateInputType
+  }
+
+  export type GetLocationTypeAggregateType<T extends LocationTypeAggregateArgs> = {
+        [P in keyof T & keyof AggregateLocationType]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLocationType[P]>
+      : GetScalarType<T[P], AggregateLocationType[P]>
+  }
+
+
+
+
+  export type LocationTypeGroupByArgs = {
+    where?: LocationTypeWhereInput
+    orderBy?: Enumerable<LocationTypeOrderByWithAggregationInput>
+    by: LocationTypeScalarFieldEnum[]
+    having?: LocationTypeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LocationTypeCountAggregateInputType | true
+    _min?: LocationTypeMinAggregateInputType
+    _max?: LocationTypeMaxAggregateInputType
+  }
+
+
+  export type LocationTypeGroupByOutputType = {
+    id: string
+    name: string
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    _count: LocationTypeCountAggregateOutputType | null
+    _min: LocationTypeMinAggregateOutputType | null
+    _max: LocationTypeMaxAggregateOutputType | null
+  }
+
+  type GetLocationTypeGroupByPayload<T extends LocationTypeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<LocationTypeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LocationTypeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LocationTypeGroupByOutputType[P]>
+            : GetScalarType<T[P], LocationTypeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LocationTypeSelect = {
+    id?: boolean
+    name?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    location?: boolean | LocationType$locationArgs
+    _count?: boolean | LocationTypeCountOutputTypeArgs
+  }
+
+
+  export type LocationTypeInclude = {
+    location?: boolean | LocationType$locationArgs
+    _count?: boolean | LocationTypeCountOutputTypeArgs
+  }
+
+  export type LocationTypeGetPayload<S extends boolean | null | undefined | LocationTypeArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? LocationType :
+    S extends undefined ? never :
+    S extends { include: any } & (LocationTypeArgs | LocationTypeFindManyArgs)
+    ? LocationType  & {
+    [P in TruthyKeys<S['include']>]:
+        P extends 'location' ? Array < LocationGetPayload<S['include'][P]>>  :
+        P extends '_count' ? LocationTypeCountOutputTypeGetPayload<S['include'][P]> :  never
+  } 
+    : S extends { select: any } & (LocationTypeArgs | LocationTypeFindManyArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+        P extends 'location' ? Array < LocationGetPayload<S['select'][P]>>  :
+        P extends '_count' ? LocationTypeCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof LocationType ? LocationType[P] : never
+  } 
+      : LocationType
+
+
+  type LocationTypeCountArgs = 
+    Omit<LocationTypeFindManyArgs, 'select' | 'include'> & {
+      select?: LocationTypeCountAggregateInputType | true
+    }
+
+  export interface LocationTypeDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
+    /**
+     * Find zero or one LocationType that matches the filter.
+     * @param {LocationTypeFindUniqueArgs} args - Arguments to find a LocationType
+     * @example
+     * // Get one LocationType
+     * const locationType = await prisma.locationType.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends LocationTypeFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, LocationTypeFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'LocationType'> extends True ? Prisma__LocationTypeClient<LocationTypeGetPayload<T>> : Prisma__LocationTypeClient<LocationTypeGetPayload<T> | null, null>
+
+    /**
+     * Find one LocationType that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {LocationTypeFindUniqueOrThrowArgs} args - Arguments to find a LocationType
+     * @example
+     * // Get one LocationType
+     * const locationType = await prisma.locationType.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends LocationTypeFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, LocationTypeFindUniqueOrThrowArgs>
+    ): Prisma__LocationTypeClient<LocationTypeGetPayload<T>>
+
+    /**
+     * Find the first LocationType that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LocationTypeFindFirstArgs} args - Arguments to find a LocationType
+     * @example
+     * // Get one LocationType
+     * const locationType = await prisma.locationType.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends LocationTypeFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, LocationTypeFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'LocationType'> extends True ? Prisma__LocationTypeClient<LocationTypeGetPayload<T>> : Prisma__LocationTypeClient<LocationTypeGetPayload<T> | null, null>
+
+    /**
+     * Find the first LocationType that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LocationTypeFindFirstOrThrowArgs} args - Arguments to find a LocationType
+     * @example
+     * // Get one LocationType
+     * const locationType = await prisma.locationType.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends LocationTypeFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, LocationTypeFindFirstOrThrowArgs>
+    ): Prisma__LocationTypeClient<LocationTypeGetPayload<T>>
+
+    /**
+     * Find zero or more LocationTypes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LocationTypeFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all LocationTypes
+     * const locationTypes = await prisma.locationType.findMany()
+     * 
+     * // Get first 10 LocationTypes
+     * const locationTypes = await prisma.locationType.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const locationTypeWithIdOnly = await prisma.locationType.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends LocationTypeFindManyArgs>(
+      args?: SelectSubset<T, LocationTypeFindManyArgs>
+    ): Prisma.PrismaPromise<Array<LocationTypeGetPayload<T>>>
+
+    /**
+     * Create a LocationType.
+     * @param {LocationTypeCreateArgs} args - Arguments to create a LocationType.
+     * @example
+     * // Create one LocationType
+     * const LocationType = await prisma.locationType.create({
+     *   data: {
+     *     // ... data to create a LocationType
+     *   }
+     * })
+     * 
+    **/
+    create<T extends LocationTypeCreateArgs>(
+      args: SelectSubset<T, LocationTypeCreateArgs>
+    ): Prisma__LocationTypeClient<LocationTypeGetPayload<T>>
+
+    /**
+     * Create many LocationTypes.
+     *     @param {LocationTypeCreateManyArgs} args - Arguments to create many LocationTypes.
+     *     @example
+     *     // Create many LocationTypes
+     *     const locationType = await prisma.locationType.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends LocationTypeCreateManyArgs>(
+      args?: SelectSubset<T, LocationTypeCreateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a LocationType.
+     * @param {LocationTypeDeleteArgs} args - Arguments to delete one LocationType.
+     * @example
+     * // Delete one LocationType
+     * const LocationType = await prisma.locationType.delete({
+     *   where: {
+     *     // ... filter to delete one LocationType
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends LocationTypeDeleteArgs>(
+      args: SelectSubset<T, LocationTypeDeleteArgs>
+    ): Prisma__LocationTypeClient<LocationTypeGetPayload<T>>
+
+    /**
+     * Update one LocationType.
+     * @param {LocationTypeUpdateArgs} args - Arguments to update one LocationType.
+     * @example
+     * // Update one LocationType
+     * const locationType = await prisma.locationType.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends LocationTypeUpdateArgs>(
+      args: SelectSubset<T, LocationTypeUpdateArgs>
+    ): Prisma__LocationTypeClient<LocationTypeGetPayload<T>>
+
+    /**
+     * Delete zero or more LocationTypes.
+     * @param {LocationTypeDeleteManyArgs} args - Arguments to filter LocationTypes to delete.
+     * @example
+     * // Delete a few LocationTypes
+     * const { count } = await prisma.locationType.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends LocationTypeDeleteManyArgs>(
+      args?: SelectSubset<T, LocationTypeDeleteManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LocationTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LocationTypeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many LocationTypes
+     * const locationType = await prisma.locationType.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends LocationTypeUpdateManyArgs>(
+      args: SelectSubset<T, LocationTypeUpdateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one LocationType.
+     * @param {LocationTypeUpsertArgs} args - Arguments to update or create a LocationType.
+     * @example
+     * // Update or create a LocationType
+     * const locationType = await prisma.locationType.upsert({
+     *   create: {
+     *     // ... data to create a LocationType
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the LocationType we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends LocationTypeUpsertArgs>(
+      args: SelectSubset<T, LocationTypeUpsertArgs>
+    ): Prisma__LocationTypeClient<LocationTypeGetPayload<T>>
+
+    /**
+     * Count the number of LocationTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LocationTypeCountArgs} args - Arguments to filter LocationTypes to count.
+     * @example
+     * // Count the number of LocationTypes
+     * const count = await prisma.locationType.count({
+     *   where: {
+     *     // ... the filter for the LocationTypes we want to count
+     *   }
+     * })
+    **/
+    count<T extends LocationTypeCountArgs>(
+      args?: Subset<T, LocationTypeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LocationTypeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a LocationType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LocationTypeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LocationTypeAggregateArgs>(args: Subset<T, LocationTypeAggregateArgs>): Prisma.PrismaPromise<GetLocationTypeAggregateType<T>>
+
+    /**
+     * Group by LocationType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LocationTypeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LocationTypeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LocationTypeGroupByArgs['orderBy'] }
+        : { orderBy?: LocationTypeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LocationTypeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLocationTypeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for LocationType.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__LocationTypeClient<T, Null = never> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    location<T extends LocationType$locationArgs= {}>(args?: Subset<T, LocationType$locationArgs>): Prisma.PrismaPromise<Array<LocationGetPayload<T>>| Null>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * LocationType base type for findUnique actions
+   */
+  export type LocationTypeFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the LocationType
+     */
+    select?: LocationTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationTypeInclude | null
+    /**
+     * Filter, which LocationType to fetch.
+     */
+    where: LocationTypeWhereUniqueInput
+  }
+
+  /**
+   * LocationType findUnique
+   */
+  export interface LocationTypeFindUniqueArgs extends LocationTypeFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * LocationType findUniqueOrThrow
+   */
+  export type LocationTypeFindUniqueOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the LocationType
+     */
+    select?: LocationTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationTypeInclude | null
+    /**
+     * Filter, which LocationType to fetch.
+     */
+    where: LocationTypeWhereUniqueInput
+  }
+
+
+  /**
+   * LocationType base type for findFirst actions
+   */
+  export type LocationTypeFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the LocationType
+     */
+    select?: LocationTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationTypeInclude | null
+    /**
+     * Filter, which LocationType to fetch.
+     */
+    where?: LocationTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LocationTypes to fetch.
+     */
+    orderBy?: Enumerable<LocationTypeOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LocationTypes.
+     */
+    cursor?: LocationTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LocationTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LocationTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LocationTypes.
+     */
+    distinct?: Enumerable<LocationTypeScalarFieldEnum>
+  }
+
+  /**
+   * LocationType findFirst
+   */
+  export interface LocationTypeFindFirstArgs extends LocationTypeFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * LocationType findFirstOrThrow
+   */
+  export type LocationTypeFindFirstOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the LocationType
+     */
+    select?: LocationTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationTypeInclude | null
+    /**
+     * Filter, which LocationType to fetch.
+     */
+    where?: LocationTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LocationTypes to fetch.
+     */
+    orderBy?: Enumerable<LocationTypeOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LocationTypes.
+     */
+    cursor?: LocationTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LocationTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LocationTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LocationTypes.
+     */
+    distinct?: Enumerable<LocationTypeScalarFieldEnum>
+  }
+
+
+  /**
+   * LocationType findMany
+   */
+  export type LocationTypeFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the LocationType
+     */
+    select?: LocationTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationTypeInclude | null
+    /**
+     * Filter, which LocationTypes to fetch.
+     */
+    where?: LocationTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LocationTypes to fetch.
+     */
+    orderBy?: Enumerable<LocationTypeOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing LocationTypes.
+     */
+    cursor?: LocationTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LocationTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LocationTypes.
+     */
+    skip?: number
+    distinct?: Enumerable<LocationTypeScalarFieldEnum>
+  }
+
+
+  /**
+   * LocationType create
+   */
+  export type LocationTypeCreateArgs = {
+    /**
+     * Select specific fields to fetch from the LocationType
+     */
+    select?: LocationTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationTypeInclude | null
+    /**
+     * The data needed to create a LocationType.
+     */
+    data: XOR<LocationTypeCreateInput, LocationTypeUncheckedCreateInput>
+  }
+
+
+  /**
+   * LocationType createMany
+   */
+  export type LocationTypeCreateManyArgs = {
+    /**
+     * The data used to create many LocationTypes.
+     */
+    data: Enumerable<LocationTypeCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * LocationType update
+   */
+  export type LocationTypeUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the LocationType
+     */
+    select?: LocationTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationTypeInclude | null
+    /**
+     * The data needed to update a LocationType.
+     */
+    data: XOR<LocationTypeUpdateInput, LocationTypeUncheckedUpdateInput>
+    /**
+     * Choose, which LocationType to update.
+     */
+    where: LocationTypeWhereUniqueInput
+  }
+
+
+  /**
+   * LocationType updateMany
+   */
+  export type LocationTypeUpdateManyArgs = {
+    /**
+     * The data used to update LocationTypes.
+     */
+    data: XOR<LocationTypeUpdateManyMutationInput, LocationTypeUncheckedUpdateManyInput>
+    /**
+     * Filter which LocationTypes to update
+     */
+    where?: LocationTypeWhereInput
+  }
+
+
+  /**
+   * LocationType upsert
+   */
+  export type LocationTypeUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the LocationType
+     */
+    select?: LocationTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationTypeInclude | null
+    /**
+     * The filter to search for the LocationType to update in case it exists.
+     */
+    where: LocationTypeWhereUniqueInput
+    /**
+     * In case the LocationType found by the `where` argument doesn't exist, create a new LocationType with this data.
+     */
+    create: XOR<LocationTypeCreateInput, LocationTypeUncheckedCreateInput>
+    /**
+     * In case the LocationType was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LocationTypeUpdateInput, LocationTypeUncheckedUpdateInput>
+  }
+
+
+  /**
+   * LocationType delete
+   */
+  export type LocationTypeDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the LocationType
+     */
+    select?: LocationTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationTypeInclude | null
+    /**
+     * Filter which LocationType to delete.
+     */
+    where: LocationTypeWhereUniqueInput
+  }
+
+
+  /**
+   * LocationType deleteMany
+   */
+  export type LocationTypeDeleteManyArgs = {
+    /**
+     * Filter which LocationTypes to delete
+     */
+    where?: LocationTypeWhereInput
+  }
+
+
+  /**
+   * LocationType.location
+   */
+  export type LocationType$locationArgs = {
+    /**
+     * Select specific fields to fetch from the Location
+     */
+    select?: LocationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationInclude | null
+    where?: LocationWhereInput
+    orderBy?: Enumerable<LocationOrderByWithRelationInput>
+    cursor?: LocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<LocationScalarFieldEnum>
+  }
+
+
+  /**
+   * LocationType without action
+   */
+  export type LocationTypeArgs = {
+    /**
+     * Select specific fields to fetch from the LocationType
+     */
+    select?: LocationTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationTypeInclude | null
   }
 
 
@@ -7381,13 +8738,13 @@ export namespace Prisma {
     createdBy?: boolean
     updatedAt?: boolean
     updatedBy?: boolean
-    locationsAvailable?: boolean | Service$locationsAvailableArgs
+    location?: boolean | Service$locationArgs
     _count?: boolean | ServiceCountOutputTypeArgs
   }
 
 
   export type ServiceInclude = {
-    locationsAvailable?: boolean | Service$locationsAvailableArgs
+    location?: boolean | Service$locationArgs
     _count?: boolean | ServiceCountOutputTypeArgs
   }
 
@@ -7398,13 +8755,13 @@ export namespace Prisma {
     S extends { include: any } & (ServiceArgs | ServiceFindManyArgs)
     ? Service  & {
     [P in TruthyKeys<S['include']>]:
-        P extends 'locationsAvailable' ? Array < ServiceAvailableGetPayload<S['include'][P]>>  :
+        P extends 'location' ? Array < LocationGetPayload<S['include'][P]>>  :
         P extends '_count' ? ServiceCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : S extends { select: any } & (ServiceArgs | ServiceFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
-        P extends 'locationsAvailable' ? Array < ServiceAvailableGetPayload<S['select'][P]>>  :
+        P extends 'location' ? Array < LocationGetPayload<S['select'][P]>>  :
         P extends '_count' ? ServiceCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Service ? Service[P] : never
   } 
       : Service
@@ -7777,7 +9134,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
     constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
 
-    locationsAvailable<T extends Service$locationsAvailableArgs= {}>(args?: Subset<T, Service$locationsAvailableArgs>): Prisma.PrismaPromise<Array<ServiceAvailableGetPayload<T>>| Null>;
+    location<T extends Service$locationArgs= {}>(args?: Subset<T, Service$locationArgs>): Prisma.PrismaPromise<Array<LocationGetPayload<T>>| Null>;
 
     private get _document();
     /**
@@ -8135,23 +9492,23 @@ export namespace Prisma {
 
 
   /**
-   * Service.locationsAvailable
+   * Service.location
    */
-  export type Service$locationsAvailableArgs = {
+  export type Service$locationArgs = {
     /**
-     * Select specific fields to fetch from the ServiceAvailable
+     * Select specific fields to fetch from the Location
      */
-    select?: ServiceAvailableSelect | null
+    select?: LocationSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ServiceAvailableInclude | null
-    where?: ServiceAvailableWhereInput
-    orderBy?: Enumerable<ServiceAvailableOrderByWithRelationInput>
-    cursor?: ServiceAvailableWhereUniqueInput
+    include?: LocationInclude | null
+    where?: LocationWhereInput
+    orderBy?: Enumerable<LocationOrderByWithRelationInput>
+    cursor?: LocationWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: Enumerable<ServiceAvailableScalarFieldEnum>
+    distinct?: Enumerable<LocationScalarFieldEnum>
   }
 
 
@@ -8172,331 +9529,355 @@ export namespace Prisma {
 
 
   /**
-   * Model ServiceAvailable
+   * Model CollectingOption
    */
 
 
-  export type AggregateServiceAvailable = {
-    _count: ServiceAvailableCountAggregateOutputType | null
-    _min: ServiceAvailableMinAggregateOutputType | null
-    _max: ServiceAvailableMaxAggregateOutputType | null
+  export type AggregateCollectingOption = {
+    _count: CollectingOptionCountAggregateOutputType | null
+    _min: CollectingOptionMinAggregateOutputType | null
+    _max: CollectingOptionMaxAggregateOutputType | null
   }
 
-  export type ServiceAvailableMinAggregateOutputType = {
+  export type CollectingOptionMinAggregateOutputType = {
     id: string | null
-    locationId: string | null
-    serviceId: string | null
+    optionName: string | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
   }
 
-  export type ServiceAvailableMaxAggregateOutputType = {
+  export type CollectingOptionMaxAggregateOutputType = {
     id: string | null
-    locationId: string | null
-    serviceId: string | null
+    optionName: string | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
   }
 
-  export type ServiceAvailableCountAggregateOutputType = {
+  export type CollectingOptionCountAggregateOutputType = {
     id: number
-    locationId: number
-    serviceId: number
+    optionName: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
     _all: number
   }
 
 
-  export type ServiceAvailableMinAggregateInputType = {
+  export type CollectingOptionMinAggregateInputType = {
     id?: true
-    locationId?: true
-    serviceId?: true
+    optionName?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
   }
 
-  export type ServiceAvailableMaxAggregateInputType = {
+  export type CollectingOptionMaxAggregateInputType = {
     id?: true
-    locationId?: true
-    serviceId?: true
+    optionName?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
   }
 
-  export type ServiceAvailableCountAggregateInputType = {
+  export type CollectingOptionCountAggregateInputType = {
     id?: true
-    locationId?: true
-    serviceId?: true
+    optionName?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
     _all?: true
   }
 
-  export type ServiceAvailableAggregateArgs = {
+  export type CollectingOptionAggregateArgs = {
     /**
-     * Filter which ServiceAvailable to aggregate.
+     * Filter which CollectingOption to aggregate.
      */
-    where?: ServiceAvailableWhereInput
+    where?: CollectingOptionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ServiceAvailables to fetch.
+     * Determine the order of CollectingOptions to fetch.
      */
-    orderBy?: Enumerable<ServiceAvailableOrderByWithRelationInput>
+    orderBy?: Enumerable<CollectingOptionOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: ServiceAvailableWhereUniqueInput
+    cursor?: CollectingOptionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ServiceAvailables from the position of the cursor.
+     * Take `±n` CollectingOptions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ServiceAvailables.
+     * Skip the first `n` CollectingOptions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned ServiceAvailables
+     * Count returned CollectingOptions
     **/
-    _count?: true | ServiceAvailableCountAggregateInputType
+    _count?: true | CollectingOptionCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: ServiceAvailableMinAggregateInputType
+    _min?: CollectingOptionMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: ServiceAvailableMaxAggregateInputType
+    _max?: CollectingOptionMaxAggregateInputType
   }
 
-  export type GetServiceAvailableAggregateType<T extends ServiceAvailableAggregateArgs> = {
-        [P in keyof T & keyof AggregateServiceAvailable]: P extends '_count' | 'count'
+  export type GetCollectingOptionAggregateType<T extends CollectingOptionAggregateArgs> = {
+        [P in keyof T & keyof AggregateCollectingOption]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateServiceAvailable[P]>
-      : GetScalarType<T[P], AggregateServiceAvailable[P]>
+        : GetScalarType<T[P], AggregateCollectingOption[P]>
+      : GetScalarType<T[P], AggregateCollectingOption[P]>
   }
 
 
 
 
-  export type ServiceAvailableGroupByArgs = {
-    where?: ServiceAvailableWhereInput
-    orderBy?: Enumerable<ServiceAvailableOrderByWithAggregationInput>
-    by: ServiceAvailableScalarFieldEnum[]
-    having?: ServiceAvailableScalarWhereWithAggregatesInput
+  export type CollectingOptionGroupByArgs = {
+    where?: CollectingOptionWhereInput
+    orderBy?: Enumerable<CollectingOptionOrderByWithAggregationInput>
+    by: CollectingOptionScalarFieldEnum[]
+    having?: CollectingOptionScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: ServiceAvailableCountAggregateInputType | true
-    _min?: ServiceAvailableMinAggregateInputType
-    _max?: ServiceAvailableMaxAggregateInputType
+    _count?: CollectingOptionCountAggregateInputType | true
+    _min?: CollectingOptionMinAggregateInputType
+    _max?: CollectingOptionMaxAggregateInputType
   }
 
 
-  export type ServiceAvailableGroupByOutputType = {
+  export type CollectingOptionGroupByOutputType = {
     id: string
-    locationId: string
-    serviceId: string
-    _count: ServiceAvailableCountAggregateOutputType | null
-    _min: ServiceAvailableMinAggregateOutputType | null
-    _max: ServiceAvailableMaxAggregateOutputType | null
+    optionName: string
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    _count: CollectingOptionCountAggregateOutputType | null
+    _min: CollectingOptionMinAggregateOutputType | null
+    _max: CollectingOptionMaxAggregateOutputType | null
   }
 
-  type GetServiceAvailableGroupByPayload<T extends ServiceAvailableGroupByArgs> = Prisma.PrismaPromise<
+  type GetCollectingOptionGroupByPayload<T extends CollectingOptionGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickArray<ServiceAvailableGroupByOutputType, T['by']> &
+      PickArray<CollectingOptionGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof ServiceAvailableGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof CollectingOptionGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], ServiceAvailableGroupByOutputType[P]>
-            : GetScalarType<T[P], ServiceAvailableGroupByOutputType[P]>
+              : GetScalarType<T[P], CollectingOptionGroupByOutputType[P]>
+            : GetScalarType<T[P], CollectingOptionGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type ServiceAvailableSelect = {
+  export type CollectingOptionSelect = {
     id?: boolean
-    locationId?: boolean
-    serviceId?: boolean
-    location?: boolean | LocationArgs
-    service?: boolean | ServiceArgs
+    optionName?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    locations?: boolean | CollectingOption$locationsArgs
+    _count?: boolean | CollectingOptionCountOutputTypeArgs
   }
 
 
-  export type ServiceAvailableInclude = {
-    location?: boolean | LocationArgs
-    service?: boolean | ServiceArgs
+  export type CollectingOptionInclude = {
+    locations?: boolean | CollectingOption$locationsArgs
+    _count?: boolean | CollectingOptionCountOutputTypeArgs
   }
 
-  export type ServiceAvailableGetPayload<S extends boolean | null | undefined | ServiceAvailableArgs> =
+  export type CollectingOptionGetPayload<S extends boolean | null | undefined | CollectingOptionArgs> =
     S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
-    S extends true ? ServiceAvailable :
+    S extends true ? CollectingOption :
     S extends undefined ? never :
-    S extends { include: any } & (ServiceAvailableArgs | ServiceAvailableFindManyArgs)
-    ? ServiceAvailable  & {
+    S extends { include: any } & (CollectingOptionArgs | CollectingOptionFindManyArgs)
+    ? CollectingOption  & {
     [P in TruthyKeys<S['include']>]:
-        P extends 'location' ? LocationGetPayload<S['include'][P]> :
-        P extends 'service' ? ServiceGetPayload<S['include'][P]> :  never
+        P extends 'locations' ? Array < LocationGetPayload<S['include'][P]>>  :
+        P extends '_count' ? CollectingOptionCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
-    : S extends { select: any } & (ServiceAvailableArgs | ServiceAvailableFindManyArgs)
+    : S extends { select: any } & (CollectingOptionArgs | CollectingOptionFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
-        P extends 'location' ? LocationGetPayload<S['select'][P]> :
-        P extends 'service' ? ServiceGetPayload<S['select'][P]> :  P extends keyof ServiceAvailable ? ServiceAvailable[P] : never
+        P extends 'locations' ? Array < LocationGetPayload<S['select'][P]>>  :
+        P extends '_count' ? CollectingOptionCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof CollectingOption ? CollectingOption[P] : never
   } 
-      : ServiceAvailable
+      : CollectingOption
 
 
-  type ServiceAvailableCountArgs = 
-    Omit<ServiceAvailableFindManyArgs, 'select' | 'include'> & {
-      select?: ServiceAvailableCountAggregateInputType | true
+  type CollectingOptionCountArgs = 
+    Omit<CollectingOptionFindManyArgs, 'select' | 'include'> & {
+      select?: CollectingOptionCountAggregateInputType | true
     }
 
-  export interface ServiceAvailableDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+  export interface CollectingOptionDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
 
     /**
-     * Find zero or one ServiceAvailable that matches the filter.
-     * @param {ServiceAvailableFindUniqueArgs} args - Arguments to find a ServiceAvailable
+     * Find zero or one CollectingOption that matches the filter.
+     * @param {CollectingOptionFindUniqueArgs} args - Arguments to find a CollectingOption
      * @example
-     * // Get one ServiceAvailable
-     * const serviceAvailable = await prisma.serviceAvailable.findUnique({
+     * // Get one CollectingOption
+     * const collectingOption = await prisma.collectingOption.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findUnique<T extends ServiceAvailableFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, ServiceAvailableFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'ServiceAvailable'> extends True ? Prisma__ServiceAvailableClient<ServiceAvailableGetPayload<T>> : Prisma__ServiceAvailableClient<ServiceAvailableGetPayload<T> | null, null>
+    findUnique<T extends CollectingOptionFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, CollectingOptionFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'CollectingOption'> extends True ? Prisma__CollectingOptionClient<CollectingOptionGetPayload<T>> : Prisma__CollectingOptionClient<CollectingOptionGetPayload<T> | null, null>
 
     /**
-     * Find one ServiceAvailable that matches the filter or throw an error  with `error.code='P2025'` 
+     * Find one CollectingOption that matches the filter or throw an error  with `error.code='P2025'` 
      *     if no matches were found.
-     * @param {ServiceAvailableFindUniqueOrThrowArgs} args - Arguments to find a ServiceAvailable
+     * @param {CollectingOptionFindUniqueOrThrowArgs} args - Arguments to find a CollectingOption
      * @example
-     * // Get one ServiceAvailable
-     * const serviceAvailable = await prisma.serviceAvailable.findUniqueOrThrow({
+     * // Get one CollectingOption
+     * const collectingOption = await prisma.collectingOption.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findUniqueOrThrow<T extends ServiceAvailableFindUniqueOrThrowArgs>(
-      args?: SelectSubset<T, ServiceAvailableFindUniqueOrThrowArgs>
-    ): Prisma__ServiceAvailableClient<ServiceAvailableGetPayload<T>>
+    findUniqueOrThrow<T extends CollectingOptionFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, CollectingOptionFindUniqueOrThrowArgs>
+    ): Prisma__CollectingOptionClient<CollectingOptionGetPayload<T>>
 
     /**
-     * Find the first ServiceAvailable that matches the filter.
+     * Find the first CollectingOption that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ServiceAvailableFindFirstArgs} args - Arguments to find a ServiceAvailable
+     * @param {CollectingOptionFindFirstArgs} args - Arguments to find a CollectingOption
      * @example
-     * // Get one ServiceAvailable
-     * const serviceAvailable = await prisma.serviceAvailable.findFirst({
+     * // Get one CollectingOption
+     * const collectingOption = await prisma.collectingOption.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findFirst<T extends ServiceAvailableFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, ServiceAvailableFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'ServiceAvailable'> extends True ? Prisma__ServiceAvailableClient<ServiceAvailableGetPayload<T>> : Prisma__ServiceAvailableClient<ServiceAvailableGetPayload<T> | null, null>
+    findFirst<T extends CollectingOptionFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, CollectingOptionFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'CollectingOption'> extends True ? Prisma__CollectingOptionClient<CollectingOptionGetPayload<T>> : Prisma__CollectingOptionClient<CollectingOptionGetPayload<T> | null, null>
 
     /**
-     * Find the first ServiceAvailable that matches the filter or
+     * Find the first CollectingOption that matches the filter or
      * throw `NotFoundError` if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ServiceAvailableFindFirstOrThrowArgs} args - Arguments to find a ServiceAvailable
+     * @param {CollectingOptionFindFirstOrThrowArgs} args - Arguments to find a CollectingOption
      * @example
-     * // Get one ServiceAvailable
-     * const serviceAvailable = await prisma.serviceAvailable.findFirstOrThrow({
+     * // Get one CollectingOption
+     * const collectingOption = await prisma.collectingOption.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findFirstOrThrow<T extends ServiceAvailableFindFirstOrThrowArgs>(
-      args?: SelectSubset<T, ServiceAvailableFindFirstOrThrowArgs>
-    ): Prisma__ServiceAvailableClient<ServiceAvailableGetPayload<T>>
+    findFirstOrThrow<T extends CollectingOptionFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, CollectingOptionFindFirstOrThrowArgs>
+    ): Prisma__CollectingOptionClient<CollectingOptionGetPayload<T>>
 
     /**
-     * Find zero or more ServiceAvailables that matches the filter.
+     * Find zero or more CollectingOptions that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ServiceAvailableFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @param {CollectingOptionFindManyArgs=} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all ServiceAvailables
-     * const serviceAvailables = await prisma.serviceAvailable.findMany()
+     * // Get all CollectingOptions
+     * const collectingOptions = await prisma.collectingOption.findMany()
      * 
-     * // Get first 10 ServiceAvailables
-     * const serviceAvailables = await prisma.serviceAvailable.findMany({ take: 10 })
+     * // Get first 10 CollectingOptions
+     * const collectingOptions = await prisma.collectingOption.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const serviceAvailableWithIdOnly = await prisma.serviceAvailable.findMany({ select: { id: true } })
+     * const collectingOptionWithIdOnly = await prisma.collectingOption.findMany({ select: { id: true } })
      * 
     **/
-    findMany<T extends ServiceAvailableFindManyArgs>(
-      args?: SelectSubset<T, ServiceAvailableFindManyArgs>
-    ): Prisma.PrismaPromise<Array<ServiceAvailableGetPayload<T>>>
+    findMany<T extends CollectingOptionFindManyArgs>(
+      args?: SelectSubset<T, CollectingOptionFindManyArgs>
+    ): Prisma.PrismaPromise<Array<CollectingOptionGetPayload<T>>>
 
     /**
-     * Create a ServiceAvailable.
-     * @param {ServiceAvailableCreateArgs} args - Arguments to create a ServiceAvailable.
+     * Create a CollectingOption.
+     * @param {CollectingOptionCreateArgs} args - Arguments to create a CollectingOption.
      * @example
-     * // Create one ServiceAvailable
-     * const ServiceAvailable = await prisma.serviceAvailable.create({
+     * // Create one CollectingOption
+     * const CollectingOption = await prisma.collectingOption.create({
      *   data: {
-     *     // ... data to create a ServiceAvailable
+     *     // ... data to create a CollectingOption
      *   }
      * })
      * 
     **/
-    create<T extends ServiceAvailableCreateArgs>(
-      args: SelectSubset<T, ServiceAvailableCreateArgs>
-    ): Prisma__ServiceAvailableClient<ServiceAvailableGetPayload<T>>
+    create<T extends CollectingOptionCreateArgs>(
+      args: SelectSubset<T, CollectingOptionCreateArgs>
+    ): Prisma__CollectingOptionClient<CollectingOptionGetPayload<T>>
 
     /**
-     * Create many ServiceAvailables.
-     *     @param {ServiceAvailableCreateManyArgs} args - Arguments to create many ServiceAvailables.
+     * Create many CollectingOptions.
+     *     @param {CollectingOptionCreateManyArgs} args - Arguments to create many CollectingOptions.
      *     @example
-     *     // Create many ServiceAvailables
-     *     const serviceAvailable = await prisma.serviceAvailable.createMany({
+     *     // Create many CollectingOptions
+     *     const collectingOption = await prisma.collectingOption.createMany({
      *       data: {
      *         // ... provide data here
      *       }
      *     })
      *     
     **/
-    createMany<T extends ServiceAvailableCreateManyArgs>(
-      args?: SelectSubset<T, ServiceAvailableCreateManyArgs>
+    createMany<T extends CollectingOptionCreateManyArgs>(
+      args?: SelectSubset<T, CollectingOptionCreateManyArgs>
     ): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Delete a ServiceAvailable.
-     * @param {ServiceAvailableDeleteArgs} args - Arguments to delete one ServiceAvailable.
+     * Delete a CollectingOption.
+     * @param {CollectingOptionDeleteArgs} args - Arguments to delete one CollectingOption.
      * @example
-     * // Delete one ServiceAvailable
-     * const ServiceAvailable = await prisma.serviceAvailable.delete({
+     * // Delete one CollectingOption
+     * const CollectingOption = await prisma.collectingOption.delete({
      *   where: {
-     *     // ... filter to delete one ServiceAvailable
+     *     // ... filter to delete one CollectingOption
      *   }
      * })
      * 
     **/
-    delete<T extends ServiceAvailableDeleteArgs>(
-      args: SelectSubset<T, ServiceAvailableDeleteArgs>
-    ): Prisma__ServiceAvailableClient<ServiceAvailableGetPayload<T>>
+    delete<T extends CollectingOptionDeleteArgs>(
+      args: SelectSubset<T, CollectingOptionDeleteArgs>
+    ): Prisma__CollectingOptionClient<CollectingOptionGetPayload<T>>
 
     /**
-     * Update one ServiceAvailable.
-     * @param {ServiceAvailableUpdateArgs} args - Arguments to update one ServiceAvailable.
+     * Update one CollectingOption.
+     * @param {CollectingOptionUpdateArgs} args - Arguments to update one CollectingOption.
      * @example
-     * // Update one ServiceAvailable
-     * const serviceAvailable = await prisma.serviceAvailable.update({
+     * // Update one CollectingOption
+     * const collectingOption = await prisma.collectingOption.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -8506,34 +9887,34 @@ export namespace Prisma {
      * })
      * 
     **/
-    update<T extends ServiceAvailableUpdateArgs>(
-      args: SelectSubset<T, ServiceAvailableUpdateArgs>
-    ): Prisma__ServiceAvailableClient<ServiceAvailableGetPayload<T>>
+    update<T extends CollectingOptionUpdateArgs>(
+      args: SelectSubset<T, CollectingOptionUpdateArgs>
+    ): Prisma__CollectingOptionClient<CollectingOptionGetPayload<T>>
 
     /**
-     * Delete zero or more ServiceAvailables.
-     * @param {ServiceAvailableDeleteManyArgs} args - Arguments to filter ServiceAvailables to delete.
+     * Delete zero or more CollectingOptions.
+     * @param {CollectingOptionDeleteManyArgs} args - Arguments to filter CollectingOptions to delete.
      * @example
-     * // Delete a few ServiceAvailables
-     * const { count } = await prisma.serviceAvailable.deleteMany({
+     * // Delete a few CollectingOptions
+     * const { count } = await prisma.collectingOption.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
     **/
-    deleteMany<T extends ServiceAvailableDeleteManyArgs>(
-      args?: SelectSubset<T, ServiceAvailableDeleteManyArgs>
+    deleteMany<T extends CollectingOptionDeleteManyArgs>(
+      args?: SelectSubset<T, CollectingOptionDeleteManyArgs>
     ): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more ServiceAvailables.
+     * Update zero or more CollectingOptions.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ServiceAvailableUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {CollectingOptionUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many ServiceAvailables
-     * const serviceAvailable = await prisma.serviceAvailable.updateMany({
+     * // Update many CollectingOptions
+     * const collectingOption = await prisma.collectingOption.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -8543,59 +9924,59 @@ export namespace Prisma {
      * })
      * 
     **/
-    updateMany<T extends ServiceAvailableUpdateManyArgs>(
-      args: SelectSubset<T, ServiceAvailableUpdateManyArgs>
+    updateMany<T extends CollectingOptionUpdateManyArgs>(
+      args: SelectSubset<T, CollectingOptionUpdateManyArgs>
     ): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one ServiceAvailable.
-     * @param {ServiceAvailableUpsertArgs} args - Arguments to update or create a ServiceAvailable.
+     * Create or update one CollectingOption.
+     * @param {CollectingOptionUpsertArgs} args - Arguments to update or create a CollectingOption.
      * @example
-     * // Update or create a ServiceAvailable
-     * const serviceAvailable = await prisma.serviceAvailable.upsert({
+     * // Update or create a CollectingOption
+     * const collectingOption = await prisma.collectingOption.upsert({
      *   create: {
-     *     // ... data to create a ServiceAvailable
+     *     // ... data to create a CollectingOption
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the ServiceAvailable we want to update
+     *     // ... the filter for the CollectingOption we want to update
      *   }
      * })
     **/
-    upsert<T extends ServiceAvailableUpsertArgs>(
-      args: SelectSubset<T, ServiceAvailableUpsertArgs>
-    ): Prisma__ServiceAvailableClient<ServiceAvailableGetPayload<T>>
+    upsert<T extends CollectingOptionUpsertArgs>(
+      args: SelectSubset<T, CollectingOptionUpsertArgs>
+    ): Prisma__CollectingOptionClient<CollectingOptionGetPayload<T>>
 
     /**
-     * Count the number of ServiceAvailables.
+     * Count the number of CollectingOptions.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ServiceAvailableCountArgs} args - Arguments to filter ServiceAvailables to count.
+     * @param {CollectingOptionCountArgs} args - Arguments to filter CollectingOptions to count.
      * @example
-     * // Count the number of ServiceAvailables
-     * const count = await prisma.serviceAvailable.count({
+     * // Count the number of CollectingOptions
+     * const count = await prisma.collectingOption.count({
      *   where: {
-     *     // ... the filter for the ServiceAvailables we want to count
+     *     // ... the filter for the CollectingOptions we want to count
      *   }
      * })
     **/
-    count<T extends ServiceAvailableCountArgs>(
-      args?: Subset<T, ServiceAvailableCountArgs>,
+    count<T extends CollectingOptionCountArgs>(
+      args?: Subset<T, CollectingOptionCountArgs>,
     ): Prisma.PrismaPromise<
       T extends _Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], ServiceAvailableCountAggregateOutputType>
+          : GetScalarType<T['select'], CollectingOptionCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a ServiceAvailable.
+     * Allows you to perform aggregations operations on a CollectingOption.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ServiceAvailableAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {CollectingOptionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -8615,13 +9996,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends ServiceAvailableAggregateArgs>(args: Subset<T, ServiceAvailableAggregateArgs>): Prisma.PrismaPromise<GetServiceAvailableAggregateType<T>>
+    aggregate<T extends CollectingOptionAggregateArgs>(args: Subset<T, CollectingOptionAggregateArgs>): Prisma.PrismaPromise<GetCollectingOptionAggregateType<T>>
 
     /**
-     * Group by ServiceAvailable.
+     * Group by CollectingOption.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ServiceAvailableGroupByArgs} args - Group by arguments.
+     * @param {CollectingOptionGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -8636,14 +10017,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends ServiceAvailableGroupByArgs,
+      T extends CollectingOptionGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ServiceAvailableGroupByArgs['orderBy'] }
-        : { orderBy?: ServiceAvailableGroupByArgs['orderBy'] },
+        ? { orderBy: CollectingOptionGroupByArgs['orderBy'] }
+        : { orderBy?: CollectingOptionGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -8692,17 +10073,17 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, ServiceAvailableGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetServiceAvailableGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, CollectingOptionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCollectingOptionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
 
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for ServiceAvailable.
+   * The delegate class that acts as a "Promise-like" for CollectingOption.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__ServiceAvailableClient<T, Null = never> implements Prisma.PrismaPromise<T> {
+  export class Prisma__CollectingOptionClient<T, Null = never> implements Prisma.PrismaPromise<T> {
     private readonly _dmmf;
     private readonly _queryType;
     private readonly _rootField;
@@ -8717,9 +10098,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
     constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
 
-    location<T extends LocationArgs= {}>(args?: Subset<T, LocationArgs>): Prisma__LocationClient<LocationGetPayload<T> | Null>;
-
-    service<T extends ServiceArgs= {}>(args?: Subset<T, ServiceArgs>): Prisma__ServiceClient<ServiceGetPayload<T> | Null>;
+    locations<T extends CollectingOption$locationsArgs= {}>(args?: Subset<T, CollectingOption$locationsArgs>): Prisma.PrismaPromise<Array<LocationGetPayload<T>>| Null>;
 
     private get _document();
     /**
@@ -8749,27 +10128,27 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * ServiceAvailable base type for findUnique actions
+   * CollectingOption base type for findUnique actions
    */
-  export type ServiceAvailableFindUniqueArgsBase = {
+  export type CollectingOptionFindUniqueArgsBase = {
     /**
-     * Select specific fields to fetch from the ServiceAvailable
+     * Select specific fields to fetch from the CollectingOption
      */
-    select?: ServiceAvailableSelect | null
+    select?: CollectingOptionSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ServiceAvailableInclude | null
+    include?: CollectingOptionInclude | null
     /**
-     * Filter, which ServiceAvailable to fetch.
+     * Filter, which CollectingOption to fetch.
      */
-    where: ServiceAvailableWhereUniqueInput
+    where: CollectingOptionWhereUniqueInput
   }
 
   /**
-   * ServiceAvailable findUnique
+   * CollectingOption findUnique
    */
-  export interface ServiceAvailableFindUniqueArgs extends ServiceAvailableFindUniqueArgsBase {
+  export interface CollectingOptionFindUniqueArgs extends CollectingOptionFindUniqueArgsBase {
    /**
     * Throw an Error if query returns no results
     * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
@@ -8779,76 +10158,76 @@ export namespace Prisma {
       
 
   /**
-   * ServiceAvailable findUniqueOrThrow
+   * CollectingOption findUniqueOrThrow
    */
-  export type ServiceAvailableFindUniqueOrThrowArgs = {
+  export type CollectingOptionFindUniqueOrThrowArgs = {
     /**
-     * Select specific fields to fetch from the ServiceAvailable
+     * Select specific fields to fetch from the CollectingOption
      */
-    select?: ServiceAvailableSelect | null
+    select?: CollectingOptionSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ServiceAvailableInclude | null
+    include?: CollectingOptionInclude | null
     /**
-     * Filter, which ServiceAvailable to fetch.
+     * Filter, which CollectingOption to fetch.
      */
-    where: ServiceAvailableWhereUniqueInput
+    where: CollectingOptionWhereUniqueInput
   }
 
 
   /**
-   * ServiceAvailable base type for findFirst actions
+   * CollectingOption base type for findFirst actions
    */
-  export type ServiceAvailableFindFirstArgsBase = {
+  export type CollectingOptionFindFirstArgsBase = {
     /**
-     * Select specific fields to fetch from the ServiceAvailable
+     * Select specific fields to fetch from the CollectingOption
      */
-    select?: ServiceAvailableSelect | null
+    select?: CollectingOptionSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ServiceAvailableInclude | null
+    include?: CollectingOptionInclude | null
     /**
-     * Filter, which ServiceAvailable to fetch.
+     * Filter, which CollectingOption to fetch.
      */
-    where?: ServiceAvailableWhereInput
+    where?: CollectingOptionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ServiceAvailables to fetch.
+     * Determine the order of CollectingOptions to fetch.
      */
-    orderBy?: Enumerable<ServiceAvailableOrderByWithRelationInput>
+    orderBy?: Enumerable<CollectingOptionOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for ServiceAvailables.
+     * Sets the position for searching for CollectingOptions.
      */
-    cursor?: ServiceAvailableWhereUniqueInput
+    cursor?: CollectingOptionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ServiceAvailables from the position of the cursor.
+     * Take `±n` CollectingOptions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ServiceAvailables.
+     * Skip the first `n` CollectingOptions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of ServiceAvailables.
+     * Filter by unique combinations of CollectingOptions.
      */
-    distinct?: Enumerable<ServiceAvailableScalarFieldEnum>
+    distinct?: Enumerable<CollectingOptionScalarFieldEnum>
   }
 
   /**
-   * ServiceAvailable findFirst
+   * CollectingOption findFirst
    */
-  export interface ServiceAvailableFindFirstArgs extends ServiceAvailableFindFirstArgsBase {
+  export interface CollectingOptionFindFirstArgs extends CollectingOptionFindFirstArgsBase {
    /**
     * Throw an Error if query returns no results
     * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
@@ -8858,236 +10237,3176 @@ export namespace Prisma {
       
 
   /**
-   * ServiceAvailable findFirstOrThrow
+   * CollectingOption findFirstOrThrow
    */
-  export type ServiceAvailableFindFirstOrThrowArgs = {
+  export type CollectingOptionFindFirstOrThrowArgs = {
     /**
-     * Select specific fields to fetch from the ServiceAvailable
+     * Select specific fields to fetch from the CollectingOption
      */
-    select?: ServiceAvailableSelect | null
+    select?: CollectingOptionSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ServiceAvailableInclude | null
+    include?: CollectingOptionInclude | null
     /**
-     * Filter, which ServiceAvailable to fetch.
+     * Filter, which CollectingOption to fetch.
      */
-    where?: ServiceAvailableWhereInput
+    where?: CollectingOptionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ServiceAvailables to fetch.
+     * Determine the order of CollectingOptions to fetch.
      */
-    orderBy?: Enumerable<ServiceAvailableOrderByWithRelationInput>
+    orderBy?: Enumerable<CollectingOptionOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for ServiceAvailables.
+     * Sets the position for searching for CollectingOptions.
      */
-    cursor?: ServiceAvailableWhereUniqueInput
+    cursor?: CollectingOptionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ServiceAvailables from the position of the cursor.
+     * Take `±n` CollectingOptions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ServiceAvailables.
+     * Skip the first `n` CollectingOptions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of ServiceAvailables.
+     * Filter by unique combinations of CollectingOptions.
      */
-    distinct?: Enumerable<ServiceAvailableScalarFieldEnum>
+    distinct?: Enumerable<CollectingOptionScalarFieldEnum>
   }
 
 
   /**
-   * ServiceAvailable findMany
+   * CollectingOption findMany
    */
-  export type ServiceAvailableFindManyArgs = {
+  export type CollectingOptionFindManyArgs = {
     /**
-     * Select specific fields to fetch from the ServiceAvailable
+     * Select specific fields to fetch from the CollectingOption
      */
-    select?: ServiceAvailableSelect | null
+    select?: CollectingOptionSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ServiceAvailableInclude | null
+    include?: CollectingOptionInclude | null
     /**
-     * Filter, which ServiceAvailables to fetch.
+     * Filter, which CollectingOptions to fetch.
      */
-    where?: ServiceAvailableWhereInput
+    where?: CollectingOptionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ServiceAvailables to fetch.
+     * Determine the order of CollectingOptions to fetch.
      */
-    orderBy?: Enumerable<ServiceAvailableOrderByWithRelationInput>
+    orderBy?: Enumerable<CollectingOptionOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing ServiceAvailables.
+     * Sets the position for listing CollectingOptions.
      */
-    cursor?: ServiceAvailableWhereUniqueInput
+    cursor?: CollectingOptionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ServiceAvailables from the position of the cursor.
+     * Take `±n` CollectingOptions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ServiceAvailables.
+     * Skip the first `n` CollectingOptions.
      */
     skip?: number
-    distinct?: Enumerable<ServiceAvailableScalarFieldEnum>
+    distinct?: Enumerable<CollectingOptionScalarFieldEnum>
   }
 
 
   /**
-   * ServiceAvailable create
+   * CollectingOption create
    */
-  export type ServiceAvailableCreateArgs = {
+  export type CollectingOptionCreateArgs = {
     /**
-     * Select specific fields to fetch from the ServiceAvailable
+     * Select specific fields to fetch from the CollectingOption
      */
-    select?: ServiceAvailableSelect | null
+    select?: CollectingOptionSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ServiceAvailableInclude | null
+    include?: CollectingOptionInclude | null
     /**
-     * The data needed to create a ServiceAvailable.
+     * The data needed to create a CollectingOption.
      */
-    data: XOR<ServiceAvailableCreateInput, ServiceAvailableUncheckedCreateInput>
+    data: XOR<CollectingOptionCreateInput, CollectingOptionUncheckedCreateInput>
   }
 
 
   /**
-   * ServiceAvailable createMany
+   * CollectingOption createMany
    */
-  export type ServiceAvailableCreateManyArgs = {
+  export type CollectingOptionCreateManyArgs = {
     /**
-     * The data used to create many ServiceAvailables.
+     * The data used to create many CollectingOptions.
      */
-    data: Enumerable<ServiceAvailableCreateManyInput>
+    data: Enumerable<CollectingOptionCreateManyInput>
     skipDuplicates?: boolean
   }
 
 
   /**
-   * ServiceAvailable update
+   * CollectingOption update
    */
-  export type ServiceAvailableUpdateArgs = {
+  export type CollectingOptionUpdateArgs = {
     /**
-     * Select specific fields to fetch from the ServiceAvailable
+     * Select specific fields to fetch from the CollectingOption
      */
-    select?: ServiceAvailableSelect | null
+    select?: CollectingOptionSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ServiceAvailableInclude | null
+    include?: CollectingOptionInclude | null
     /**
-     * The data needed to update a ServiceAvailable.
+     * The data needed to update a CollectingOption.
      */
-    data: XOR<ServiceAvailableUpdateInput, ServiceAvailableUncheckedUpdateInput>
+    data: XOR<CollectingOptionUpdateInput, CollectingOptionUncheckedUpdateInput>
     /**
-     * Choose, which ServiceAvailable to update.
+     * Choose, which CollectingOption to update.
      */
-    where: ServiceAvailableWhereUniqueInput
+    where: CollectingOptionWhereUniqueInput
   }
 
 
   /**
-   * ServiceAvailable updateMany
+   * CollectingOption updateMany
    */
-  export type ServiceAvailableUpdateManyArgs = {
+  export type CollectingOptionUpdateManyArgs = {
     /**
-     * The data used to update ServiceAvailables.
+     * The data used to update CollectingOptions.
      */
-    data: XOR<ServiceAvailableUpdateManyMutationInput, ServiceAvailableUncheckedUpdateManyInput>
+    data: XOR<CollectingOptionUpdateManyMutationInput, CollectingOptionUncheckedUpdateManyInput>
     /**
-     * Filter which ServiceAvailables to update
+     * Filter which CollectingOptions to update
      */
-    where?: ServiceAvailableWhereInput
+    where?: CollectingOptionWhereInput
   }
 
 
   /**
-   * ServiceAvailable upsert
+   * CollectingOption upsert
    */
-  export type ServiceAvailableUpsertArgs = {
+  export type CollectingOptionUpsertArgs = {
     /**
-     * Select specific fields to fetch from the ServiceAvailable
+     * Select specific fields to fetch from the CollectingOption
      */
-    select?: ServiceAvailableSelect | null
+    select?: CollectingOptionSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ServiceAvailableInclude | null
+    include?: CollectingOptionInclude | null
     /**
-     * The filter to search for the ServiceAvailable to update in case it exists.
+     * The filter to search for the CollectingOption to update in case it exists.
      */
-    where: ServiceAvailableWhereUniqueInput
+    where: CollectingOptionWhereUniqueInput
     /**
-     * In case the ServiceAvailable found by the `where` argument doesn't exist, create a new ServiceAvailable with this data.
+     * In case the CollectingOption found by the `where` argument doesn't exist, create a new CollectingOption with this data.
      */
-    create: XOR<ServiceAvailableCreateInput, ServiceAvailableUncheckedCreateInput>
+    create: XOR<CollectingOptionCreateInput, CollectingOptionUncheckedCreateInput>
     /**
-     * In case the ServiceAvailable was found with the provided `where` argument, update it with this data.
+     * In case the CollectingOption was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<ServiceAvailableUpdateInput, ServiceAvailableUncheckedUpdateInput>
+    update: XOR<CollectingOptionUpdateInput, CollectingOptionUncheckedUpdateInput>
   }
 
 
   /**
-   * ServiceAvailable delete
+   * CollectingOption delete
    */
-  export type ServiceAvailableDeleteArgs = {
+  export type CollectingOptionDeleteArgs = {
     /**
-     * Select specific fields to fetch from the ServiceAvailable
+     * Select specific fields to fetch from the CollectingOption
      */
-    select?: ServiceAvailableSelect | null
+    select?: CollectingOptionSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ServiceAvailableInclude | null
+    include?: CollectingOptionInclude | null
     /**
-     * Filter which ServiceAvailable to delete.
+     * Filter which CollectingOption to delete.
      */
-    where: ServiceAvailableWhereUniqueInput
+    where: CollectingOptionWhereUniqueInput
   }
 
 
   /**
-   * ServiceAvailable deleteMany
+   * CollectingOption deleteMany
    */
-  export type ServiceAvailableDeleteManyArgs = {
+  export type CollectingOptionDeleteManyArgs = {
     /**
-     * Filter which ServiceAvailables to delete
+     * Filter which CollectingOptions to delete
      */
-    where?: ServiceAvailableWhereInput
+    where?: CollectingOptionWhereInput
   }
 
 
   /**
-   * ServiceAvailable without action
+   * CollectingOption.locations
    */
-  export type ServiceAvailableArgs = {
+  export type CollectingOption$locationsArgs = {
     /**
-     * Select specific fields to fetch from the ServiceAvailable
+     * Select specific fields to fetch from the Location
      */
-    select?: ServiceAvailableSelect | null
+    select?: LocationSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ServiceAvailableInclude | null
+    include?: LocationInclude | null
+    where?: LocationWhereInput
+    orderBy?: Enumerable<LocationOrderByWithRelationInput>
+    cursor?: LocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<LocationScalarFieldEnum>
+  }
+
+
+  /**
+   * CollectingOption without action
+   */
+  export type CollectingOptionArgs = {
+    /**
+     * Select specific fields to fetch from the CollectingOption
+     */
+    select?: CollectingOptionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CollectingOptionInclude | null
+  }
+
+
+
+  /**
+   * Model ProcessingOption
+   */
+
+
+  export type AggregateProcessingOption = {
+    _count: ProcessingOptionCountAggregateOutputType | null
+    _min: ProcessingOptionMinAggregateOutputType | null
+    _max: ProcessingOptionMaxAggregateOutputType | null
+  }
+
+  export type ProcessingOptionMinAggregateOutputType = {
+    id: string | null
+    optionName: string | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+  }
+
+  export type ProcessingOptionMaxAggregateOutputType = {
+    id: string | null
+    optionName: string | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+  }
+
+  export type ProcessingOptionCountAggregateOutputType = {
+    id: number
+    optionName: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    _all: number
+  }
+
+
+  export type ProcessingOptionMinAggregateInputType = {
+    id?: true
+    optionName?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+  }
+
+  export type ProcessingOptionMaxAggregateInputType = {
+    id?: true
+    optionName?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+  }
+
+  export type ProcessingOptionCountAggregateInputType = {
+    id?: true
+    optionName?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    _all?: true
+  }
+
+  export type ProcessingOptionAggregateArgs = {
+    /**
+     * Filter which ProcessingOption to aggregate.
+     */
+    where?: ProcessingOptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProcessingOptions to fetch.
+     */
+    orderBy?: Enumerable<ProcessingOptionOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProcessingOptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProcessingOptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProcessingOptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ProcessingOptions
+    **/
+    _count?: true | ProcessingOptionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProcessingOptionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProcessingOptionMaxAggregateInputType
+  }
+
+  export type GetProcessingOptionAggregateType<T extends ProcessingOptionAggregateArgs> = {
+        [P in keyof T & keyof AggregateProcessingOption]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProcessingOption[P]>
+      : GetScalarType<T[P], AggregateProcessingOption[P]>
+  }
+
+
+
+
+  export type ProcessingOptionGroupByArgs = {
+    where?: ProcessingOptionWhereInput
+    orderBy?: Enumerable<ProcessingOptionOrderByWithAggregationInput>
+    by: ProcessingOptionScalarFieldEnum[]
+    having?: ProcessingOptionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProcessingOptionCountAggregateInputType | true
+    _min?: ProcessingOptionMinAggregateInputType
+    _max?: ProcessingOptionMaxAggregateInputType
+  }
+
+
+  export type ProcessingOptionGroupByOutputType = {
+    id: string
+    optionName: string
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    _count: ProcessingOptionCountAggregateOutputType | null
+    _min: ProcessingOptionMinAggregateOutputType | null
+    _max: ProcessingOptionMaxAggregateOutputType | null
+  }
+
+  type GetProcessingOptionGroupByPayload<T extends ProcessingOptionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<ProcessingOptionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProcessingOptionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProcessingOptionGroupByOutputType[P]>
+            : GetScalarType<T[P], ProcessingOptionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProcessingOptionSelect = {
+    id?: boolean
+    optionName?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    locations?: boolean | ProcessingOption$locationsArgs
+    _count?: boolean | ProcessingOptionCountOutputTypeArgs
+  }
+
+
+  export type ProcessingOptionInclude = {
+    locations?: boolean | ProcessingOption$locationsArgs
+    _count?: boolean | ProcessingOptionCountOutputTypeArgs
+  }
+
+  export type ProcessingOptionGetPayload<S extends boolean | null | undefined | ProcessingOptionArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? ProcessingOption :
+    S extends undefined ? never :
+    S extends { include: any } & (ProcessingOptionArgs | ProcessingOptionFindManyArgs)
+    ? ProcessingOption  & {
+    [P in TruthyKeys<S['include']>]:
+        P extends 'locations' ? Array < LocationGetPayload<S['include'][P]>>  :
+        P extends '_count' ? ProcessingOptionCountOutputTypeGetPayload<S['include'][P]> :  never
+  } 
+    : S extends { select: any } & (ProcessingOptionArgs | ProcessingOptionFindManyArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+        P extends 'locations' ? Array < LocationGetPayload<S['select'][P]>>  :
+        P extends '_count' ? ProcessingOptionCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof ProcessingOption ? ProcessingOption[P] : never
+  } 
+      : ProcessingOption
+
+
+  type ProcessingOptionCountArgs = 
+    Omit<ProcessingOptionFindManyArgs, 'select' | 'include'> & {
+      select?: ProcessingOptionCountAggregateInputType | true
+    }
+
+  export interface ProcessingOptionDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
+    /**
+     * Find zero or one ProcessingOption that matches the filter.
+     * @param {ProcessingOptionFindUniqueArgs} args - Arguments to find a ProcessingOption
+     * @example
+     * // Get one ProcessingOption
+     * const processingOption = await prisma.processingOption.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends ProcessingOptionFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, ProcessingOptionFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'ProcessingOption'> extends True ? Prisma__ProcessingOptionClient<ProcessingOptionGetPayload<T>> : Prisma__ProcessingOptionClient<ProcessingOptionGetPayload<T> | null, null>
+
+    /**
+     * Find one ProcessingOption that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {ProcessingOptionFindUniqueOrThrowArgs} args - Arguments to find a ProcessingOption
+     * @example
+     * // Get one ProcessingOption
+     * const processingOption = await prisma.processingOption.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends ProcessingOptionFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, ProcessingOptionFindUniqueOrThrowArgs>
+    ): Prisma__ProcessingOptionClient<ProcessingOptionGetPayload<T>>
+
+    /**
+     * Find the first ProcessingOption that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProcessingOptionFindFirstArgs} args - Arguments to find a ProcessingOption
+     * @example
+     * // Get one ProcessingOption
+     * const processingOption = await prisma.processingOption.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends ProcessingOptionFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, ProcessingOptionFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'ProcessingOption'> extends True ? Prisma__ProcessingOptionClient<ProcessingOptionGetPayload<T>> : Prisma__ProcessingOptionClient<ProcessingOptionGetPayload<T> | null, null>
+
+    /**
+     * Find the first ProcessingOption that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProcessingOptionFindFirstOrThrowArgs} args - Arguments to find a ProcessingOption
+     * @example
+     * // Get one ProcessingOption
+     * const processingOption = await prisma.processingOption.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends ProcessingOptionFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, ProcessingOptionFindFirstOrThrowArgs>
+    ): Prisma__ProcessingOptionClient<ProcessingOptionGetPayload<T>>
+
+    /**
+     * Find zero or more ProcessingOptions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProcessingOptionFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ProcessingOptions
+     * const processingOptions = await prisma.processingOption.findMany()
+     * 
+     * // Get first 10 ProcessingOptions
+     * const processingOptions = await prisma.processingOption.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const processingOptionWithIdOnly = await prisma.processingOption.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends ProcessingOptionFindManyArgs>(
+      args?: SelectSubset<T, ProcessingOptionFindManyArgs>
+    ): Prisma.PrismaPromise<Array<ProcessingOptionGetPayload<T>>>
+
+    /**
+     * Create a ProcessingOption.
+     * @param {ProcessingOptionCreateArgs} args - Arguments to create a ProcessingOption.
+     * @example
+     * // Create one ProcessingOption
+     * const ProcessingOption = await prisma.processingOption.create({
+     *   data: {
+     *     // ... data to create a ProcessingOption
+     *   }
+     * })
+     * 
+    **/
+    create<T extends ProcessingOptionCreateArgs>(
+      args: SelectSubset<T, ProcessingOptionCreateArgs>
+    ): Prisma__ProcessingOptionClient<ProcessingOptionGetPayload<T>>
+
+    /**
+     * Create many ProcessingOptions.
+     *     @param {ProcessingOptionCreateManyArgs} args - Arguments to create many ProcessingOptions.
+     *     @example
+     *     // Create many ProcessingOptions
+     *     const processingOption = await prisma.processingOption.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends ProcessingOptionCreateManyArgs>(
+      args?: SelectSubset<T, ProcessingOptionCreateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a ProcessingOption.
+     * @param {ProcessingOptionDeleteArgs} args - Arguments to delete one ProcessingOption.
+     * @example
+     * // Delete one ProcessingOption
+     * const ProcessingOption = await prisma.processingOption.delete({
+     *   where: {
+     *     // ... filter to delete one ProcessingOption
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends ProcessingOptionDeleteArgs>(
+      args: SelectSubset<T, ProcessingOptionDeleteArgs>
+    ): Prisma__ProcessingOptionClient<ProcessingOptionGetPayload<T>>
+
+    /**
+     * Update one ProcessingOption.
+     * @param {ProcessingOptionUpdateArgs} args - Arguments to update one ProcessingOption.
+     * @example
+     * // Update one ProcessingOption
+     * const processingOption = await prisma.processingOption.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends ProcessingOptionUpdateArgs>(
+      args: SelectSubset<T, ProcessingOptionUpdateArgs>
+    ): Prisma__ProcessingOptionClient<ProcessingOptionGetPayload<T>>
+
+    /**
+     * Delete zero or more ProcessingOptions.
+     * @param {ProcessingOptionDeleteManyArgs} args - Arguments to filter ProcessingOptions to delete.
+     * @example
+     * // Delete a few ProcessingOptions
+     * const { count } = await prisma.processingOption.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends ProcessingOptionDeleteManyArgs>(
+      args?: SelectSubset<T, ProcessingOptionDeleteManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProcessingOptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProcessingOptionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ProcessingOptions
+     * const processingOption = await prisma.processingOption.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends ProcessingOptionUpdateManyArgs>(
+      args: SelectSubset<T, ProcessingOptionUpdateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ProcessingOption.
+     * @param {ProcessingOptionUpsertArgs} args - Arguments to update or create a ProcessingOption.
+     * @example
+     * // Update or create a ProcessingOption
+     * const processingOption = await prisma.processingOption.upsert({
+     *   create: {
+     *     // ... data to create a ProcessingOption
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ProcessingOption we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends ProcessingOptionUpsertArgs>(
+      args: SelectSubset<T, ProcessingOptionUpsertArgs>
+    ): Prisma__ProcessingOptionClient<ProcessingOptionGetPayload<T>>
+
+    /**
+     * Count the number of ProcessingOptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProcessingOptionCountArgs} args - Arguments to filter ProcessingOptions to count.
+     * @example
+     * // Count the number of ProcessingOptions
+     * const count = await prisma.processingOption.count({
+     *   where: {
+     *     // ... the filter for the ProcessingOptions we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProcessingOptionCountArgs>(
+      args?: Subset<T, ProcessingOptionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProcessingOptionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ProcessingOption.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProcessingOptionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProcessingOptionAggregateArgs>(args: Subset<T, ProcessingOptionAggregateArgs>): Prisma.PrismaPromise<GetProcessingOptionAggregateType<T>>
+
+    /**
+     * Group by ProcessingOption.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProcessingOptionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProcessingOptionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProcessingOptionGroupByArgs['orderBy'] }
+        : { orderBy?: ProcessingOptionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProcessingOptionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProcessingOptionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ProcessingOption.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__ProcessingOptionClient<T, Null = never> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    locations<T extends ProcessingOption$locationsArgs= {}>(args?: Subset<T, ProcessingOption$locationsArgs>): Prisma.PrismaPromise<Array<LocationGetPayload<T>>| Null>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * ProcessingOption base type for findUnique actions
+   */
+  export type ProcessingOptionFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the ProcessingOption
+     */
+    select?: ProcessingOptionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ProcessingOptionInclude | null
+    /**
+     * Filter, which ProcessingOption to fetch.
+     */
+    where: ProcessingOptionWhereUniqueInput
+  }
+
+  /**
+   * ProcessingOption findUnique
+   */
+  export interface ProcessingOptionFindUniqueArgs extends ProcessingOptionFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * ProcessingOption findUniqueOrThrow
+   */
+  export type ProcessingOptionFindUniqueOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the ProcessingOption
+     */
+    select?: ProcessingOptionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ProcessingOptionInclude | null
+    /**
+     * Filter, which ProcessingOption to fetch.
+     */
+    where: ProcessingOptionWhereUniqueInput
+  }
+
+
+  /**
+   * ProcessingOption base type for findFirst actions
+   */
+  export type ProcessingOptionFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the ProcessingOption
+     */
+    select?: ProcessingOptionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ProcessingOptionInclude | null
+    /**
+     * Filter, which ProcessingOption to fetch.
+     */
+    where?: ProcessingOptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProcessingOptions to fetch.
+     */
+    orderBy?: Enumerable<ProcessingOptionOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProcessingOptions.
+     */
+    cursor?: ProcessingOptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProcessingOptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProcessingOptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProcessingOptions.
+     */
+    distinct?: Enumerable<ProcessingOptionScalarFieldEnum>
+  }
+
+  /**
+   * ProcessingOption findFirst
+   */
+  export interface ProcessingOptionFindFirstArgs extends ProcessingOptionFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * ProcessingOption findFirstOrThrow
+   */
+  export type ProcessingOptionFindFirstOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the ProcessingOption
+     */
+    select?: ProcessingOptionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ProcessingOptionInclude | null
+    /**
+     * Filter, which ProcessingOption to fetch.
+     */
+    where?: ProcessingOptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProcessingOptions to fetch.
+     */
+    orderBy?: Enumerable<ProcessingOptionOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProcessingOptions.
+     */
+    cursor?: ProcessingOptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProcessingOptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProcessingOptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProcessingOptions.
+     */
+    distinct?: Enumerable<ProcessingOptionScalarFieldEnum>
+  }
+
+
+  /**
+   * ProcessingOption findMany
+   */
+  export type ProcessingOptionFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the ProcessingOption
+     */
+    select?: ProcessingOptionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ProcessingOptionInclude | null
+    /**
+     * Filter, which ProcessingOptions to fetch.
+     */
+    where?: ProcessingOptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProcessingOptions to fetch.
+     */
+    orderBy?: Enumerable<ProcessingOptionOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ProcessingOptions.
+     */
+    cursor?: ProcessingOptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProcessingOptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProcessingOptions.
+     */
+    skip?: number
+    distinct?: Enumerable<ProcessingOptionScalarFieldEnum>
+  }
+
+
+  /**
+   * ProcessingOption create
+   */
+  export type ProcessingOptionCreateArgs = {
+    /**
+     * Select specific fields to fetch from the ProcessingOption
+     */
+    select?: ProcessingOptionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ProcessingOptionInclude | null
+    /**
+     * The data needed to create a ProcessingOption.
+     */
+    data: XOR<ProcessingOptionCreateInput, ProcessingOptionUncheckedCreateInput>
+  }
+
+
+  /**
+   * ProcessingOption createMany
+   */
+  export type ProcessingOptionCreateManyArgs = {
+    /**
+     * The data used to create many ProcessingOptions.
+     */
+    data: Enumerable<ProcessingOptionCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * ProcessingOption update
+   */
+  export type ProcessingOptionUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the ProcessingOption
+     */
+    select?: ProcessingOptionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ProcessingOptionInclude | null
+    /**
+     * The data needed to update a ProcessingOption.
+     */
+    data: XOR<ProcessingOptionUpdateInput, ProcessingOptionUncheckedUpdateInput>
+    /**
+     * Choose, which ProcessingOption to update.
+     */
+    where: ProcessingOptionWhereUniqueInput
+  }
+
+
+  /**
+   * ProcessingOption updateMany
+   */
+  export type ProcessingOptionUpdateManyArgs = {
+    /**
+     * The data used to update ProcessingOptions.
+     */
+    data: XOR<ProcessingOptionUpdateManyMutationInput, ProcessingOptionUncheckedUpdateManyInput>
+    /**
+     * Filter which ProcessingOptions to update
+     */
+    where?: ProcessingOptionWhereInput
+  }
+
+
+  /**
+   * ProcessingOption upsert
+   */
+  export type ProcessingOptionUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the ProcessingOption
+     */
+    select?: ProcessingOptionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ProcessingOptionInclude | null
+    /**
+     * The filter to search for the ProcessingOption to update in case it exists.
+     */
+    where: ProcessingOptionWhereUniqueInput
+    /**
+     * In case the ProcessingOption found by the `where` argument doesn't exist, create a new ProcessingOption with this data.
+     */
+    create: XOR<ProcessingOptionCreateInput, ProcessingOptionUncheckedCreateInput>
+    /**
+     * In case the ProcessingOption was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProcessingOptionUpdateInput, ProcessingOptionUncheckedUpdateInput>
+  }
+
+
+  /**
+   * ProcessingOption delete
+   */
+  export type ProcessingOptionDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the ProcessingOption
+     */
+    select?: ProcessingOptionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ProcessingOptionInclude | null
+    /**
+     * Filter which ProcessingOption to delete.
+     */
+    where: ProcessingOptionWhereUniqueInput
+  }
+
+
+  /**
+   * ProcessingOption deleteMany
+   */
+  export type ProcessingOptionDeleteManyArgs = {
+    /**
+     * Filter which ProcessingOptions to delete
+     */
+    where?: ProcessingOptionWhereInput
+  }
+
+
+  /**
+   * ProcessingOption.locations
+   */
+  export type ProcessingOption$locationsArgs = {
+    /**
+     * Select specific fields to fetch from the Location
+     */
+    select?: LocationSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LocationInclude | null
+    where?: LocationWhereInput
+    orderBy?: Enumerable<LocationOrderByWithRelationInput>
+    cursor?: LocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<LocationScalarFieldEnum>
+  }
+
+
+  /**
+   * ProcessingOption without action
+   */
+  export type ProcessingOptionArgs = {
+    /**
+     * Select specific fields to fetch from the ProcessingOption
+     */
+    select?: ProcessingOptionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ProcessingOptionInclude | null
+  }
+
+
+
+  /**
+   * Model Mail
+   */
+
+
+  export type AggregateMail = {
+    _count: MailCountAggregateOutputType | null
+    _min: MailMinAggregateOutputType | null
+    _max: MailMaxAggregateOutputType | null
+  }
+
+  export type MailMinAggregateOutputType = {
+    id: string | null
+    mail_code: string | null
+    mail_category_id: string | null
+    recipient_address: string | null
+    sender_address: string | null
+    location_start_id: string | null
+    location_end_id: string | null
+    time_inserted: Date | null
+    time_delivered: Date | null
+    mailCarrierId: string | null
+  }
+
+  export type MailMaxAggregateOutputType = {
+    id: string | null
+    mail_code: string | null
+    mail_category_id: string | null
+    recipient_address: string | null
+    sender_address: string | null
+    location_start_id: string | null
+    location_end_id: string | null
+    time_inserted: Date | null
+    time_delivered: Date | null
+    mailCarrierId: string | null
+  }
+
+  export type MailCountAggregateOutputType = {
+    id: number
+    mail_code: number
+    mail_category_id: number
+    recipient_address: number
+    sender_address: number
+    location_start_id: number
+    location_end_id: number
+    time_inserted: number
+    time_delivered: number
+    mailCarrierId: number
+    _all: number
+  }
+
+
+  export type MailMinAggregateInputType = {
+    id?: true
+    mail_code?: true
+    mail_category_id?: true
+    recipient_address?: true
+    sender_address?: true
+    location_start_id?: true
+    location_end_id?: true
+    time_inserted?: true
+    time_delivered?: true
+    mailCarrierId?: true
+  }
+
+  export type MailMaxAggregateInputType = {
+    id?: true
+    mail_code?: true
+    mail_category_id?: true
+    recipient_address?: true
+    sender_address?: true
+    location_start_id?: true
+    location_end_id?: true
+    time_inserted?: true
+    time_delivered?: true
+    mailCarrierId?: true
+  }
+
+  export type MailCountAggregateInputType = {
+    id?: true
+    mail_code?: true
+    mail_category_id?: true
+    recipient_address?: true
+    sender_address?: true
+    location_start_id?: true
+    location_end_id?: true
+    time_inserted?: true
+    time_delivered?: true
+    mailCarrierId?: true
+    _all?: true
+  }
+
+  export type MailAggregateArgs = {
+    /**
+     * Filter which Mail to aggregate.
+     */
+    where?: MailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Mail to fetch.
+     */
+    orderBy?: Enumerable<MailOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Mail from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Mail.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Mail
+    **/
+    _count?: true | MailCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MailMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MailMaxAggregateInputType
+  }
+
+  export type GetMailAggregateType<T extends MailAggregateArgs> = {
+        [P in keyof T & keyof AggregateMail]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMail[P]>
+      : GetScalarType<T[P], AggregateMail[P]>
+  }
+
+
+
+
+  export type MailGroupByArgs = {
+    where?: MailWhereInput
+    orderBy?: Enumerable<MailOrderByWithAggregationInput>
+    by: MailScalarFieldEnum[]
+    having?: MailScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MailCountAggregateInputType | true
+    _min?: MailMinAggregateInputType
+    _max?: MailMaxAggregateInputType
+  }
+
+
+  export type MailGroupByOutputType = {
+    id: string
+    mail_code: string
+    mail_category_id: string
+    recipient_address: string
+    sender_address: string
+    location_start_id: string
+    location_end_id: string | null
+    time_inserted: Date
+    time_delivered: Date | null
+    mailCarrierId: string
+    _count: MailCountAggregateOutputType | null
+    _min: MailMinAggregateOutputType | null
+    _max: MailMaxAggregateOutputType | null
+  }
+
+  type GetMailGroupByPayload<T extends MailGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<MailGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MailGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MailGroupByOutputType[P]>
+            : GetScalarType<T[P], MailGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MailSelect = {
+    id?: boolean
+    mail_code?: boolean
+    mail_category_id?: boolean
+    recipient_address?: boolean
+    sender_address?: boolean
+    location_start_id?: boolean
+    location_end_id?: boolean
+    time_inserted?: boolean
+    time_delivered?: boolean
+    mailCarrierId?: boolean
+    location_start?: boolean | LocationArgs
+    location_end?: boolean | LocationArgs
+    mailCarrier?: boolean | MailCarrierArgs
+  }
+
+
+  export type MailInclude = {
+    location_start?: boolean | LocationArgs
+    location_end?: boolean | LocationArgs
+    mailCarrier?: boolean | MailCarrierArgs
+  }
+
+  export type MailGetPayload<S extends boolean | null | undefined | MailArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? Mail :
+    S extends undefined ? never :
+    S extends { include: any } & (MailArgs | MailFindManyArgs)
+    ? Mail  & {
+    [P in TruthyKeys<S['include']>]:
+        P extends 'location_start' ? LocationGetPayload<S['include'][P]> :
+        P extends 'location_end' ? LocationGetPayload<S['include'][P]> | null :
+        P extends 'mailCarrier' ? MailCarrierGetPayload<S['include'][P]> :  never
+  } 
+    : S extends { select: any } & (MailArgs | MailFindManyArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+        P extends 'location_start' ? LocationGetPayload<S['select'][P]> :
+        P extends 'location_end' ? LocationGetPayload<S['select'][P]> | null :
+        P extends 'mailCarrier' ? MailCarrierGetPayload<S['select'][P]> :  P extends keyof Mail ? Mail[P] : never
+  } 
+      : Mail
+
+
+  type MailCountArgs = 
+    Omit<MailFindManyArgs, 'select' | 'include'> & {
+      select?: MailCountAggregateInputType | true
+    }
+
+  export interface MailDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
+    /**
+     * Find zero or one Mail that matches the filter.
+     * @param {MailFindUniqueArgs} args - Arguments to find a Mail
+     * @example
+     * // Get one Mail
+     * const mail = await prisma.mail.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends MailFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, MailFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Mail'> extends True ? Prisma__MailClient<MailGetPayload<T>> : Prisma__MailClient<MailGetPayload<T> | null, null>
+
+    /**
+     * Find one Mail that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {MailFindUniqueOrThrowArgs} args - Arguments to find a Mail
+     * @example
+     * // Get one Mail
+     * const mail = await prisma.mail.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends MailFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, MailFindUniqueOrThrowArgs>
+    ): Prisma__MailClient<MailGetPayload<T>>
+
+    /**
+     * Find the first Mail that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailFindFirstArgs} args - Arguments to find a Mail
+     * @example
+     * // Get one Mail
+     * const mail = await prisma.mail.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends MailFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, MailFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Mail'> extends True ? Prisma__MailClient<MailGetPayload<T>> : Prisma__MailClient<MailGetPayload<T> | null, null>
+
+    /**
+     * Find the first Mail that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailFindFirstOrThrowArgs} args - Arguments to find a Mail
+     * @example
+     * // Get one Mail
+     * const mail = await prisma.mail.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends MailFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, MailFindFirstOrThrowArgs>
+    ): Prisma__MailClient<MailGetPayload<T>>
+
+    /**
+     * Find zero or more Mail that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Mail
+     * const mail = await prisma.mail.findMany()
+     * 
+     * // Get first 10 Mail
+     * const mail = await prisma.mail.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const mailWithIdOnly = await prisma.mail.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends MailFindManyArgs>(
+      args?: SelectSubset<T, MailFindManyArgs>
+    ): Prisma.PrismaPromise<Array<MailGetPayload<T>>>
+
+    /**
+     * Create a Mail.
+     * @param {MailCreateArgs} args - Arguments to create a Mail.
+     * @example
+     * // Create one Mail
+     * const Mail = await prisma.mail.create({
+     *   data: {
+     *     // ... data to create a Mail
+     *   }
+     * })
+     * 
+    **/
+    create<T extends MailCreateArgs>(
+      args: SelectSubset<T, MailCreateArgs>
+    ): Prisma__MailClient<MailGetPayload<T>>
+
+    /**
+     * Create many Mail.
+     *     @param {MailCreateManyArgs} args - Arguments to create many Mail.
+     *     @example
+     *     // Create many Mail
+     *     const mail = await prisma.mail.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends MailCreateManyArgs>(
+      args?: SelectSubset<T, MailCreateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Mail.
+     * @param {MailDeleteArgs} args - Arguments to delete one Mail.
+     * @example
+     * // Delete one Mail
+     * const Mail = await prisma.mail.delete({
+     *   where: {
+     *     // ... filter to delete one Mail
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends MailDeleteArgs>(
+      args: SelectSubset<T, MailDeleteArgs>
+    ): Prisma__MailClient<MailGetPayload<T>>
+
+    /**
+     * Update one Mail.
+     * @param {MailUpdateArgs} args - Arguments to update one Mail.
+     * @example
+     * // Update one Mail
+     * const mail = await prisma.mail.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends MailUpdateArgs>(
+      args: SelectSubset<T, MailUpdateArgs>
+    ): Prisma__MailClient<MailGetPayload<T>>
+
+    /**
+     * Delete zero or more Mail.
+     * @param {MailDeleteManyArgs} args - Arguments to filter Mail to delete.
+     * @example
+     * // Delete a few Mail
+     * const { count } = await prisma.mail.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends MailDeleteManyArgs>(
+      args?: SelectSubset<T, MailDeleteManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Mail.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Mail
+     * const mail = await prisma.mail.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends MailUpdateManyArgs>(
+      args: SelectSubset<T, MailUpdateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Mail.
+     * @param {MailUpsertArgs} args - Arguments to update or create a Mail.
+     * @example
+     * // Update or create a Mail
+     * const mail = await prisma.mail.upsert({
+     *   create: {
+     *     // ... data to create a Mail
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Mail we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends MailUpsertArgs>(
+      args: SelectSubset<T, MailUpsertArgs>
+    ): Prisma__MailClient<MailGetPayload<T>>
+
+    /**
+     * Count the number of Mail.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailCountArgs} args - Arguments to filter Mail to count.
+     * @example
+     * // Count the number of Mail
+     * const count = await prisma.mail.count({
+     *   where: {
+     *     // ... the filter for the Mail we want to count
+     *   }
+     * })
+    **/
+    count<T extends MailCountArgs>(
+      args?: Subset<T, MailCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MailCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Mail.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MailAggregateArgs>(args: Subset<T, MailAggregateArgs>): Prisma.PrismaPromise<GetMailAggregateType<T>>
+
+    /**
+     * Group by Mail.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MailGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MailGroupByArgs['orderBy'] }
+        : { orderBy?: MailGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MailGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMailGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Mail.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__MailClient<T, Null = never> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    location_start<T extends LocationArgs= {}>(args?: Subset<T, LocationArgs>): Prisma__LocationClient<LocationGetPayload<T> | Null>;
+
+    location_end<T extends LocationArgs= {}>(args?: Subset<T, LocationArgs>): Prisma__LocationClient<LocationGetPayload<T> | Null>;
+
+    mailCarrier<T extends MailCarrierArgs= {}>(args?: Subset<T, MailCarrierArgs>): Prisma__MailCarrierClient<MailCarrierGetPayload<T> | Null>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * Mail base type for findUnique actions
+   */
+  export type MailFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the Mail
+     */
+    select?: MailSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailInclude | null
+    /**
+     * Filter, which Mail to fetch.
+     */
+    where: MailWhereUniqueInput
+  }
+
+  /**
+   * Mail findUnique
+   */
+  export interface MailFindUniqueArgs extends MailFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * Mail findUniqueOrThrow
+   */
+  export type MailFindUniqueOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the Mail
+     */
+    select?: MailSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailInclude | null
+    /**
+     * Filter, which Mail to fetch.
+     */
+    where: MailWhereUniqueInput
+  }
+
+
+  /**
+   * Mail base type for findFirst actions
+   */
+  export type MailFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the Mail
+     */
+    select?: MailSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailInclude | null
+    /**
+     * Filter, which Mail to fetch.
+     */
+    where?: MailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Mail to fetch.
+     */
+    orderBy?: Enumerable<MailOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Mail.
+     */
+    cursor?: MailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Mail from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Mail.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Mail.
+     */
+    distinct?: Enumerable<MailScalarFieldEnum>
+  }
+
+  /**
+   * Mail findFirst
+   */
+  export interface MailFindFirstArgs extends MailFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * Mail findFirstOrThrow
+   */
+  export type MailFindFirstOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the Mail
+     */
+    select?: MailSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailInclude | null
+    /**
+     * Filter, which Mail to fetch.
+     */
+    where?: MailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Mail to fetch.
+     */
+    orderBy?: Enumerable<MailOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Mail.
+     */
+    cursor?: MailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Mail from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Mail.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Mail.
+     */
+    distinct?: Enumerable<MailScalarFieldEnum>
+  }
+
+
+  /**
+   * Mail findMany
+   */
+  export type MailFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the Mail
+     */
+    select?: MailSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailInclude | null
+    /**
+     * Filter, which Mail to fetch.
+     */
+    where?: MailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Mail to fetch.
+     */
+    orderBy?: Enumerable<MailOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Mail.
+     */
+    cursor?: MailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Mail from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Mail.
+     */
+    skip?: number
+    distinct?: Enumerable<MailScalarFieldEnum>
+  }
+
+
+  /**
+   * Mail create
+   */
+  export type MailCreateArgs = {
+    /**
+     * Select specific fields to fetch from the Mail
+     */
+    select?: MailSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailInclude | null
+    /**
+     * The data needed to create a Mail.
+     */
+    data: XOR<MailCreateInput, MailUncheckedCreateInput>
+  }
+
+
+  /**
+   * Mail createMany
+   */
+  export type MailCreateManyArgs = {
+    /**
+     * The data used to create many Mail.
+     */
+    data: Enumerable<MailCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * Mail update
+   */
+  export type MailUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the Mail
+     */
+    select?: MailSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailInclude | null
+    /**
+     * The data needed to update a Mail.
+     */
+    data: XOR<MailUpdateInput, MailUncheckedUpdateInput>
+    /**
+     * Choose, which Mail to update.
+     */
+    where: MailWhereUniqueInput
+  }
+
+
+  /**
+   * Mail updateMany
+   */
+  export type MailUpdateManyArgs = {
+    /**
+     * The data used to update Mail.
+     */
+    data: XOR<MailUpdateManyMutationInput, MailUncheckedUpdateManyInput>
+    /**
+     * Filter which Mail to update
+     */
+    where?: MailWhereInput
+  }
+
+
+  /**
+   * Mail upsert
+   */
+  export type MailUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the Mail
+     */
+    select?: MailSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailInclude | null
+    /**
+     * The filter to search for the Mail to update in case it exists.
+     */
+    where: MailWhereUniqueInput
+    /**
+     * In case the Mail found by the `where` argument doesn't exist, create a new Mail with this data.
+     */
+    create: XOR<MailCreateInput, MailUncheckedCreateInput>
+    /**
+     * In case the Mail was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MailUpdateInput, MailUncheckedUpdateInput>
+  }
+
+
+  /**
+   * Mail delete
+   */
+  export type MailDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the Mail
+     */
+    select?: MailSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailInclude | null
+    /**
+     * Filter which Mail to delete.
+     */
+    where: MailWhereUniqueInput
+  }
+
+
+  /**
+   * Mail deleteMany
+   */
+  export type MailDeleteManyArgs = {
+    /**
+     * Filter which Mail to delete
+     */
+    where?: MailWhereInput
+  }
+
+
+  /**
+   * Mail without action
+   */
+  export type MailArgs = {
+    /**
+     * Select specific fields to fetch from the Mail
+     */
+    select?: MailSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailInclude | null
+  }
+
+
+
+  /**
+   * Model MailCarrier
+   */
+
+
+  export type AggregateMailCarrier = {
+    _count: MailCarrierCountAggregateOutputType | null
+    _min: MailCarrierMinAggregateOutputType | null
+    _max: MailCarrierMaxAggregateOutputType | null
+  }
+
+  export type MailCarrierMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+  }
+
+  export type MailCarrierMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    createdAt: Date | null
+    createdBy: string | null
+    updatedAt: Date | null
+    updatedBy: string | null
+  }
+
+  export type MailCarrierCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    createdAt: number
+    createdBy: number
+    updatedAt: number
+    updatedBy: number
+    _all: number
+  }
+
+
+  export type MailCarrierMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+  }
+
+  export type MailCarrierMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+  }
+
+  export type MailCarrierCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+    createdBy?: true
+    updatedAt?: true
+    updatedBy?: true
+    _all?: true
+  }
+
+  export type MailCarrierAggregateArgs = {
+    /**
+     * Filter which MailCarrier to aggregate.
+     */
+    where?: MailCarrierWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MailCarriers to fetch.
+     */
+    orderBy?: Enumerable<MailCarrierOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MailCarrierWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MailCarriers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MailCarriers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MailCarriers
+    **/
+    _count?: true | MailCarrierCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MailCarrierMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MailCarrierMaxAggregateInputType
+  }
+
+  export type GetMailCarrierAggregateType<T extends MailCarrierAggregateArgs> = {
+        [P in keyof T & keyof AggregateMailCarrier]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMailCarrier[P]>
+      : GetScalarType<T[P], AggregateMailCarrier[P]>
+  }
+
+
+
+
+  export type MailCarrierGroupByArgs = {
+    where?: MailCarrierWhereInput
+    orderBy?: Enumerable<MailCarrierOrderByWithAggregationInput>
+    by: MailCarrierScalarFieldEnum[]
+    having?: MailCarrierScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MailCarrierCountAggregateInputType | true
+    _min?: MailCarrierMinAggregateInputType
+    _max?: MailCarrierMaxAggregateInputType
+  }
+
+
+  export type MailCarrierGroupByOutputType = {
+    id: string
+    name: string
+    description: string | null
+    createdAt: Date
+    createdBy: string | null
+    updatedAt: Date
+    updatedBy: string | null
+    _count: MailCarrierCountAggregateOutputType | null
+    _min: MailCarrierMinAggregateOutputType | null
+    _max: MailCarrierMaxAggregateOutputType | null
+  }
+
+  type GetMailCarrierGroupByPayload<T extends MailCarrierGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<MailCarrierGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MailCarrierGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MailCarrierGroupByOutputType[P]>
+            : GetScalarType<T[P], MailCarrierGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MailCarrierSelect = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    createdAt?: boolean
+    createdBy?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+    mail?: boolean | MailCarrier$mailArgs
+    _count?: boolean | MailCarrierCountOutputTypeArgs
+  }
+
+
+  export type MailCarrierInclude = {
+    mail?: boolean | MailCarrier$mailArgs
+    _count?: boolean | MailCarrierCountOutputTypeArgs
+  }
+
+  export type MailCarrierGetPayload<S extends boolean | null | undefined | MailCarrierArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? MailCarrier :
+    S extends undefined ? never :
+    S extends { include: any } & (MailCarrierArgs | MailCarrierFindManyArgs)
+    ? MailCarrier  & {
+    [P in TruthyKeys<S['include']>]:
+        P extends 'mail' ? Array < MailGetPayload<S['include'][P]>>  :
+        P extends '_count' ? MailCarrierCountOutputTypeGetPayload<S['include'][P]> :  never
+  } 
+    : S extends { select: any } & (MailCarrierArgs | MailCarrierFindManyArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+        P extends 'mail' ? Array < MailGetPayload<S['select'][P]>>  :
+        P extends '_count' ? MailCarrierCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof MailCarrier ? MailCarrier[P] : never
+  } 
+      : MailCarrier
+
+
+  type MailCarrierCountArgs = 
+    Omit<MailCarrierFindManyArgs, 'select' | 'include'> & {
+      select?: MailCarrierCountAggregateInputType | true
+    }
+
+  export interface MailCarrierDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
+    /**
+     * Find zero or one MailCarrier that matches the filter.
+     * @param {MailCarrierFindUniqueArgs} args - Arguments to find a MailCarrier
+     * @example
+     * // Get one MailCarrier
+     * const mailCarrier = await prisma.mailCarrier.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends MailCarrierFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, MailCarrierFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'MailCarrier'> extends True ? Prisma__MailCarrierClient<MailCarrierGetPayload<T>> : Prisma__MailCarrierClient<MailCarrierGetPayload<T> | null, null>
+
+    /**
+     * Find one MailCarrier that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {MailCarrierFindUniqueOrThrowArgs} args - Arguments to find a MailCarrier
+     * @example
+     * // Get one MailCarrier
+     * const mailCarrier = await prisma.mailCarrier.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends MailCarrierFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, MailCarrierFindUniqueOrThrowArgs>
+    ): Prisma__MailCarrierClient<MailCarrierGetPayload<T>>
+
+    /**
+     * Find the first MailCarrier that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailCarrierFindFirstArgs} args - Arguments to find a MailCarrier
+     * @example
+     * // Get one MailCarrier
+     * const mailCarrier = await prisma.mailCarrier.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends MailCarrierFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, MailCarrierFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'MailCarrier'> extends True ? Prisma__MailCarrierClient<MailCarrierGetPayload<T>> : Prisma__MailCarrierClient<MailCarrierGetPayload<T> | null, null>
+
+    /**
+     * Find the first MailCarrier that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailCarrierFindFirstOrThrowArgs} args - Arguments to find a MailCarrier
+     * @example
+     * // Get one MailCarrier
+     * const mailCarrier = await prisma.mailCarrier.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends MailCarrierFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, MailCarrierFindFirstOrThrowArgs>
+    ): Prisma__MailCarrierClient<MailCarrierGetPayload<T>>
+
+    /**
+     * Find zero or more MailCarriers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailCarrierFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MailCarriers
+     * const mailCarriers = await prisma.mailCarrier.findMany()
+     * 
+     * // Get first 10 MailCarriers
+     * const mailCarriers = await prisma.mailCarrier.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const mailCarrierWithIdOnly = await prisma.mailCarrier.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends MailCarrierFindManyArgs>(
+      args?: SelectSubset<T, MailCarrierFindManyArgs>
+    ): Prisma.PrismaPromise<Array<MailCarrierGetPayload<T>>>
+
+    /**
+     * Create a MailCarrier.
+     * @param {MailCarrierCreateArgs} args - Arguments to create a MailCarrier.
+     * @example
+     * // Create one MailCarrier
+     * const MailCarrier = await prisma.mailCarrier.create({
+     *   data: {
+     *     // ... data to create a MailCarrier
+     *   }
+     * })
+     * 
+    **/
+    create<T extends MailCarrierCreateArgs>(
+      args: SelectSubset<T, MailCarrierCreateArgs>
+    ): Prisma__MailCarrierClient<MailCarrierGetPayload<T>>
+
+    /**
+     * Create many MailCarriers.
+     *     @param {MailCarrierCreateManyArgs} args - Arguments to create many MailCarriers.
+     *     @example
+     *     // Create many MailCarriers
+     *     const mailCarrier = await prisma.mailCarrier.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends MailCarrierCreateManyArgs>(
+      args?: SelectSubset<T, MailCarrierCreateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a MailCarrier.
+     * @param {MailCarrierDeleteArgs} args - Arguments to delete one MailCarrier.
+     * @example
+     * // Delete one MailCarrier
+     * const MailCarrier = await prisma.mailCarrier.delete({
+     *   where: {
+     *     // ... filter to delete one MailCarrier
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends MailCarrierDeleteArgs>(
+      args: SelectSubset<T, MailCarrierDeleteArgs>
+    ): Prisma__MailCarrierClient<MailCarrierGetPayload<T>>
+
+    /**
+     * Update one MailCarrier.
+     * @param {MailCarrierUpdateArgs} args - Arguments to update one MailCarrier.
+     * @example
+     * // Update one MailCarrier
+     * const mailCarrier = await prisma.mailCarrier.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends MailCarrierUpdateArgs>(
+      args: SelectSubset<T, MailCarrierUpdateArgs>
+    ): Prisma__MailCarrierClient<MailCarrierGetPayload<T>>
+
+    /**
+     * Delete zero or more MailCarriers.
+     * @param {MailCarrierDeleteManyArgs} args - Arguments to filter MailCarriers to delete.
+     * @example
+     * // Delete a few MailCarriers
+     * const { count } = await prisma.mailCarrier.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends MailCarrierDeleteManyArgs>(
+      args?: SelectSubset<T, MailCarrierDeleteManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MailCarriers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailCarrierUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MailCarriers
+     * const mailCarrier = await prisma.mailCarrier.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends MailCarrierUpdateManyArgs>(
+      args: SelectSubset<T, MailCarrierUpdateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one MailCarrier.
+     * @param {MailCarrierUpsertArgs} args - Arguments to update or create a MailCarrier.
+     * @example
+     * // Update or create a MailCarrier
+     * const mailCarrier = await prisma.mailCarrier.upsert({
+     *   create: {
+     *     // ... data to create a MailCarrier
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MailCarrier we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends MailCarrierUpsertArgs>(
+      args: SelectSubset<T, MailCarrierUpsertArgs>
+    ): Prisma__MailCarrierClient<MailCarrierGetPayload<T>>
+
+    /**
+     * Count the number of MailCarriers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailCarrierCountArgs} args - Arguments to filter MailCarriers to count.
+     * @example
+     * // Count the number of MailCarriers
+     * const count = await prisma.mailCarrier.count({
+     *   where: {
+     *     // ... the filter for the MailCarriers we want to count
+     *   }
+     * })
+    **/
+    count<T extends MailCarrierCountArgs>(
+      args?: Subset<T, MailCarrierCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MailCarrierCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MailCarrier.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailCarrierAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MailCarrierAggregateArgs>(args: Subset<T, MailCarrierAggregateArgs>): Prisma.PrismaPromise<GetMailCarrierAggregateType<T>>
+
+    /**
+     * Group by MailCarrier.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailCarrierGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MailCarrierGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MailCarrierGroupByArgs['orderBy'] }
+        : { orderBy?: MailCarrierGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MailCarrierGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMailCarrierGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MailCarrier.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__MailCarrierClient<T, Null = never> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    mail<T extends MailCarrier$mailArgs= {}>(args?: Subset<T, MailCarrier$mailArgs>): Prisma.PrismaPromise<Array<MailGetPayload<T>>| Null>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * MailCarrier base type for findUnique actions
+   */
+  export type MailCarrierFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the MailCarrier
+     */
+    select?: MailCarrierSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailCarrierInclude | null
+    /**
+     * Filter, which MailCarrier to fetch.
+     */
+    where: MailCarrierWhereUniqueInput
+  }
+
+  /**
+   * MailCarrier findUnique
+   */
+  export interface MailCarrierFindUniqueArgs extends MailCarrierFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * MailCarrier findUniqueOrThrow
+   */
+  export type MailCarrierFindUniqueOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the MailCarrier
+     */
+    select?: MailCarrierSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailCarrierInclude | null
+    /**
+     * Filter, which MailCarrier to fetch.
+     */
+    where: MailCarrierWhereUniqueInput
+  }
+
+
+  /**
+   * MailCarrier base type for findFirst actions
+   */
+  export type MailCarrierFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the MailCarrier
+     */
+    select?: MailCarrierSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailCarrierInclude | null
+    /**
+     * Filter, which MailCarrier to fetch.
+     */
+    where?: MailCarrierWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MailCarriers to fetch.
+     */
+    orderBy?: Enumerable<MailCarrierOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MailCarriers.
+     */
+    cursor?: MailCarrierWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MailCarriers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MailCarriers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MailCarriers.
+     */
+    distinct?: Enumerable<MailCarrierScalarFieldEnum>
+  }
+
+  /**
+   * MailCarrier findFirst
+   */
+  export interface MailCarrierFindFirstArgs extends MailCarrierFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * MailCarrier findFirstOrThrow
+   */
+  export type MailCarrierFindFirstOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the MailCarrier
+     */
+    select?: MailCarrierSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailCarrierInclude | null
+    /**
+     * Filter, which MailCarrier to fetch.
+     */
+    where?: MailCarrierWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MailCarriers to fetch.
+     */
+    orderBy?: Enumerable<MailCarrierOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MailCarriers.
+     */
+    cursor?: MailCarrierWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MailCarriers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MailCarriers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MailCarriers.
+     */
+    distinct?: Enumerable<MailCarrierScalarFieldEnum>
+  }
+
+
+  /**
+   * MailCarrier findMany
+   */
+  export type MailCarrierFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the MailCarrier
+     */
+    select?: MailCarrierSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailCarrierInclude | null
+    /**
+     * Filter, which MailCarriers to fetch.
+     */
+    where?: MailCarrierWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MailCarriers to fetch.
+     */
+    orderBy?: Enumerable<MailCarrierOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MailCarriers.
+     */
+    cursor?: MailCarrierWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MailCarriers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MailCarriers.
+     */
+    skip?: number
+    distinct?: Enumerable<MailCarrierScalarFieldEnum>
+  }
+
+
+  /**
+   * MailCarrier create
+   */
+  export type MailCarrierCreateArgs = {
+    /**
+     * Select specific fields to fetch from the MailCarrier
+     */
+    select?: MailCarrierSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailCarrierInclude | null
+    /**
+     * The data needed to create a MailCarrier.
+     */
+    data: XOR<MailCarrierCreateInput, MailCarrierUncheckedCreateInput>
+  }
+
+
+  /**
+   * MailCarrier createMany
+   */
+  export type MailCarrierCreateManyArgs = {
+    /**
+     * The data used to create many MailCarriers.
+     */
+    data: Enumerable<MailCarrierCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * MailCarrier update
+   */
+  export type MailCarrierUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the MailCarrier
+     */
+    select?: MailCarrierSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailCarrierInclude | null
+    /**
+     * The data needed to update a MailCarrier.
+     */
+    data: XOR<MailCarrierUpdateInput, MailCarrierUncheckedUpdateInput>
+    /**
+     * Choose, which MailCarrier to update.
+     */
+    where: MailCarrierWhereUniqueInput
+  }
+
+
+  /**
+   * MailCarrier updateMany
+   */
+  export type MailCarrierUpdateManyArgs = {
+    /**
+     * The data used to update MailCarriers.
+     */
+    data: XOR<MailCarrierUpdateManyMutationInput, MailCarrierUncheckedUpdateManyInput>
+    /**
+     * Filter which MailCarriers to update
+     */
+    where?: MailCarrierWhereInput
+  }
+
+
+  /**
+   * MailCarrier upsert
+   */
+  export type MailCarrierUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the MailCarrier
+     */
+    select?: MailCarrierSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailCarrierInclude | null
+    /**
+     * The filter to search for the MailCarrier to update in case it exists.
+     */
+    where: MailCarrierWhereUniqueInput
+    /**
+     * In case the MailCarrier found by the `where` argument doesn't exist, create a new MailCarrier with this data.
+     */
+    create: XOR<MailCarrierCreateInput, MailCarrierUncheckedCreateInput>
+    /**
+     * In case the MailCarrier was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MailCarrierUpdateInput, MailCarrierUncheckedUpdateInput>
+  }
+
+
+  /**
+   * MailCarrier delete
+   */
+  export type MailCarrierDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the MailCarrier
+     */
+    select?: MailCarrierSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailCarrierInclude | null
+    /**
+     * Filter which MailCarrier to delete.
+     */
+    where: MailCarrierWhereUniqueInput
+  }
+
+
+  /**
+   * MailCarrier deleteMany
+   */
+  export type MailCarrierDeleteManyArgs = {
+    /**
+     * Filter which MailCarriers to delete
+     */
+    where?: MailCarrierWhereInput
+  }
+
+
+  /**
+   * MailCarrier.mail
+   */
+  export type MailCarrier$mailArgs = {
+    /**
+     * Select specific fields to fetch from the Mail
+     */
+    select?: MailSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailInclude | null
+    where?: MailWhereInput
+    orderBy?: Enumerable<MailOrderByWithRelationInput>
+    cursor?: MailWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<MailScalarFieldEnum>
+  }
+
+
+  /**
+   * MailCarrier without action
+   */
+  export type MailCarrierArgs = {
+    /**
+     * Select specific fields to fetch from the MailCarrier
+     */
+    select?: MailCarrierSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MailCarrierInclude | null
   }
 
 
@@ -9112,6 +13431,18 @@ export namespace Prisma {
   export type CityScalarFieldEnum = (typeof CityScalarFieldEnum)[keyof typeof CityScalarFieldEnum]
 
 
+  export const CollectingOptionScalarFieldEnum: {
+    id: 'id',
+    optionName: 'optionName',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy'
+  };
+
+  export type CollectingOptionScalarFieldEnum = (typeof CollectingOptionScalarFieldEnum)[keyof typeof CollectingOptionScalarFieldEnum]
+
+
   export const CountryScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -9132,10 +13463,53 @@ export namespace Prisma {
     createdBy: 'createdBy',
     updatedAt: 'updatedAt',
     updatedBy: 'updatedBy',
-    postOfficeInChargeId: 'postOfficeInChargeId'
+    postOfficeInChargeId: 'postOfficeInChargeId',
+    LocationTypeId: 'LocationTypeId',
+    serviceId: 'serviceId'
   };
 
   export type LocationScalarFieldEnum = (typeof LocationScalarFieldEnum)[keyof typeof LocationScalarFieldEnum]
+
+
+  export const LocationTypeScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy'
+  };
+
+  export type LocationTypeScalarFieldEnum = (typeof LocationTypeScalarFieldEnum)[keyof typeof LocationTypeScalarFieldEnum]
+
+
+  export const MailCarrierScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy'
+  };
+
+  export type MailCarrierScalarFieldEnum = (typeof MailCarrierScalarFieldEnum)[keyof typeof MailCarrierScalarFieldEnum]
+
+
+  export const MailScalarFieldEnum: {
+    id: 'id',
+    mail_code: 'mail_code',
+    mail_category_id: 'mail_category_id',
+    recipient_address: 'recipient_address',
+    sender_address: 'sender_address',
+    location_start_id: 'location_start_id',
+    location_end_id: 'location_end_id',
+    time_inserted: 'time_inserted',
+    time_delivered: 'time_delivered',
+    mailCarrierId: 'mailCarrierId'
+  };
+
+  export type MailScalarFieldEnum = (typeof MailScalarFieldEnum)[keyof typeof MailScalarFieldEnum]
 
 
   export const PostOfficeScalarFieldEnum: {
@@ -9155,21 +13529,24 @@ export namespace Prisma {
   export type PostOfficeScalarFieldEnum = (typeof PostOfficeScalarFieldEnum)[keyof typeof PostOfficeScalarFieldEnum]
 
 
+  export const ProcessingOptionScalarFieldEnum: {
+    id: 'id',
+    optionName: 'optionName',
+    createdAt: 'createdAt',
+    createdBy: 'createdBy',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy'
+  };
+
+  export type ProcessingOptionScalarFieldEnum = (typeof ProcessingOptionScalarFieldEnum)[keyof typeof ProcessingOptionScalarFieldEnum]
+
+
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
   };
 
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
-
-
-  export const ServiceAvailableScalarFieldEnum: {
-    id: 'id',
-    locationId: 'locationId',
-    serviceId: 'serviceId'
-  };
-
-  export type ServiceAvailableScalarFieldEnum = (typeof ServiceAvailableScalarFieldEnum)[keyof typeof ServiceAvailableScalarFieldEnum]
 
 
   export const ServiceScalarFieldEnum: {
@@ -9564,8 +13941,15 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter | Date | string
     updatedBy?: StringNullableFilter | string | null
     postOfficeInChargeId?: StringFilter | string
+    LocationTypeId?: StringFilter | string
+    serviceId?: StringFilter | string
     postOfficeInCharge?: XOR<PostOfficeRelationFilter, PostOfficeWhereInput>
-    servicesAvailable?: ServiceAvailableListRelationFilter
+    LocationType?: XOR<LocationTypeRelationFilter, LocationTypeWhereInput>
+    services?: XOR<ServiceRelationFilter, ServiceWhereInput>
+    collectingOptions?: CollectingOptionListRelationFilter
+    processingOptions?: ProcessingOptionListRelationFilter
+    mailStart?: MailListRelationFilter
+    mailEnd?: MailListRelationFilter
   }
 
   export type LocationOrderByWithRelationInput = {
@@ -9577,8 +13961,15 @@ export namespace Prisma {
     updatedAt?: SortOrder
     updatedBy?: SortOrder
     postOfficeInChargeId?: SortOrder
+    LocationTypeId?: SortOrder
+    serviceId?: SortOrder
     postOfficeInCharge?: PostOfficeOrderByWithRelationInput
-    servicesAvailable?: ServiceAvailableOrderByRelationAggregateInput
+    LocationType?: LocationTypeOrderByWithRelationInput
+    services?: ServiceOrderByWithRelationInput
+    collectingOptions?: CollectingOptionOrderByRelationAggregateInput
+    processingOptions?: ProcessingOptionOrderByRelationAggregateInput
+    mailStart?: MailOrderByRelationAggregateInput
+    mailEnd?: MailOrderByRelationAggregateInput
   }
 
   export type LocationWhereUniqueInput = {
@@ -9595,6 +13986,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     updatedBy?: SortOrder
     postOfficeInChargeId?: SortOrder
+    LocationTypeId?: SortOrder
+    serviceId?: SortOrder
     _count?: LocationCountOrderByAggregateInput
     _max?: LocationMaxOrderByAggregateInput
     _min?: LocationMinOrderByAggregateInput
@@ -9612,6 +14005,60 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
     updatedBy?: StringNullableWithAggregatesFilter | string | null
     postOfficeInChargeId?: StringWithAggregatesFilter | string
+    LocationTypeId?: StringWithAggregatesFilter | string
+    serviceId?: StringWithAggregatesFilter | string
+  }
+
+  export type LocationTypeWhereInput = {
+    AND?: Enumerable<LocationTypeWhereInput>
+    OR?: Enumerable<LocationTypeWhereInput>
+    NOT?: Enumerable<LocationTypeWhereInput>
+    id?: StringFilter | string
+    name?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    createdBy?: StringNullableFilter | string | null
+    updatedAt?: DateTimeFilter | Date | string
+    updatedBy?: StringNullableFilter | string | null
+    location?: LocationListRelationFilter
+  }
+
+  export type LocationTypeOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    location?: LocationOrderByRelationAggregateInput
+  }
+
+  export type LocationTypeWhereUniqueInput = {
+    id?: string
+    name?: string
+  }
+
+  export type LocationTypeOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    _count?: LocationTypeCountOrderByAggregateInput
+    _max?: LocationTypeMaxOrderByAggregateInput
+    _min?: LocationTypeMinOrderByAggregateInput
+  }
+
+  export type LocationTypeScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<LocationTypeScalarWhereWithAggregatesInput>
+    OR?: Enumerable<LocationTypeScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<LocationTypeScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    name?: StringWithAggregatesFilter | string
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+    createdBy?: StringNullableWithAggregatesFilter | string | null
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter | string | null
   }
 
   export type ServiceWhereInput = {
@@ -9626,7 +14073,7 @@ export namespace Prisma {
     createdBy?: StringNullableFilter | string | null
     updatedAt?: DateTimeFilter | Date | string
     updatedBy?: StringNullableFilter | string | null
-    locationsAvailable?: ServiceAvailableListRelationFilter
+    location?: LocationListRelationFilter
   }
 
   export type ServiceOrderByWithRelationInput = {
@@ -9638,7 +14085,7 @@ export namespace Prisma {
     createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
-    locationsAvailable?: ServiceAvailableOrderByRelationAggregateInput
+    location?: LocationOrderByRelationAggregateInput
   }
 
   export type ServiceWhereUniqueInput = {
@@ -9674,45 +14121,236 @@ export namespace Prisma {
     updatedBy?: StringNullableWithAggregatesFilter | string | null
   }
 
-  export type ServiceAvailableWhereInput = {
-    AND?: Enumerable<ServiceAvailableWhereInput>
-    OR?: Enumerable<ServiceAvailableWhereInput>
-    NOT?: Enumerable<ServiceAvailableWhereInput>
+  export type CollectingOptionWhereInput = {
+    AND?: Enumerable<CollectingOptionWhereInput>
+    OR?: Enumerable<CollectingOptionWhereInput>
+    NOT?: Enumerable<CollectingOptionWhereInput>
     id?: StringFilter | string
-    locationId?: StringFilter | string
-    serviceId?: StringFilter | string
-    location?: XOR<LocationRelationFilter, LocationWhereInput>
-    service?: XOR<ServiceRelationFilter, ServiceWhereInput>
+    optionName?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    createdBy?: StringNullableFilter | string | null
+    updatedAt?: DateTimeFilter | Date | string
+    updatedBy?: StringNullableFilter | string | null
+    locations?: LocationListRelationFilter
   }
 
-  export type ServiceAvailableOrderByWithRelationInput = {
+  export type CollectingOptionOrderByWithRelationInput = {
     id?: SortOrder
-    locationId?: SortOrder
-    serviceId?: SortOrder
-    location?: LocationOrderByWithRelationInput
-    service?: ServiceOrderByWithRelationInput
+    optionName?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    locations?: LocationOrderByRelationAggregateInput
   }
 
-  export type ServiceAvailableWhereUniqueInput = {
+  export type CollectingOptionWhereUniqueInput = {
     id?: string
+    optionName?: string
   }
 
-  export type ServiceAvailableOrderByWithAggregationInput = {
+  export type CollectingOptionOrderByWithAggregationInput = {
     id?: SortOrder
-    locationId?: SortOrder
-    serviceId?: SortOrder
-    _count?: ServiceAvailableCountOrderByAggregateInput
-    _max?: ServiceAvailableMaxOrderByAggregateInput
-    _min?: ServiceAvailableMinOrderByAggregateInput
+    optionName?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    _count?: CollectingOptionCountOrderByAggregateInput
+    _max?: CollectingOptionMaxOrderByAggregateInput
+    _min?: CollectingOptionMinOrderByAggregateInput
   }
 
-  export type ServiceAvailableScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<ServiceAvailableScalarWhereWithAggregatesInput>
-    OR?: Enumerable<ServiceAvailableScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<ServiceAvailableScalarWhereWithAggregatesInput>
+  export type CollectingOptionScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<CollectingOptionScalarWhereWithAggregatesInput>
+    OR?: Enumerable<CollectingOptionScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<CollectingOptionScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
-    locationId?: StringWithAggregatesFilter | string
-    serviceId?: StringWithAggregatesFilter | string
+    optionName?: StringWithAggregatesFilter | string
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+    createdBy?: StringNullableWithAggregatesFilter | string | null
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter | string | null
+  }
+
+  export type ProcessingOptionWhereInput = {
+    AND?: Enumerable<ProcessingOptionWhereInput>
+    OR?: Enumerable<ProcessingOptionWhereInput>
+    NOT?: Enumerable<ProcessingOptionWhereInput>
+    id?: StringFilter | string
+    optionName?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    createdBy?: StringNullableFilter | string | null
+    updatedAt?: DateTimeFilter | Date | string
+    updatedBy?: StringNullableFilter | string | null
+    locations?: LocationListRelationFilter
+  }
+
+  export type ProcessingOptionOrderByWithRelationInput = {
+    id?: SortOrder
+    optionName?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    locations?: LocationOrderByRelationAggregateInput
+  }
+
+  export type ProcessingOptionWhereUniqueInput = {
+    id?: string
+    optionName?: string
+  }
+
+  export type ProcessingOptionOrderByWithAggregationInput = {
+    id?: SortOrder
+    optionName?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    _count?: ProcessingOptionCountOrderByAggregateInput
+    _max?: ProcessingOptionMaxOrderByAggregateInput
+    _min?: ProcessingOptionMinOrderByAggregateInput
+  }
+
+  export type ProcessingOptionScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<ProcessingOptionScalarWhereWithAggregatesInput>
+    OR?: Enumerable<ProcessingOptionScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<ProcessingOptionScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    optionName?: StringWithAggregatesFilter | string
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+    createdBy?: StringNullableWithAggregatesFilter | string | null
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter | string | null
+  }
+
+  export type MailWhereInput = {
+    AND?: Enumerable<MailWhereInput>
+    OR?: Enumerable<MailWhereInput>
+    NOT?: Enumerable<MailWhereInput>
+    id?: StringFilter | string
+    mail_code?: StringFilter | string
+    mail_category_id?: StringFilter | string
+    recipient_address?: StringFilter | string
+    sender_address?: StringFilter | string
+    location_start_id?: StringFilter | string
+    location_end_id?: StringNullableFilter | string | null
+    time_inserted?: DateTimeFilter | Date | string
+    time_delivered?: DateTimeNullableFilter | Date | string | null
+    mailCarrierId?: StringFilter | string
+    location_start?: XOR<LocationRelationFilter, LocationWhereInput>
+    location_end?: XOR<LocationRelationFilter, LocationWhereInput> | null
+    mailCarrier?: XOR<MailCarrierRelationFilter, MailCarrierWhereInput>
+  }
+
+  export type MailOrderByWithRelationInput = {
+    id?: SortOrder
+    mail_code?: SortOrder
+    mail_category_id?: SortOrder
+    recipient_address?: SortOrder
+    sender_address?: SortOrder
+    location_start_id?: SortOrder
+    location_end_id?: SortOrder
+    time_inserted?: SortOrder
+    time_delivered?: SortOrder
+    mailCarrierId?: SortOrder
+    location_start?: LocationOrderByWithRelationInput
+    location_end?: LocationOrderByWithRelationInput
+    mailCarrier?: MailCarrierOrderByWithRelationInput
+  }
+
+  export type MailWhereUniqueInput = {
+    id?: string
+    mail_code?: string
+  }
+
+  export type MailOrderByWithAggregationInput = {
+    id?: SortOrder
+    mail_code?: SortOrder
+    mail_category_id?: SortOrder
+    recipient_address?: SortOrder
+    sender_address?: SortOrder
+    location_start_id?: SortOrder
+    location_end_id?: SortOrder
+    time_inserted?: SortOrder
+    time_delivered?: SortOrder
+    mailCarrierId?: SortOrder
+    _count?: MailCountOrderByAggregateInput
+    _max?: MailMaxOrderByAggregateInput
+    _min?: MailMinOrderByAggregateInput
+  }
+
+  export type MailScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<MailScalarWhereWithAggregatesInput>
+    OR?: Enumerable<MailScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<MailScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    mail_code?: StringWithAggregatesFilter | string
+    mail_category_id?: StringWithAggregatesFilter | string
+    recipient_address?: StringWithAggregatesFilter | string
+    sender_address?: StringWithAggregatesFilter | string
+    location_start_id?: StringWithAggregatesFilter | string
+    location_end_id?: StringNullableWithAggregatesFilter | string | null
+    time_inserted?: DateTimeWithAggregatesFilter | Date | string
+    time_delivered?: DateTimeNullableWithAggregatesFilter | Date | string | null
+    mailCarrierId?: StringWithAggregatesFilter | string
+  }
+
+  export type MailCarrierWhereInput = {
+    AND?: Enumerable<MailCarrierWhereInput>
+    OR?: Enumerable<MailCarrierWhereInput>
+    NOT?: Enumerable<MailCarrierWhereInput>
+    id?: StringFilter | string
+    name?: StringFilter | string
+    description?: StringNullableFilter | string | null
+    createdAt?: DateTimeFilter | Date | string
+    createdBy?: StringNullableFilter | string | null
+    updatedAt?: DateTimeFilter | Date | string
+    updatedBy?: StringNullableFilter | string | null
+    mail?: MailListRelationFilter
+  }
+
+  export type MailCarrierOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    mail?: MailOrderByRelationAggregateInput
+  }
+
+  export type MailCarrierWhereUniqueInput = {
+    id?: string
+    name?: string
+  }
+
+  export type MailCarrierOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+    _count?: MailCarrierCountOrderByAggregateInput
+    _max?: MailCarrierMaxOrderByAggregateInput
+    _min?: MailCarrierMinOrderByAggregateInput
+  }
+
+  export type MailCarrierScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<MailCarrierScalarWhereWithAggregatesInput>
+    OR?: Enumerable<MailCarrierScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<MailCarrierScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    name?: StringWithAggregatesFilter | string
+    description?: StringNullableWithAggregatesFilter | string | null
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+    createdBy?: StringNullableWithAggregatesFilter | string | null
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter | string | null
   }
 
   export type UserCreateInput = {
@@ -10148,7 +14786,12 @@ export namespace Prisma {
     updatedAt?: Date | string
     updatedBy?: string | null
     postOfficeInCharge: PostOfficeCreateNestedOneWithoutLocationsInput
-    servicesAvailable?: ServiceAvailableCreateNestedManyWithoutLocationInput
+    LocationType: LocationTypeCreateNestedOneWithoutLocationInput
+    services: ServiceCreateNestedOneWithoutLocationInput
+    collectingOptions?: CollectingOptionCreateNestedManyWithoutLocationsInput
+    processingOptions?: ProcessingOptionCreateNestedManyWithoutLocationsInput
+    mailStart?: MailCreateNestedManyWithoutLocation_startInput
+    mailEnd?: MailCreateNestedManyWithoutLocation_endInput
   }
 
   export type LocationUncheckedCreateInput = {
@@ -10160,7 +14803,12 @@ export namespace Prisma {
     updatedAt?: Date | string
     updatedBy?: string | null
     postOfficeInChargeId: string
-    servicesAvailable?: ServiceAvailableUncheckedCreateNestedManyWithoutLocationInput
+    LocationTypeId: string
+    serviceId: string
+    collectingOptions?: CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput
+    processingOptions?: ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput
+    mailStart?: MailUncheckedCreateNestedManyWithoutLocation_startInput
+    mailEnd?: MailUncheckedCreateNestedManyWithoutLocation_endInput
   }
 
   export type LocationUpdateInput = {
@@ -10172,7 +14820,12 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInCharge?: PostOfficeUpdateOneRequiredWithoutLocationsNestedInput
-    servicesAvailable?: ServiceAvailableUpdateManyWithoutLocationNestedInput
+    LocationType?: LocationTypeUpdateOneRequiredWithoutLocationNestedInput
+    services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
+    collectingOptions?: CollectingOptionUpdateManyWithoutLocationsNestedInput
+    processingOptions?: ProcessingOptionUpdateManyWithoutLocationsNestedInput
+    mailStart?: MailUpdateManyWithoutLocation_startNestedInput
+    mailEnd?: MailUpdateManyWithoutLocation_endNestedInput
   }
 
   export type LocationUncheckedUpdateInput = {
@@ -10184,7 +14837,12 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
-    servicesAvailable?: ServiceAvailableUncheckedUpdateManyWithoutLocationNestedInput
+    LocationTypeId?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+    collectingOptions?: CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput
+    processingOptions?: ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput
+    mailStart?: MailUncheckedUpdateManyWithoutLocation_startNestedInput
+    mailEnd?: MailUncheckedUpdateManyWithoutLocation_endNestedInput
   }
 
   export type LocationCreateManyInput = {
@@ -10196,6 +14854,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     updatedBy?: string | null
     postOfficeInChargeId: string
+    LocationTypeId: string
+    serviceId: string
   }
 
   export type LocationUpdateManyMutationInput = {
@@ -10217,6 +14877,75 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
+    LocationTypeId?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type LocationTypeCreateInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    location?: LocationCreateNestedManyWithoutLocationTypeInput
+  }
+
+  export type LocationTypeUncheckedCreateInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    location?: LocationUncheckedCreateNestedManyWithoutLocationTypeInput
+  }
+
+  export type LocationTypeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: LocationUpdateManyWithoutLocationTypeNestedInput
+  }
+
+  export type LocationTypeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: LocationUncheckedUpdateManyWithoutLocationTypeNestedInput
+  }
+
+  export type LocationTypeCreateManyInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type LocationTypeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type LocationTypeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ServiceCreateInput = {
@@ -10228,7 +14957,7 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
-    locationsAvailable?: ServiceAvailableCreateNestedManyWithoutServiceInput
+    location?: LocationCreateNestedManyWithoutServicesInput
   }
 
   export type ServiceUncheckedCreateInput = {
@@ -10240,7 +14969,7 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
-    locationsAvailable?: ServiceAvailableUncheckedCreateNestedManyWithoutServiceInput
+    location?: LocationUncheckedCreateNestedManyWithoutServicesInput
   }
 
   export type ServiceUpdateInput = {
@@ -10252,7 +14981,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    locationsAvailable?: ServiceAvailableUpdateManyWithoutServiceNestedInput
+    location?: LocationUpdateManyWithoutServicesNestedInput
   }
 
   export type ServiceUncheckedUpdateInput = {
@@ -10264,7 +14993,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    locationsAvailable?: ServiceAvailableUncheckedUpdateManyWithoutServiceNestedInput
+    location?: LocationUncheckedUpdateManyWithoutServicesNestedInput
   }
 
   export type ServiceCreateManyInput = {
@@ -10300,44 +15029,300 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type ServiceAvailableCreateInput = {
+  export type CollectingOptionCreateInput = {
     id?: string
-    location: LocationCreateNestedOneWithoutServicesAvailableInput
-    service: ServiceCreateNestedOneWithoutLocationsAvailableInput
+    optionName: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    locations?: LocationCreateNestedManyWithoutCollectingOptionsInput
   }
 
-  export type ServiceAvailableUncheckedCreateInput = {
+  export type CollectingOptionUncheckedCreateInput = {
     id?: string
-    locationId: string
-    serviceId: string
+    optionName: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    locations?: LocationUncheckedCreateNestedManyWithoutCollectingOptionsInput
   }
 
-  export type ServiceAvailableUpdateInput = {
+  export type CollectingOptionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    location?: LocationUpdateOneRequiredWithoutServicesAvailableNestedInput
-    service?: ServiceUpdateOneRequiredWithoutLocationsAvailableNestedInput
+    optionName?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    locations?: LocationUpdateManyWithoutCollectingOptionsNestedInput
   }
 
-  export type ServiceAvailableUncheckedUpdateInput = {
+  export type CollectingOptionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    locationId?: StringFieldUpdateOperationsInput | string
-    serviceId?: StringFieldUpdateOperationsInput | string
+    optionName?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    locations?: LocationUncheckedUpdateManyWithoutCollectingOptionsNestedInput
   }
 
-  export type ServiceAvailableCreateManyInput = {
+  export type CollectingOptionCreateManyInput = {
     id?: string
-    locationId: string
-    serviceId: string
+    optionName: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
   }
 
-  export type ServiceAvailableUpdateManyMutationInput = {
+  export type CollectingOptionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    optionName?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type ServiceAvailableUncheckedUpdateManyInput = {
+  export type CollectingOptionUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    locationId?: StringFieldUpdateOperationsInput | string
-    serviceId?: StringFieldUpdateOperationsInput | string
+    optionName?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ProcessingOptionCreateInput = {
+    id?: string
+    optionName: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    locations?: LocationCreateNestedManyWithoutProcessingOptionsInput
+  }
+
+  export type ProcessingOptionUncheckedCreateInput = {
+    id?: string
+    optionName: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    locations?: LocationUncheckedCreateNestedManyWithoutProcessingOptionsInput
+  }
+
+  export type ProcessingOptionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    optionName?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    locations?: LocationUpdateManyWithoutProcessingOptionsNestedInput
+  }
+
+  export type ProcessingOptionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    optionName?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    locations?: LocationUncheckedUpdateManyWithoutProcessingOptionsNestedInput
+  }
+
+  export type ProcessingOptionCreateManyInput = {
+    id?: string
+    optionName: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type ProcessingOptionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    optionName?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ProcessingOptionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    optionName?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type MailCreateInput = {
+    id?: string
+    mail_code: string
+    mail_category_id: string
+    recipient_address: string
+    sender_address: string
+    time_inserted?: Date | string
+    time_delivered?: Date | string | null
+    location_start: LocationCreateNestedOneWithoutMailStartInput
+    location_end?: LocationCreateNestedOneWithoutMailEndInput
+    mailCarrier: MailCarrierCreateNestedOneWithoutMailInput
+  }
+
+  export type MailUncheckedCreateInput = {
+    id?: string
+    mail_code: string
+    mail_category_id: string
+    recipient_address: string
+    sender_address: string
+    location_start_id: string
+    location_end_id?: string | null
+    time_inserted?: Date | string
+    time_delivered?: Date | string | null
+    mailCarrierId: string
+  }
+
+  export type MailUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mail_code?: StringFieldUpdateOperationsInput | string
+    mail_category_id?: StringFieldUpdateOperationsInput | string
+    recipient_address?: StringFieldUpdateOperationsInput | string
+    sender_address?: StringFieldUpdateOperationsInput | string
+    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location_start?: LocationUpdateOneRequiredWithoutMailStartNestedInput
+    location_end?: LocationUpdateOneWithoutMailEndNestedInput
+    mailCarrier?: MailCarrierUpdateOneRequiredWithoutMailNestedInput
+  }
+
+  export type MailUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mail_code?: StringFieldUpdateOperationsInput | string
+    mail_category_id?: StringFieldUpdateOperationsInput | string
+    recipient_address?: StringFieldUpdateOperationsInput | string
+    sender_address?: StringFieldUpdateOperationsInput | string
+    location_start_id?: StringFieldUpdateOperationsInput | string
+    location_end_id?: NullableStringFieldUpdateOperationsInput | string | null
+    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mailCarrierId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type MailCreateManyInput = {
+    id?: string
+    mail_code: string
+    mail_category_id: string
+    recipient_address: string
+    sender_address: string
+    location_start_id: string
+    location_end_id?: string | null
+    time_inserted?: Date | string
+    time_delivered?: Date | string | null
+    mailCarrierId: string
+  }
+
+  export type MailUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mail_code?: StringFieldUpdateOperationsInput | string
+    mail_category_id?: StringFieldUpdateOperationsInput | string
+    recipient_address?: StringFieldUpdateOperationsInput | string
+    sender_address?: StringFieldUpdateOperationsInput | string
+    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type MailUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mail_code?: StringFieldUpdateOperationsInput | string
+    mail_category_id?: StringFieldUpdateOperationsInput | string
+    recipient_address?: StringFieldUpdateOperationsInput | string
+    sender_address?: StringFieldUpdateOperationsInput | string
+    location_start_id?: StringFieldUpdateOperationsInput | string
+    location_end_id?: NullableStringFieldUpdateOperationsInput | string | null
+    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mailCarrierId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type MailCarrierCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    mail?: MailCreateNestedManyWithoutMailCarrierInput
+  }
+
+  export type MailCarrierUncheckedCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    mail?: MailUncheckedCreateNestedManyWithoutMailCarrierInput
+  }
+
+  export type MailCarrierUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    mail?: MailUpdateManyWithoutMailCarrierNestedInput
+  }
+
+  export type MailCarrierUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    mail?: MailUncheckedUpdateManyWithoutMailCarrierNestedInput
+  }
+
+  export type MailCarrierCreateManyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type MailCarrierUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type MailCarrierUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type StringFilter = {
@@ -10683,13 +15668,43 @@ export namespace Prisma {
     isNot?: PostOfficeWhereInput
   }
 
-  export type ServiceAvailableListRelationFilter = {
-    every?: ServiceAvailableWhereInput
-    some?: ServiceAvailableWhereInput
-    none?: ServiceAvailableWhereInput
+  export type LocationTypeRelationFilter = {
+    is?: LocationTypeWhereInput
+    isNot?: LocationTypeWhereInput
   }
 
-  export type ServiceAvailableOrderByRelationAggregateInput = {
+  export type ServiceRelationFilter = {
+    is?: ServiceWhereInput
+    isNot?: ServiceWhereInput
+  }
+
+  export type CollectingOptionListRelationFilter = {
+    every?: CollectingOptionWhereInput
+    some?: CollectingOptionWhereInput
+    none?: CollectingOptionWhereInput
+  }
+
+  export type ProcessingOptionListRelationFilter = {
+    every?: ProcessingOptionWhereInput
+    some?: ProcessingOptionWhereInput
+    none?: ProcessingOptionWhereInput
+  }
+
+  export type MailListRelationFilter = {
+    every?: MailWhereInput
+    some?: MailWhereInput
+    none?: MailWhereInput
+  }
+
+  export type CollectingOptionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ProcessingOptionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MailOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -10702,6 +15717,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     updatedBy?: SortOrder
     postOfficeInChargeId?: SortOrder
+    LocationTypeId?: SortOrder
+    serviceId?: SortOrder
   }
 
   export type LocationMaxOrderByAggregateInput = {
@@ -10713,6 +15730,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     updatedBy?: SortOrder
     postOfficeInChargeId?: SortOrder
+    LocationTypeId?: SortOrder
+    serviceId?: SortOrder
   }
 
   export type LocationMinOrderByAggregateInput = {
@@ -10724,6 +15743,35 @@ export namespace Prisma {
     updatedAt?: SortOrder
     updatedBy?: SortOrder
     postOfficeInChargeId?: SortOrder
+    LocationTypeId?: SortOrder
+    serviceId?: SortOrder
+  }
+
+  export type LocationTypeCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type LocationTypeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type LocationTypeMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
   }
 
   export type ServiceCountOrderByAggregateInput = {
@@ -10759,32 +15807,162 @@ export namespace Prisma {
     updatedBy?: SortOrder
   }
 
+  export type CollectingOptionCountOrderByAggregateInput = {
+    id?: SortOrder
+    optionName?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type CollectingOptionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    optionName?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type CollectingOptionMinOrderByAggregateInput = {
+    id?: SortOrder
+    optionName?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type ProcessingOptionCountOrderByAggregateInput = {
+    id?: SortOrder
+    optionName?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type ProcessingOptionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    optionName?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type ProcessingOptionMinOrderByAggregateInput = {
+    id?: SortOrder
+    optionName?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type DateTimeNullableFilter = {
+    equals?: Date | string | null
+    in?: Enumerable<Date> | Enumerable<string> | Date | string | null
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string | null
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeNullableFilter | Date | string | null
+  }
+
   export type LocationRelationFilter = {
     is?: LocationWhereInput
     isNot?: LocationWhereInput
   }
 
-  export type ServiceRelationFilter = {
-    is?: ServiceWhereInput
-    isNot?: ServiceWhereInput
+  export type MailCarrierRelationFilter = {
+    is?: MailCarrierWhereInput
+    isNot?: MailCarrierWhereInput
   }
 
-  export type ServiceAvailableCountOrderByAggregateInput = {
+  export type MailCountOrderByAggregateInput = {
     id?: SortOrder
-    locationId?: SortOrder
-    serviceId?: SortOrder
+    mail_code?: SortOrder
+    mail_category_id?: SortOrder
+    recipient_address?: SortOrder
+    sender_address?: SortOrder
+    location_start_id?: SortOrder
+    location_end_id?: SortOrder
+    time_inserted?: SortOrder
+    time_delivered?: SortOrder
+    mailCarrierId?: SortOrder
   }
 
-  export type ServiceAvailableMaxOrderByAggregateInput = {
+  export type MailMaxOrderByAggregateInput = {
     id?: SortOrder
-    locationId?: SortOrder
-    serviceId?: SortOrder
+    mail_code?: SortOrder
+    mail_category_id?: SortOrder
+    recipient_address?: SortOrder
+    sender_address?: SortOrder
+    location_start_id?: SortOrder
+    location_end_id?: SortOrder
+    time_inserted?: SortOrder
+    time_delivered?: SortOrder
+    mailCarrierId?: SortOrder
   }
 
-  export type ServiceAvailableMinOrderByAggregateInput = {
+  export type MailMinOrderByAggregateInput = {
     id?: SortOrder
-    locationId?: SortOrder
-    serviceId?: SortOrder
+    mail_code?: SortOrder
+    mail_category_id?: SortOrder
+    recipient_address?: SortOrder
+    sender_address?: SortOrder
+    location_start_id?: SortOrder
+    location_end_id?: SortOrder
+    time_inserted?: SortOrder
+    time_delivered?: SortOrder
+    mailCarrierId?: SortOrder
+  }
+
+  export type DateTimeNullableWithAggregatesFilter = {
+    equals?: Date | string | null
+    in?: Enumerable<Date> | Enumerable<string> | Date | string | null
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string | null
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeNullableWithAggregatesFilter | Date | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedDateTimeNullableFilter
+    _max?: NestedDateTimeNullableFilter
+  }
+
+  export type MailCarrierCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type MailCarrierMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type MailCarrierMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    createdBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
   }
 
   export type UserTypeCreateNestedManyWithoutUsersInput = {
@@ -11039,18 +16217,68 @@ export namespace Prisma {
     connect?: PostOfficeWhereUniqueInput
   }
 
-  export type ServiceAvailableCreateNestedManyWithoutLocationInput = {
-    create?: XOR<Enumerable<ServiceAvailableCreateWithoutLocationInput>, Enumerable<ServiceAvailableUncheckedCreateWithoutLocationInput>>
-    connectOrCreate?: Enumerable<ServiceAvailableCreateOrConnectWithoutLocationInput>
-    createMany?: ServiceAvailableCreateManyLocationInputEnvelope
-    connect?: Enumerable<ServiceAvailableWhereUniqueInput>
+  export type LocationTypeCreateNestedOneWithoutLocationInput = {
+    create?: XOR<LocationTypeCreateWithoutLocationInput, LocationTypeUncheckedCreateWithoutLocationInput>
+    connectOrCreate?: LocationTypeCreateOrConnectWithoutLocationInput
+    connect?: LocationTypeWhereUniqueInput
   }
 
-  export type ServiceAvailableUncheckedCreateNestedManyWithoutLocationInput = {
-    create?: XOR<Enumerable<ServiceAvailableCreateWithoutLocationInput>, Enumerable<ServiceAvailableUncheckedCreateWithoutLocationInput>>
-    connectOrCreate?: Enumerable<ServiceAvailableCreateOrConnectWithoutLocationInput>
-    createMany?: ServiceAvailableCreateManyLocationInputEnvelope
-    connect?: Enumerable<ServiceAvailableWhereUniqueInput>
+  export type ServiceCreateNestedOneWithoutLocationInput = {
+    create?: XOR<ServiceCreateWithoutLocationInput, ServiceUncheckedCreateWithoutLocationInput>
+    connectOrCreate?: ServiceCreateOrConnectWithoutLocationInput
+    connect?: ServiceWhereUniqueInput
+  }
+
+  export type CollectingOptionCreateNestedManyWithoutLocationsInput = {
+    create?: XOR<Enumerable<CollectingOptionCreateWithoutLocationsInput>, Enumerable<CollectingOptionUncheckedCreateWithoutLocationsInput>>
+    connectOrCreate?: Enumerable<CollectingOptionCreateOrConnectWithoutLocationsInput>
+    connect?: Enumerable<CollectingOptionWhereUniqueInput>
+  }
+
+  export type ProcessingOptionCreateNestedManyWithoutLocationsInput = {
+    create?: XOR<Enumerable<ProcessingOptionCreateWithoutLocationsInput>, Enumerable<ProcessingOptionUncheckedCreateWithoutLocationsInput>>
+    connectOrCreate?: Enumerable<ProcessingOptionCreateOrConnectWithoutLocationsInput>
+    connect?: Enumerable<ProcessingOptionWhereUniqueInput>
+  }
+
+  export type MailCreateNestedManyWithoutLocation_startInput = {
+    create?: XOR<Enumerable<MailCreateWithoutLocation_startInput>, Enumerable<MailUncheckedCreateWithoutLocation_startInput>>
+    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocation_startInput>
+    createMany?: MailCreateManyLocation_startInputEnvelope
+    connect?: Enumerable<MailWhereUniqueInput>
+  }
+
+  export type MailCreateNestedManyWithoutLocation_endInput = {
+    create?: XOR<Enumerable<MailCreateWithoutLocation_endInput>, Enumerable<MailUncheckedCreateWithoutLocation_endInput>>
+    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocation_endInput>
+    createMany?: MailCreateManyLocation_endInputEnvelope
+    connect?: Enumerable<MailWhereUniqueInput>
+  }
+
+  export type CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput = {
+    create?: XOR<Enumerable<CollectingOptionCreateWithoutLocationsInput>, Enumerable<CollectingOptionUncheckedCreateWithoutLocationsInput>>
+    connectOrCreate?: Enumerable<CollectingOptionCreateOrConnectWithoutLocationsInput>
+    connect?: Enumerable<CollectingOptionWhereUniqueInput>
+  }
+
+  export type ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput = {
+    create?: XOR<Enumerable<ProcessingOptionCreateWithoutLocationsInput>, Enumerable<ProcessingOptionUncheckedCreateWithoutLocationsInput>>
+    connectOrCreate?: Enumerable<ProcessingOptionCreateOrConnectWithoutLocationsInput>
+    connect?: Enumerable<ProcessingOptionWhereUniqueInput>
+  }
+
+  export type MailUncheckedCreateNestedManyWithoutLocation_startInput = {
+    create?: XOR<Enumerable<MailCreateWithoutLocation_startInput>, Enumerable<MailUncheckedCreateWithoutLocation_startInput>>
+    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocation_startInput>
+    createMany?: MailCreateManyLocation_startInputEnvelope
+    connect?: Enumerable<MailWhereUniqueInput>
+  }
+
+  export type MailUncheckedCreateNestedManyWithoutLocation_endInput = {
+    create?: XOR<Enumerable<MailCreateWithoutLocation_endInput>, Enumerable<MailUncheckedCreateWithoutLocation_endInput>>
+    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocation_endInput>
+    createMany?: MailCreateManyLocation_endInputEnvelope
+    connect?: Enumerable<MailWhereUniqueInput>
   }
 
   export type PostOfficeUpdateOneRequiredWithoutLocationsNestedInput = {
@@ -11061,102 +16289,378 @@ export namespace Prisma {
     update?: XOR<PostOfficeUpdateWithoutLocationsInput, PostOfficeUncheckedUpdateWithoutLocationsInput>
   }
 
-  export type ServiceAvailableUpdateManyWithoutLocationNestedInput = {
-    create?: XOR<Enumerable<ServiceAvailableCreateWithoutLocationInput>, Enumerable<ServiceAvailableUncheckedCreateWithoutLocationInput>>
-    connectOrCreate?: Enumerable<ServiceAvailableCreateOrConnectWithoutLocationInput>
-    upsert?: Enumerable<ServiceAvailableUpsertWithWhereUniqueWithoutLocationInput>
-    createMany?: ServiceAvailableCreateManyLocationInputEnvelope
-    set?: Enumerable<ServiceAvailableWhereUniqueInput>
-    disconnect?: Enumerable<ServiceAvailableWhereUniqueInput>
-    delete?: Enumerable<ServiceAvailableWhereUniqueInput>
-    connect?: Enumerable<ServiceAvailableWhereUniqueInput>
-    update?: Enumerable<ServiceAvailableUpdateWithWhereUniqueWithoutLocationInput>
-    updateMany?: Enumerable<ServiceAvailableUpdateManyWithWhereWithoutLocationInput>
-    deleteMany?: Enumerable<ServiceAvailableScalarWhereInput>
+  export type LocationTypeUpdateOneRequiredWithoutLocationNestedInput = {
+    create?: XOR<LocationTypeCreateWithoutLocationInput, LocationTypeUncheckedCreateWithoutLocationInput>
+    connectOrCreate?: LocationTypeCreateOrConnectWithoutLocationInput
+    upsert?: LocationTypeUpsertWithoutLocationInput
+    connect?: LocationTypeWhereUniqueInput
+    update?: XOR<LocationTypeUpdateWithoutLocationInput, LocationTypeUncheckedUpdateWithoutLocationInput>
   }
 
-  export type ServiceAvailableUncheckedUpdateManyWithoutLocationNestedInput = {
-    create?: XOR<Enumerable<ServiceAvailableCreateWithoutLocationInput>, Enumerable<ServiceAvailableUncheckedCreateWithoutLocationInput>>
-    connectOrCreate?: Enumerable<ServiceAvailableCreateOrConnectWithoutLocationInput>
-    upsert?: Enumerable<ServiceAvailableUpsertWithWhereUniqueWithoutLocationInput>
-    createMany?: ServiceAvailableCreateManyLocationInputEnvelope
-    set?: Enumerable<ServiceAvailableWhereUniqueInput>
-    disconnect?: Enumerable<ServiceAvailableWhereUniqueInput>
-    delete?: Enumerable<ServiceAvailableWhereUniqueInput>
-    connect?: Enumerable<ServiceAvailableWhereUniqueInput>
-    update?: Enumerable<ServiceAvailableUpdateWithWhereUniqueWithoutLocationInput>
-    updateMany?: Enumerable<ServiceAvailableUpdateManyWithWhereWithoutLocationInput>
-    deleteMany?: Enumerable<ServiceAvailableScalarWhereInput>
+  export type ServiceUpdateOneRequiredWithoutLocationNestedInput = {
+    create?: XOR<ServiceCreateWithoutLocationInput, ServiceUncheckedCreateWithoutLocationInput>
+    connectOrCreate?: ServiceCreateOrConnectWithoutLocationInput
+    upsert?: ServiceUpsertWithoutLocationInput
+    connect?: ServiceWhereUniqueInput
+    update?: XOR<ServiceUpdateWithoutLocationInput, ServiceUncheckedUpdateWithoutLocationInput>
   }
 
-  export type ServiceAvailableCreateNestedManyWithoutServiceInput = {
-    create?: XOR<Enumerable<ServiceAvailableCreateWithoutServiceInput>, Enumerable<ServiceAvailableUncheckedCreateWithoutServiceInput>>
-    connectOrCreate?: Enumerable<ServiceAvailableCreateOrConnectWithoutServiceInput>
-    createMany?: ServiceAvailableCreateManyServiceInputEnvelope
-    connect?: Enumerable<ServiceAvailableWhereUniqueInput>
+  export type CollectingOptionUpdateManyWithoutLocationsNestedInput = {
+    create?: XOR<Enumerable<CollectingOptionCreateWithoutLocationsInput>, Enumerable<CollectingOptionUncheckedCreateWithoutLocationsInput>>
+    connectOrCreate?: Enumerable<CollectingOptionCreateOrConnectWithoutLocationsInput>
+    upsert?: Enumerable<CollectingOptionUpsertWithWhereUniqueWithoutLocationsInput>
+    set?: Enumerable<CollectingOptionWhereUniqueInput>
+    disconnect?: Enumerable<CollectingOptionWhereUniqueInput>
+    delete?: Enumerable<CollectingOptionWhereUniqueInput>
+    connect?: Enumerable<CollectingOptionWhereUniqueInput>
+    update?: Enumerable<CollectingOptionUpdateWithWhereUniqueWithoutLocationsInput>
+    updateMany?: Enumerable<CollectingOptionUpdateManyWithWhereWithoutLocationsInput>
+    deleteMany?: Enumerable<CollectingOptionScalarWhereInput>
   }
 
-  export type ServiceAvailableUncheckedCreateNestedManyWithoutServiceInput = {
-    create?: XOR<Enumerable<ServiceAvailableCreateWithoutServiceInput>, Enumerable<ServiceAvailableUncheckedCreateWithoutServiceInput>>
-    connectOrCreate?: Enumerable<ServiceAvailableCreateOrConnectWithoutServiceInput>
-    createMany?: ServiceAvailableCreateManyServiceInputEnvelope
-    connect?: Enumerable<ServiceAvailableWhereUniqueInput>
+  export type ProcessingOptionUpdateManyWithoutLocationsNestedInput = {
+    create?: XOR<Enumerable<ProcessingOptionCreateWithoutLocationsInput>, Enumerable<ProcessingOptionUncheckedCreateWithoutLocationsInput>>
+    connectOrCreate?: Enumerable<ProcessingOptionCreateOrConnectWithoutLocationsInput>
+    upsert?: Enumerable<ProcessingOptionUpsertWithWhereUniqueWithoutLocationsInput>
+    set?: Enumerable<ProcessingOptionWhereUniqueInput>
+    disconnect?: Enumerable<ProcessingOptionWhereUniqueInput>
+    delete?: Enumerable<ProcessingOptionWhereUniqueInput>
+    connect?: Enumerable<ProcessingOptionWhereUniqueInput>
+    update?: Enumerable<ProcessingOptionUpdateWithWhereUniqueWithoutLocationsInput>
+    updateMany?: Enumerable<ProcessingOptionUpdateManyWithWhereWithoutLocationsInput>
+    deleteMany?: Enumerable<ProcessingOptionScalarWhereInput>
   }
 
-  export type ServiceAvailableUpdateManyWithoutServiceNestedInput = {
-    create?: XOR<Enumerable<ServiceAvailableCreateWithoutServiceInput>, Enumerable<ServiceAvailableUncheckedCreateWithoutServiceInput>>
-    connectOrCreate?: Enumerable<ServiceAvailableCreateOrConnectWithoutServiceInput>
-    upsert?: Enumerable<ServiceAvailableUpsertWithWhereUniqueWithoutServiceInput>
-    createMany?: ServiceAvailableCreateManyServiceInputEnvelope
-    set?: Enumerable<ServiceAvailableWhereUniqueInput>
-    disconnect?: Enumerable<ServiceAvailableWhereUniqueInput>
-    delete?: Enumerable<ServiceAvailableWhereUniqueInput>
-    connect?: Enumerable<ServiceAvailableWhereUniqueInput>
-    update?: Enumerable<ServiceAvailableUpdateWithWhereUniqueWithoutServiceInput>
-    updateMany?: Enumerable<ServiceAvailableUpdateManyWithWhereWithoutServiceInput>
-    deleteMany?: Enumerable<ServiceAvailableScalarWhereInput>
+  export type MailUpdateManyWithoutLocation_startNestedInput = {
+    create?: XOR<Enumerable<MailCreateWithoutLocation_startInput>, Enumerable<MailUncheckedCreateWithoutLocation_startInput>>
+    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocation_startInput>
+    upsert?: Enumerable<MailUpsertWithWhereUniqueWithoutLocation_startInput>
+    createMany?: MailCreateManyLocation_startInputEnvelope
+    set?: Enumerable<MailWhereUniqueInput>
+    disconnect?: Enumerable<MailWhereUniqueInput>
+    delete?: Enumerable<MailWhereUniqueInput>
+    connect?: Enumerable<MailWhereUniqueInput>
+    update?: Enumerable<MailUpdateWithWhereUniqueWithoutLocation_startInput>
+    updateMany?: Enumerable<MailUpdateManyWithWhereWithoutLocation_startInput>
+    deleteMany?: Enumerable<MailScalarWhereInput>
   }
 
-  export type ServiceAvailableUncheckedUpdateManyWithoutServiceNestedInput = {
-    create?: XOR<Enumerable<ServiceAvailableCreateWithoutServiceInput>, Enumerable<ServiceAvailableUncheckedCreateWithoutServiceInput>>
-    connectOrCreate?: Enumerable<ServiceAvailableCreateOrConnectWithoutServiceInput>
-    upsert?: Enumerable<ServiceAvailableUpsertWithWhereUniqueWithoutServiceInput>
-    createMany?: ServiceAvailableCreateManyServiceInputEnvelope
-    set?: Enumerable<ServiceAvailableWhereUniqueInput>
-    disconnect?: Enumerable<ServiceAvailableWhereUniqueInput>
-    delete?: Enumerable<ServiceAvailableWhereUniqueInput>
-    connect?: Enumerable<ServiceAvailableWhereUniqueInput>
-    update?: Enumerable<ServiceAvailableUpdateWithWhereUniqueWithoutServiceInput>
-    updateMany?: Enumerable<ServiceAvailableUpdateManyWithWhereWithoutServiceInput>
-    deleteMany?: Enumerable<ServiceAvailableScalarWhereInput>
+  export type MailUpdateManyWithoutLocation_endNestedInput = {
+    create?: XOR<Enumerable<MailCreateWithoutLocation_endInput>, Enumerable<MailUncheckedCreateWithoutLocation_endInput>>
+    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocation_endInput>
+    upsert?: Enumerable<MailUpsertWithWhereUniqueWithoutLocation_endInput>
+    createMany?: MailCreateManyLocation_endInputEnvelope
+    set?: Enumerable<MailWhereUniqueInput>
+    disconnect?: Enumerable<MailWhereUniqueInput>
+    delete?: Enumerable<MailWhereUniqueInput>
+    connect?: Enumerable<MailWhereUniqueInput>
+    update?: Enumerable<MailUpdateWithWhereUniqueWithoutLocation_endInput>
+    updateMany?: Enumerable<MailUpdateManyWithWhereWithoutLocation_endInput>
+    deleteMany?: Enumerable<MailScalarWhereInput>
   }
 
-  export type LocationCreateNestedOneWithoutServicesAvailableInput = {
-    create?: XOR<LocationCreateWithoutServicesAvailableInput, LocationUncheckedCreateWithoutServicesAvailableInput>
-    connectOrCreate?: LocationCreateOrConnectWithoutServicesAvailableInput
+  export type CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput = {
+    create?: XOR<Enumerable<CollectingOptionCreateWithoutLocationsInput>, Enumerable<CollectingOptionUncheckedCreateWithoutLocationsInput>>
+    connectOrCreate?: Enumerable<CollectingOptionCreateOrConnectWithoutLocationsInput>
+    upsert?: Enumerable<CollectingOptionUpsertWithWhereUniqueWithoutLocationsInput>
+    set?: Enumerable<CollectingOptionWhereUniqueInput>
+    disconnect?: Enumerable<CollectingOptionWhereUniqueInput>
+    delete?: Enumerable<CollectingOptionWhereUniqueInput>
+    connect?: Enumerable<CollectingOptionWhereUniqueInput>
+    update?: Enumerable<CollectingOptionUpdateWithWhereUniqueWithoutLocationsInput>
+    updateMany?: Enumerable<CollectingOptionUpdateManyWithWhereWithoutLocationsInput>
+    deleteMany?: Enumerable<CollectingOptionScalarWhereInput>
+  }
+
+  export type ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput = {
+    create?: XOR<Enumerable<ProcessingOptionCreateWithoutLocationsInput>, Enumerable<ProcessingOptionUncheckedCreateWithoutLocationsInput>>
+    connectOrCreate?: Enumerable<ProcessingOptionCreateOrConnectWithoutLocationsInput>
+    upsert?: Enumerable<ProcessingOptionUpsertWithWhereUniqueWithoutLocationsInput>
+    set?: Enumerable<ProcessingOptionWhereUniqueInput>
+    disconnect?: Enumerable<ProcessingOptionWhereUniqueInput>
+    delete?: Enumerable<ProcessingOptionWhereUniqueInput>
+    connect?: Enumerable<ProcessingOptionWhereUniqueInput>
+    update?: Enumerable<ProcessingOptionUpdateWithWhereUniqueWithoutLocationsInput>
+    updateMany?: Enumerable<ProcessingOptionUpdateManyWithWhereWithoutLocationsInput>
+    deleteMany?: Enumerable<ProcessingOptionScalarWhereInput>
+  }
+
+  export type MailUncheckedUpdateManyWithoutLocation_startNestedInput = {
+    create?: XOR<Enumerable<MailCreateWithoutLocation_startInput>, Enumerable<MailUncheckedCreateWithoutLocation_startInput>>
+    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocation_startInput>
+    upsert?: Enumerable<MailUpsertWithWhereUniqueWithoutLocation_startInput>
+    createMany?: MailCreateManyLocation_startInputEnvelope
+    set?: Enumerable<MailWhereUniqueInput>
+    disconnect?: Enumerable<MailWhereUniqueInput>
+    delete?: Enumerable<MailWhereUniqueInput>
+    connect?: Enumerable<MailWhereUniqueInput>
+    update?: Enumerable<MailUpdateWithWhereUniqueWithoutLocation_startInput>
+    updateMany?: Enumerable<MailUpdateManyWithWhereWithoutLocation_startInput>
+    deleteMany?: Enumerable<MailScalarWhereInput>
+  }
+
+  export type MailUncheckedUpdateManyWithoutLocation_endNestedInput = {
+    create?: XOR<Enumerable<MailCreateWithoutLocation_endInput>, Enumerable<MailUncheckedCreateWithoutLocation_endInput>>
+    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocation_endInput>
+    upsert?: Enumerable<MailUpsertWithWhereUniqueWithoutLocation_endInput>
+    createMany?: MailCreateManyLocation_endInputEnvelope
+    set?: Enumerable<MailWhereUniqueInput>
+    disconnect?: Enumerable<MailWhereUniqueInput>
+    delete?: Enumerable<MailWhereUniqueInput>
+    connect?: Enumerable<MailWhereUniqueInput>
+    update?: Enumerable<MailUpdateWithWhereUniqueWithoutLocation_endInput>
+    updateMany?: Enumerable<MailUpdateManyWithWhereWithoutLocation_endInput>
+    deleteMany?: Enumerable<MailScalarWhereInput>
+  }
+
+  export type LocationCreateNestedManyWithoutLocationTypeInput = {
+    create?: XOR<Enumerable<LocationCreateWithoutLocationTypeInput>, Enumerable<LocationUncheckedCreateWithoutLocationTypeInput>>
+    connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutLocationTypeInput>
+    createMany?: LocationCreateManyLocationTypeInputEnvelope
+    connect?: Enumerable<LocationWhereUniqueInput>
+  }
+
+  export type LocationUncheckedCreateNestedManyWithoutLocationTypeInput = {
+    create?: XOR<Enumerable<LocationCreateWithoutLocationTypeInput>, Enumerable<LocationUncheckedCreateWithoutLocationTypeInput>>
+    connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutLocationTypeInput>
+    createMany?: LocationCreateManyLocationTypeInputEnvelope
+    connect?: Enumerable<LocationWhereUniqueInput>
+  }
+
+  export type LocationUpdateManyWithoutLocationTypeNestedInput = {
+    create?: XOR<Enumerable<LocationCreateWithoutLocationTypeInput>, Enumerable<LocationUncheckedCreateWithoutLocationTypeInput>>
+    connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutLocationTypeInput>
+    upsert?: Enumerable<LocationUpsertWithWhereUniqueWithoutLocationTypeInput>
+    createMany?: LocationCreateManyLocationTypeInputEnvelope
+    set?: Enumerable<LocationWhereUniqueInput>
+    disconnect?: Enumerable<LocationWhereUniqueInput>
+    delete?: Enumerable<LocationWhereUniqueInput>
+    connect?: Enumerable<LocationWhereUniqueInput>
+    update?: Enumerable<LocationUpdateWithWhereUniqueWithoutLocationTypeInput>
+    updateMany?: Enumerable<LocationUpdateManyWithWhereWithoutLocationTypeInput>
+    deleteMany?: Enumerable<LocationScalarWhereInput>
+  }
+
+  export type LocationUncheckedUpdateManyWithoutLocationTypeNestedInput = {
+    create?: XOR<Enumerable<LocationCreateWithoutLocationTypeInput>, Enumerable<LocationUncheckedCreateWithoutLocationTypeInput>>
+    connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutLocationTypeInput>
+    upsert?: Enumerable<LocationUpsertWithWhereUniqueWithoutLocationTypeInput>
+    createMany?: LocationCreateManyLocationTypeInputEnvelope
+    set?: Enumerable<LocationWhereUniqueInput>
+    disconnect?: Enumerable<LocationWhereUniqueInput>
+    delete?: Enumerable<LocationWhereUniqueInput>
+    connect?: Enumerable<LocationWhereUniqueInput>
+    update?: Enumerable<LocationUpdateWithWhereUniqueWithoutLocationTypeInput>
+    updateMany?: Enumerable<LocationUpdateManyWithWhereWithoutLocationTypeInput>
+    deleteMany?: Enumerable<LocationScalarWhereInput>
+  }
+
+  export type LocationCreateNestedManyWithoutServicesInput = {
+    create?: XOR<Enumerable<LocationCreateWithoutServicesInput>, Enumerable<LocationUncheckedCreateWithoutServicesInput>>
+    connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutServicesInput>
+    createMany?: LocationCreateManyServicesInputEnvelope
+    connect?: Enumerable<LocationWhereUniqueInput>
+  }
+
+  export type LocationUncheckedCreateNestedManyWithoutServicesInput = {
+    create?: XOR<Enumerable<LocationCreateWithoutServicesInput>, Enumerable<LocationUncheckedCreateWithoutServicesInput>>
+    connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutServicesInput>
+    createMany?: LocationCreateManyServicesInputEnvelope
+    connect?: Enumerable<LocationWhereUniqueInput>
+  }
+
+  export type LocationUpdateManyWithoutServicesNestedInput = {
+    create?: XOR<Enumerable<LocationCreateWithoutServicesInput>, Enumerable<LocationUncheckedCreateWithoutServicesInput>>
+    connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutServicesInput>
+    upsert?: Enumerable<LocationUpsertWithWhereUniqueWithoutServicesInput>
+    createMany?: LocationCreateManyServicesInputEnvelope
+    set?: Enumerable<LocationWhereUniqueInput>
+    disconnect?: Enumerable<LocationWhereUniqueInput>
+    delete?: Enumerable<LocationWhereUniqueInput>
+    connect?: Enumerable<LocationWhereUniqueInput>
+    update?: Enumerable<LocationUpdateWithWhereUniqueWithoutServicesInput>
+    updateMany?: Enumerable<LocationUpdateManyWithWhereWithoutServicesInput>
+    deleteMany?: Enumerable<LocationScalarWhereInput>
+  }
+
+  export type LocationUncheckedUpdateManyWithoutServicesNestedInput = {
+    create?: XOR<Enumerable<LocationCreateWithoutServicesInput>, Enumerable<LocationUncheckedCreateWithoutServicesInput>>
+    connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutServicesInput>
+    upsert?: Enumerable<LocationUpsertWithWhereUniqueWithoutServicesInput>
+    createMany?: LocationCreateManyServicesInputEnvelope
+    set?: Enumerable<LocationWhereUniqueInput>
+    disconnect?: Enumerable<LocationWhereUniqueInput>
+    delete?: Enumerable<LocationWhereUniqueInput>
+    connect?: Enumerable<LocationWhereUniqueInput>
+    update?: Enumerable<LocationUpdateWithWhereUniqueWithoutServicesInput>
+    updateMany?: Enumerable<LocationUpdateManyWithWhereWithoutServicesInput>
+    deleteMany?: Enumerable<LocationScalarWhereInput>
+  }
+
+  export type LocationCreateNestedManyWithoutCollectingOptionsInput = {
+    create?: XOR<Enumerable<LocationCreateWithoutCollectingOptionsInput>, Enumerable<LocationUncheckedCreateWithoutCollectingOptionsInput>>
+    connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutCollectingOptionsInput>
+    connect?: Enumerable<LocationWhereUniqueInput>
+  }
+
+  export type LocationUncheckedCreateNestedManyWithoutCollectingOptionsInput = {
+    create?: XOR<Enumerable<LocationCreateWithoutCollectingOptionsInput>, Enumerable<LocationUncheckedCreateWithoutCollectingOptionsInput>>
+    connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutCollectingOptionsInput>
+    connect?: Enumerable<LocationWhereUniqueInput>
+  }
+
+  export type LocationUpdateManyWithoutCollectingOptionsNestedInput = {
+    create?: XOR<Enumerable<LocationCreateWithoutCollectingOptionsInput>, Enumerable<LocationUncheckedCreateWithoutCollectingOptionsInput>>
+    connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutCollectingOptionsInput>
+    upsert?: Enumerable<LocationUpsertWithWhereUniqueWithoutCollectingOptionsInput>
+    set?: Enumerable<LocationWhereUniqueInput>
+    disconnect?: Enumerable<LocationWhereUniqueInput>
+    delete?: Enumerable<LocationWhereUniqueInput>
+    connect?: Enumerable<LocationWhereUniqueInput>
+    update?: Enumerable<LocationUpdateWithWhereUniqueWithoutCollectingOptionsInput>
+    updateMany?: Enumerable<LocationUpdateManyWithWhereWithoutCollectingOptionsInput>
+    deleteMany?: Enumerable<LocationScalarWhereInput>
+  }
+
+  export type LocationUncheckedUpdateManyWithoutCollectingOptionsNestedInput = {
+    create?: XOR<Enumerable<LocationCreateWithoutCollectingOptionsInput>, Enumerable<LocationUncheckedCreateWithoutCollectingOptionsInput>>
+    connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutCollectingOptionsInput>
+    upsert?: Enumerable<LocationUpsertWithWhereUniqueWithoutCollectingOptionsInput>
+    set?: Enumerable<LocationWhereUniqueInput>
+    disconnect?: Enumerable<LocationWhereUniqueInput>
+    delete?: Enumerable<LocationWhereUniqueInput>
+    connect?: Enumerable<LocationWhereUniqueInput>
+    update?: Enumerable<LocationUpdateWithWhereUniqueWithoutCollectingOptionsInput>
+    updateMany?: Enumerable<LocationUpdateManyWithWhereWithoutCollectingOptionsInput>
+    deleteMany?: Enumerable<LocationScalarWhereInput>
+  }
+
+  export type LocationCreateNestedManyWithoutProcessingOptionsInput = {
+    create?: XOR<Enumerable<LocationCreateWithoutProcessingOptionsInput>, Enumerable<LocationUncheckedCreateWithoutProcessingOptionsInput>>
+    connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutProcessingOptionsInput>
+    connect?: Enumerable<LocationWhereUniqueInput>
+  }
+
+  export type LocationUncheckedCreateNestedManyWithoutProcessingOptionsInput = {
+    create?: XOR<Enumerable<LocationCreateWithoutProcessingOptionsInput>, Enumerable<LocationUncheckedCreateWithoutProcessingOptionsInput>>
+    connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutProcessingOptionsInput>
+    connect?: Enumerable<LocationWhereUniqueInput>
+  }
+
+  export type LocationUpdateManyWithoutProcessingOptionsNestedInput = {
+    create?: XOR<Enumerable<LocationCreateWithoutProcessingOptionsInput>, Enumerable<LocationUncheckedCreateWithoutProcessingOptionsInput>>
+    connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutProcessingOptionsInput>
+    upsert?: Enumerable<LocationUpsertWithWhereUniqueWithoutProcessingOptionsInput>
+    set?: Enumerable<LocationWhereUniqueInput>
+    disconnect?: Enumerable<LocationWhereUniqueInput>
+    delete?: Enumerable<LocationWhereUniqueInput>
+    connect?: Enumerable<LocationWhereUniqueInput>
+    update?: Enumerable<LocationUpdateWithWhereUniqueWithoutProcessingOptionsInput>
+    updateMany?: Enumerable<LocationUpdateManyWithWhereWithoutProcessingOptionsInput>
+    deleteMany?: Enumerable<LocationScalarWhereInput>
+  }
+
+  export type LocationUncheckedUpdateManyWithoutProcessingOptionsNestedInput = {
+    create?: XOR<Enumerable<LocationCreateWithoutProcessingOptionsInput>, Enumerable<LocationUncheckedCreateWithoutProcessingOptionsInput>>
+    connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutProcessingOptionsInput>
+    upsert?: Enumerable<LocationUpsertWithWhereUniqueWithoutProcessingOptionsInput>
+    set?: Enumerable<LocationWhereUniqueInput>
+    disconnect?: Enumerable<LocationWhereUniqueInput>
+    delete?: Enumerable<LocationWhereUniqueInput>
+    connect?: Enumerable<LocationWhereUniqueInput>
+    update?: Enumerable<LocationUpdateWithWhereUniqueWithoutProcessingOptionsInput>
+    updateMany?: Enumerable<LocationUpdateManyWithWhereWithoutProcessingOptionsInput>
+    deleteMany?: Enumerable<LocationScalarWhereInput>
+  }
+
+  export type LocationCreateNestedOneWithoutMailStartInput = {
+    create?: XOR<LocationCreateWithoutMailStartInput, LocationUncheckedCreateWithoutMailStartInput>
+    connectOrCreate?: LocationCreateOrConnectWithoutMailStartInput
     connect?: LocationWhereUniqueInput
   }
 
-  export type ServiceCreateNestedOneWithoutLocationsAvailableInput = {
-    create?: XOR<ServiceCreateWithoutLocationsAvailableInput, ServiceUncheckedCreateWithoutLocationsAvailableInput>
-    connectOrCreate?: ServiceCreateOrConnectWithoutLocationsAvailableInput
-    connect?: ServiceWhereUniqueInput
-  }
-
-  export type LocationUpdateOneRequiredWithoutServicesAvailableNestedInput = {
-    create?: XOR<LocationCreateWithoutServicesAvailableInput, LocationUncheckedCreateWithoutServicesAvailableInput>
-    connectOrCreate?: LocationCreateOrConnectWithoutServicesAvailableInput
-    upsert?: LocationUpsertWithoutServicesAvailableInput
+  export type LocationCreateNestedOneWithoutMailEndInput = {
+    create?: XOR<LocationCreateWithoutMailEndInput, LocationUncheckedCreateWithoutMailEndInput>
+    connectOrCreate?: LocationCreateOrConnectWithoutMailEndInput
     connect?: LocationWhereUniqueInput
-    update?: XOR<LocationUpdateWithoutServicesAvailableInput, LocationUncheckedUpdateWithoutServicesAvailableInput>
   }
 
-  export type ServiceUpdateOneRequiredWithoutLocationsAvailableNestedInput = {
-    create?: XOR<ServiceCreateWithoutLocationsAvailableInput, ServiceUncheckedCreateWithoutLocationsAvailableInput>
-    connectOrCreate?: ServiceCreateOrConnectWithoutLocationsAvailableInput
-    upsert?: ServiceUpsertWithoutLocationsAvailableInput
-    connect?: ServiceWhereUniqueInput
-    update?: XOR<ServiceUpdateWithoutLocationsAvailableInput, ServiceUncheckedUpdateWithoutLocationsAvailableInput>
+  export type MailCarrierCreateNestedOneWithoutMailInput = {
+    create?: XOR<MailCarrierCreateWithoutMailInput, MailCarrierUncheckedCreateWithoutMailInput>
+    connectOrCreate?: MailCarrierCreateOrConnectWithoutMailInput
+    connect?: MailCarrierWhereUniqueInput
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type LocationUpdateOneRequiredWithoutMailStartNestedInput = {
+    create?: XOR<LocationCreateWithoutMailStartInput, LocationUncheckedCreateWithoutMailStartInput>
+    connectOrCreate?: LocationCreateOrConnectWithoutMailStartInput
+    upsert?: LocationUpsertWithoutMailStartInput
+    connect?: LocationWhereUniqueInput
+    update?: XOR<LocationUpdateWithoutMailStartInput, LocationUncheckedUpdateWithoutMailStartInput>
+  }
+
+  export type LocationUpdateOneWithoutMailEndNestedInput = {
+    create?: XOR<LocationCreateWithoutMailEndInput, LocationUncheckedCreateWithoutMailEndInput>
+    connectOrCreate?: LocationCreateOrConnectWithoutMailEndInput
+    upsert?: LocationUpsertWithoutMailEndInput
+    disconnect?: boolean
+    delete?: boolean
+    connect?: LocationWhereUniqueInput
+    update?: XOR<LocationUpdateWithoutMailEndInput, LocationUncheckedUpdateWithoutMailEndInput>
+  }
+
+  export type MailCarrierUpdateOneRequiredWithoutMailNestedInput = {
+    create?: XOR<MailCarrierCreateWithoutMailInput, MailCarrierUncheckedCreateWithoutMailInput>
+    connectOrCreate?: MailCarrierCreateOrConnectWithoutMailInput
+    upsert?: MailCarrierUpsertWithoutMailInput
+    connect?: MailCarrierWhereUniqueInput
+    update?: XOR<MailCarrierUpdateWithoutMailInput, MailCarrierUncheckedUpdateWithoutMailInput>
+  }
+
+  export type MailCreateNestedManyWithoutMailCarrierInput = {
+    create?: XOR<Enumerable<MailCreateWithoutMailCarrierInput>, Enumerable<MailUncheckedCreateWithoutMailCarrierInput>>
+    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutMailCarrierInput>
+    createMany?: MailCreateManyMailCarrierInputEnvelope
+    connect?: Enumerable<MailWhereUniqueInput>
+  }
+
+  export type MailUncheckedCreateNestedManyWithoutMailCarrierInput = {
+    create?: XOR<Enumerable<MailCreateWithoutMailCarrierInput>, Enumerable<MailUncheckedCreateWithoutMailCarrierInput>>
+    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutMailCarrierInput>
+    createMany?: MailCreateManyMailCarrierInputEnvelope
+    connect?: Enumerable<MailWhereUniqueInput>
+  }
+
+  export type MailUpdateManyWithoutMailCarrierNestedInput = {
+    create?: XOR<Enumerable<MailCreateWithoutMailCarrierInput>, Enumerable<MailUncheckedCreateWithoutMailCarrierInput>>
+    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutMailCarrierInput>
+    upsert?: Enumerable<MailUpsertWithWhereUniqueWithoutMailCarrierInput>
+    createMany?: MailCreateManyMailCarrierInputEnvelope
+    set?: Enumerable<MailWhereUniqueInput>
+    disconnect?: Enumerable<MailWhereUniqueInput>
+    delete?: Enumerable<MailWhereUniqueInput>
+    connect?: Enumerable<MailWhereUniqueInput>
+    update?: Enumerable<MailUpdateWithWhereUniqueWithoutMailCarrierInput>
+    updateMany?: Enumerable<MailUpdateManyWithWhereWithoutMailCarrierInput>
+    deleteMany?: Enumerable<MailScalarWhereInput>
+  }
+
+  export type MailUncheckedUpdateManyWithoutMailCarrierNestedInput = {
+    create?: XOR<Enumerable<MailCreateWithoutMailCarrierInput>, Enumerable<MailUncheckedCreateWithoutMailCarrierInput>>
+    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutMailCarrierInput>
+    upsert?: Enumerable<MailUpsertWithWhereUniqueWithoutMailCarrierInput>
+    createMany?: MailCreateManyMailCarrierInputEnvelope
+    set?: Enumerable<MailWhereUniqueInput>
+    disconnect?: Enumerable<MailWhereUniqueInput>
+    delete?: Enumerable<MailWhereUniqueInput>
+    connect?: Enumerable<MailWhereUniqueInput>
+    update?: Enumerable<MailUpdateWithWhereUniqueWithoutMailCarrierInput>
+    updateMany?: Enumerable<MailUpdateManyWithWhereWithoutMailCarrierInput>
+    deleteMany?: Enumerable<MailScalarWhereInput>
   }
 
   export type NestedStringFilter = {
@@ -11279,6 +16783,31 @@ export namespace Prisma {
     gt?: number
     gte?: number
     not?: NestedIntNullableFilter | number | null
+  }
+
+  export type NestedDateTimeNullableFilter = {
+    equals?: Date | string | null
+    in?: Enumerable<Date> | Enumerable<string> | Date | string | null
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string | null
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeNullableFilter | Date | string | null
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter = {
+    equals?: Date | string | null
+    in?: Enumerable<Date> | Enumerable<string> | Date | string | null
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string | null
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeNullableWithAggregatesFilter | Date | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedDateTimeNullableFilter
+    _max?: NestedDateTimeNullableFilter
   }
 
   export type UserTypeCreateWithoutUsersInput = {
@@ -11613,7 +17142,12 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
-    servicesAvailable?: ServiceAvailableCreateNestedManyWithoutLocationInput
+    LocationType: LocationTypeCreateNestedOneWithoutLocationInput
+    services: ServiceCreateNestedOneWithoutLocationInput
+    collectingOptions?: CollectingOptionCreateNestedManyWithoutLocationsInput
+    processingOptions?: ProcessingOptionCreateNestedManyWithoutLocationsInput
+    mailStart?: MailCreateNestedManyWithoutLocation_startInput
+    mailEnd?: MailCreateNestedManyWithoutLocation_endInput
   }
 
   export type LocationUncheckedCreateWithoutPostOfficeInChargeInput = {
@@ -11624,7 +17158,12 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
-    servicesAvailable?: ServiceAvailableUncheckedCreateNestedManyWithoutLocationInput
+    LocationTypeId: string
+    serviceId: string
+    collectingOptions?: CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput
+    processingOptions?: ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput
+    mailStart?: MailUncheckedCreateNestedManyWithoutLocation_startInput
+    mailEnd?: MailUncheckedCreateNestedManyWithoutLocation_endInput
   }
 
   export type LocationCreateOrConnectWithoutPostOfficeInChargeInput = {
@@ -11690,6 +17229,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter | Date | string
     updatedBy?: StringNullableFilter | string | null
     postOfficeInChargeId?: StringFilter | string
+    LocationTypeId?: StringFilter | string
+    serviceId?: StringFilter | string
   }
 
   export type PostOfficeCreateWithoutLocationsInput = {
@@ -11725,23 +17266,167 @@ export namespace Prisma {
     create: XOR<PostOfficeCreateWithoutLocationsInput, PostOfficeUncheckedCreateWithoutLocationsInput>
   }
 
-  export type ServiceAvailableCreateWithoutLocationInput = {
+  export type LocationTypeCreateWithoutLocationInput = {
     id?: string
-    service: ServiceCreateNestedOneWithoutLocationsAvailableInput
+    name: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
   }
 
-  export type ServiceAvailableUncheckedCreateWithoutLocationInput = {
+  export type LocationTypeUncheckedCreateWithoutLocationInput = {
     id?: string
-    serviceId: string
+    name: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
   }
 
-  export type ServiceAvailableCreateOrConnectWithoutLocationInput = {
-    where: ServiceAvailableWhereUniqueInput
-    create: XOR<ServiceAvailableCreateWithoutLocationInput, ServiceAvailableUncheckedCreateWithoutLocationInput>
+  export type LocationTypeCreateOrConnectWithoutLocationInput = {
+    where: LocationTypeWhereUniqueInput
+    create: XOR<LocationTypeCreateWithoutLocationInput, LocationTypeUncheckedCreateWithoutLocationInput>
   }
 
-  export type ServiceAvailableCreateManyLocationInputEnvelope = {
-    data: Enumerable<ServiceAvailableCreateManyLocationInput>
+  export type ServiceCreateWithoutLocationInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type ServiceUncheckedCreateWithoutLocationInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type ServiceCreateOrConnectWithoutLocationInput = {
+    where: ServiceWhereUniqueInput
+    create: XOR<ServiceCreateWithoutLocationInput, ServiceUncheckedCreateWithoutLocationInput>
+  }
+
+  export type CollectingOptionCreateWithoutLocationsInput = {
+    id?: string
+    optionName: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type CollectingOptionUncheckedCreateWithoutLocationsInput = {
+    id?: string
+    optionName: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type CollectingOptionCreateOrConnectWithoutLocationsInput = {
+    where: CollectingOptionWhereUniqueInput
+    create: XOR<CollectingOptionCreateWithoutLocationsInput, CollectingOptionUncheckedCreateWithoutLocationsInput>
+  }
+
+  export type ProcessingOptionCreateWithoutLocationsInput = {
+    id?: string
+    optionName: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type ProcessingOptionUncheckedCreateWithoutLocationsInput = {
+    id?: string
+    optionName: string
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type ProcessingOptionCreateOrConnectWithoutLocationsInput = {
+    where: ProcessingOptionWhereUniqueInput
+    create: XOR<ProcessingOptionCreateWithoutLocationsInput, ProcessingOptionUncheckedCreateWithoutLocationsInput>
+  }
+
+  export type MailCreateWithoutLocation_startInput = {
+    id?: string
+    mail_code: string
+    mail_category_id: string
+    recipient_address: string
+    sender_address: string
+    time_inserted?: Date | string
+    time_delivered?: Date | string | null
+    location_end?: LocationCreateNestedOneWithoutMailEndInput
+    mailCarrier: MailCarrierCreateNestedOneWithoutMailInput
+  }
+
+  export type MailUncheckedCreateWithoutLocation_startInput = {
+    id?: string
+    mail_code: string
+    mail_category_id: string
+    recipient_address: string
+    sender_address: string
+    location_end_id?: string | null
+    time_inserted?: Date | string
+    time_delivered?: Date | string | null
+    mailCarrierId: string
+  }
+
+  export type MailCreateOrConnectWithoutLocation_startInput = {
+    where: MailWhereUniqueInput
+    create: XOR<MailCreateWithoutLocation_startInput, MailUncheckedCreateWithoutLocation_startInput>
+  }
+
+  export type MailCreateManyLocation_startInputEnvelope = {
+    data: Enumerable<MailCreateManyLocation_startInput>
+    skipDuplicates?: boolean
+  }
+
+  export type MailCreateWithoutLocation_endInput = {
+    id?: string
+    mail_code: string
+    mail_category_id: string
+    recipient_address: string
+    sender_address: string
+    time_inserted?: Date | string
+    time_delivered?: Date | string | null
+    location_start: LocationCreateNestedOneWithoutMailStartInput
+    mailCarrier: MailCarrierCreateNestedOneWithoutMailInput
+  }
+
+  export type MailUncheckedCreateWithoutLocation_endInput = {
+    id?: string
+    mail_code: string
+    mail_category_id: string
+    recipient_address: string
+    sender_address: string
+    location_start_id: string
+    time_inserted?: Date | string
+    time_delivered?: Date | string | null
+    mailCarrierId: string
+  }
+
+  export type MailCreateOrConnectWithoutLocation_endInput = {
+    where: MailWhereUniqueInput
+    create: XOR<MailCreateWithoutLocation_endInput, MailUncheckedCreateWithoutLocation_endInput>
+  }
+
+  export type MailCreateManyLocation_endInputEnvelope = {
+    data: Enumerable<MailCreateManyLocation_endInput>
     skipDuplicates?: boolean
   }
 
@@ -11778,68 +17463,161 @@ export namespace Prisma {
     cityId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type ServiceAvailableUpsertWithWhereUniqueWithoutLocationInput = {
-    where: ServiceAvailableWhereUniqueInput
-    update: XOR<ServiceAvailableUpdateWithoutLocationInput, ServiceAvailableUncheckedUpdateWithoutLocationInput>
-    create: XOR<ServiceAvailableCreateWithoutLocationInput, ServiceAvailableUncheckedCreateWithoutLocationInput>
+  export type LocationTypeUpsertWithoutLocationInput = {
+    update: XOR<LocationTypeUpdateWithoutLocationInput, LocationTypeUncheckedUpdateWithoutLocationInput>
+    create: XOR<LocationTypeCreateWithoutLocationInput, LocationTypeUncheckedCreateWithoutLocationInput>
   }
 
-  export type ServiceAvailableUpdateWithWhereUniqueWithoutLocationInput = {
-    where: ServiceAvailableWhereUniqueInput
-    data: XOR<ServiceAvailableUpdateWithoutLocationInput, ServiceAvailableUncheckedUpdateWithoutLocationInput>
+  export type LocationTypeUpdateWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type ServiceAvailableUpdateManyWithWhereWithoutLocationInput = {
-    where: ServiceAvailableScalarWhereInput
-    data: XOR<ServiceAvailableUpdateManyMutationInput, ServiceAvailableUncheckedUpdateManyWithoutServicesAvailableInput>
+  export type LocationTypeUncheckedUpdateWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type ServiceAvailableScalarWhereInput = {
-    AND?: Enumerable<ServiceAvailableScalarWhereInput>
-    OR?: Enumerable<ServiceAvailableScalarWhereInput>
-    NOT?: Enumerable<ServiceAvailableScalarWhereInput>
+  export type ServiceUpsertWithoutLocationInput = {
+    update: XOR<ServiceUpdateWithoutLocationInput, ServiceUncheckedUpdateWithoutLocationInput>
+    create: XOR<ServiceCreateWithoutLocationInput, ServiceUncheckedCreateWithoutLocationInput>
+  }
+
+  export type ServiceUpdateWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ServiceUncheckedUpdateWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CollectingOptionUpsertWithWhereUniqueWithoutLocationsInput = {
+    where: CollectingOptionWhereUniqueInput
+    update: XOR<CollectingOptionUpdateWithoutLocationsInput, CollectingOptionUncheckedUpdateWithoutLocationsInput>
+    create: XOR<CollectingOptionCreateWithoutLocationsInput, CollectingOptionUncheckedCreateWithoutLocationsInput>
+  }
+
+  export type CollectingOptionUpdateWithWhereUniqueWithoutLocationsInput = {
+    where: CollectingOptionWhereUniqueInput
+    data: XOR<CollectingOptionUpdateWithoutLocationsInput, CollectingOptionUncheckedUpdateWithoutLocationsInput>
+  }
+
+  export type CollectingOptionUpdateManyWithWhereWithoutLocationsInput = {
+    where: CollectingOptionScalarWhereInput
+    data: XOR<CollectingOptionUpdateManyMutationInput, CollectingOptionUncheckedUpdateManyWithoutCollectingOptionsInput>
+  }
+
+  export type CollectingOptionScalarWhereInput = {
+    AND?: Enumerable<CollectingOptionScalarWhereInput>
+    OR?: Enumerable<CollectingOptionScalarWhereInput>
+    NOT?: Enumerable<CollectingOptionScalarWhereInput>
     id?: StringFilter | string
-    locationId?: StringFilter | string
-    serviceId?: StringFilter | string
+    optionName?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    createdBy?: StringNullableFilter | string | null
+    updatedAt?: DateTimeFilter | Date | string
+    updatedBy?: StringNullableFilter | string | null
   }
 
-  export type ServiceAvailableCreateWithoutServiceInput = {
-    id?: string
-    location: LocationCreateNestedOneWithoutServicesAvailableInput
+  export type ProcessingOptionUpsertWithWhereUniqueWithoutLocationsInput = {
+    where: ProcessingOptionWhereUniqueInput
+    update: XOR<ProcessingOptionUpdateWithoutLocationsInput, ProcessingOptionUncheckedUpdateWithoutLocationsInput>
+    create: XOR<ProcessingOptionCreateWithoutLocationsInput, ProcessingOptionUncheckedCreateWithoutLocationsInput>
   }
 
-  export type ServiceAvailableUncheckedCreateWithoutServiceInput = {
-    id?: string
-    locationId: string
+  export type ProcessingOptionUpdateWithWhereUniqueWithoutLocationsInput = {
+    where: ProcessingOptionWhereUniqueInput
+    data: XOR<ProcessingOptionUpdateWithoutLocationsInput, ProcessingOptionUncheckedUpdateWithoutLocationsInput>
   }
 
-  export type ServiceAvailableCreateOrConnectWithoutServiceInput = {
-    where: ServiceAvailableWhereUniqueInput
-    create: XOR<ServiceAvailableCreateWithoutServiceInput, ServiceAvailableUncheckedCreateWithoutServiceInput>
+  export type ProcessingOptionUpdateManyWithWhereWithoutLocationsInput = {
+    where: ProcessingOptionScalarWhereInput
+    data: XOR<ProcessingOptionUpdateManyMutationInput, ProcessingOptionUncheckedUpdateManyWithoutProcessingOptionsInput>
   }
 
-  export type ServiceAvailableCreateManyServiceInputEnvelope = {
-    data: Enumerable<ServiceAvailableCreateManyServiceInput>
-    skipDuplicates?: boolean
+  export type ProcessingOptionScalarWhereInput = {
+    AND?: Enumerable<ProcessingOptionScalarWhereInput>
+    OR?: Enumerable<ProcessingOptionScalarWhereInput>
+    NOT?: Enumerable<ProcessingOptionScalarWhereInput>
+    id?: StringFilter | string
+    optionName?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    createdBy?: StringNullableFilter | string | null
+    updatedAt?: DateTimeFilter | Date | string
+    updatedBy?: StringNullableFilter | string | null
   }
 
-  export type ServiceAvailableUpsertWithWhereUniqueWithoutServiceInput = {
-    where: ServiceAvailableWhereUniqueInput
-    update: XOR<ServiceAvailableUpdateWithoutServiceInput, ServiceAvailableUncheckedUpdateWithoutServiceInput>
-    create: XOR<ServiceAvailableCreateWithoutServiceInput, ServiceAvailableUncheckedCreateWithoutServiceInput>
+  export type MailUpsertWithWhereUniqueWithoutLocation_startInput = {
+    where: MailWhereUniqueInput
+    update: XOR<MailUpdateWithoutLocation_startInput, MailUncheckedUpdateWithoutLocation_startInput>
+    create: XOR<MailCreateWithoutLocation_startInput, MailUncheckedCreateWithoutLocation_startInput>
   }
 
-  export type ServiceAvailableUpdateWithWhereUniqueWithoutServiceInput = {
-    where: ServiceAvailableWhereUniqueInput
-    data: XOR<ServiceAvailableUpdateWithoutServiceInput, ServiceAvailableUncheckedUpdateWithoutServiceInput>
+  export type MailUpdateWithWhereUniqueWithoutLocation_startInput = {
+    where: MailWhereUniqueInput
+    data: XOR<MailUpdateWithoutLocation_startInput, MailUncheckedUpdateWithoutLocation_startInput>
   }
 
-  export type ServiceAvailableUpdateManyWithWhereWithoutServiceInput = {
-    where: ServiceAvailableScalarWhereInput
-    data: XOR<ServiceAvailableUpdateManyMutationInput, ServiceAvailableUncheckedUpdateManyWithoutLocationsAvailableInput>
+  export type MailUpdateManyWithWhereWithoutLocation_startInput = {
+    where: MailScalarWhereInput
+    data: XOR<MailUpdateManyMutationInput, MailUncheckedUpdateManyWithoutMailStartInput>
   }
 
-  export type LocationCreateWithoutServicesAvailableInput = {
+  export type MailScalarWhereInput = {
+    AND?: Enumerable<MailScalarWhereInput>
+    OR?: Enumerable<MailScalarWhereInput>
+    NOT?: Enumerable<MailScalarWhereInput>
+    id?: StringFilter | string
+    mail_code?: StringFilter | string
+    mail_category_id?: StringFilter | string
+    recipient_address?: StringFilter | string
+    sender_address?: StringFilter | string
+    location_start_id?: StringFilter | string
+    location_end_id?: StringNullableFilter | string | null
+    time_inserted?: DateTimeFilter | Date | string
+    time_delivered?: DateTimeNullableFilter | Date | string | null
+    mailCarrierId?: StringFilter | string
+  }
+
+  export type MailUpsertWithWhereUniqueWithoutLocation_endInput = {
+    where: MailWhereUniqueInput
+    update: XOR<MailUpdateWithoutLocation_endInput, MailUncheckedUpdateWithoutLocation_endInput>
+    create: XOR<MailCreateWithoutLocation_endInput, MailUncheckedCreateWithoutLocation_endInput>
+  }
+
+  export type MailUpdateWithWhereUniqueWithoutLocation_endInput = {
+    where: MailWhereUniqueInput
+    data: XOR<MailUpdateWithoutLocation_endInput, MailUncheckedUpdateWithoutLocation_endInput>
+  }
+
+  export type MailUpdateManyWithWhereWithoutLocation_endInput = {
+    where: MailScalarWhereInput
+    data: XOR<MailUpdateManyMutationInput, MailUncheckedUpdateManyWithoutMailEndInput>
+  }
+
+  export type LocationCreateWithoutLocationTypeInput = {
     id?: string
     name: string
     description?: string | null
@@ -11848,9 +17626,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     updatedBy?: string | null
     postOfficeInCharge: PostOfficeCreateNestedOneWithoutLocationsInput
+    services: ServiceCreateNestedOneWithoutLocationInput
+    collectingOptions?: CollectingOptionCreateNestedManyWithoutLocationsInput
+    processingOptions?: ProcessingOptionCreateNestedManyWithoutLocationsInput
+    mailStart?: MailCreateNestedManyWithoutLocation_startInput
+    mailEnd?: MailCreateNestedManyWithoutLocation_endInput
   }
 
-  export type LocationUncheckedCreateWithoutServicesAvailableInput = {
+  export type LocationUncheckedCreateWithoutLocationTypeInput = {
     id?: string
     name: string
     description?: string | null
@@ -11859,46 +17642,308 @@ export namespace Prisma {
     updatedAt?: Date | string
     updatedBy?: string | null
     postOfficeInChargeId: string
+    serviceId: string
+    collectingOptions?: CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput
+    processingOptions?: ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput
+    mailStart?: MailUncheckedCreateNestedManyWithoutLocation_startInput
+    mailEnd?: MailUncheckedCreateNestedManyWithoutLocation_endInput
   }
 
-  export type LocationCreateOrConnectWithoutServicesAvailableInput = {
+  export type LocationCreateOrConnectWithoutLocationTypeInput = {
     where: LocationWhereUniqueInput
-    create: XOR<LocationCreateWithoutServicesAvailableInput, LocationUncheckedCreateWithoutServicesAvailableInput>
+    create: XOR<LocationCreateWithoutLocationTypeInput, LocationUncheckedCreateWithoutLocationTypeInput>
   }
 
-  export type ServiceCreateWithoutLocationsAvailableInput = {
+  export type LocationCreateManyLocationTypeInputEnvelope = {
+    data: Enumerable<LocationCreateManyLocationTypeInput>
+    skipDuplicates?: boolean
+  }
+
+  export type LocationUpsertWithWhereUniqueWithoutLocationTypeInput = {
+    where: LocationWhereUniqueInput
+    update: XOR<LocationUpdateWithoutLocationTypeInput, LocationUncheckedUpdateWithoutLocationTypeInput>
+    create: XOR<LocationCreateWithoutLocationTypeInput, LocationUncheckedCreateWithoutLocationTypeInput>
+  }
+
+  export type LocationUpdateWithWhereUniqueWithoutLocationTypeInput = {
+    where: LocationWhereUniqueInput
+    data: XOR<LocationUpdateWithoutLocationTypeInput, LocationUncheckedUpdateWithoutLocationTypeInput>
+  }
+
+  export type LocationUpdateManyWithWhereWithoutLocationTypeInput = {
+    where: LocationScalarWhereInput
+    data: XOR<LocationUpdateManyMutationInput, LocationUncheckedUpdateManyWithoutLocationInput>
+  }
+
+  export type LocationCreateWithoutServicesInput = {
     id?: string
     name: string
     description?: string | null
-    isActive?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    postOfficeInCharge: PostOfficeCreateNestedOneWithoutLocationsInput
+    LocationType: LocationTypeCreateNestedOneWithoutLocationInput
+    collectingOptions?: CollectingOptionCreateNestedManyWithoutLocationsInput
+    processingOptions?: ProcessingOptionCreateNestedManyWithoutLocationsInput
+    mailStart?: MailCreateNestedManyWithoutLocation_startInput
+    mailEnd?: MailCreateNestedManyWithoutLocation_endInput
+  }
+
+  export type LocationUncheckedCreateWithoutServicesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    postOfficeInChargeId: string
+    LocationTypeId: string
+    collectingOptions?: CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput
+    processingOptions?: ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput
+    mailStart?: MailUncheckedCreateNestedManyWithoutLocation_startInput
+    mailEnd?: MailUncheckedCreateNestedManyWithoutLocation_endInput
+  }
+
+  export type LocationCreateOrConnectWithoutServicesInput = {
+    where: LocationWhereUniqueInput
+    create: XOR<LocationCreateWithoutServicesInput, LocationUncheckedCreateWithoutServicesInput>
+  }
+
+  export type LocationCreateManyServicesInputEnvelope = {
+    data: Enumerable<LocationCreateManyServicesInput>
+    skipDuplicates?: boolean
+  }
+
+  export type LocationUpsertWithWhereUniqueWithoutServicesInput = {
+    where: LocationWhereUniqueInput
+    update: XOR<LocationUpdateWithoutServicesInput, LocationUncheckedUpdateWithoutServicesInput>
+    create: XOR<LocationCreateWithoutServicesInput, LocationUncheckedCreateWithoutServicesInput>
+  }
+
+  export type LocationUpdateWithWhereUniqueWithoutServicesInput = {
+    where: LocationWhereUniqueInput
+    data: XOR<LocationUpdateWithoutServicesInput, LocationUncheckedUpdateWithoutServicesInput>
+  }
+
+  export type LocationUpdateManyWithWhereWithoutServicesInput = {
+    where: LocationScalarWhereInput
+    data: XOR<LocationUpdateManyMutationInput, LocationUncheckedUpdateManyWithoutLocationInput>
+  }
+
+  export type LocationCreateWithoutCollectingOptionsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    postOfficeInCharge: PostOfficeCreateNestedOneWithoutLocationsInput
+    LocationType: LocationTypeCreateNestedOneWithoutLocationInput
+    services: ServiceCreateNestedOneWithoutLocationInput
+    processingOptions?: ProcessingOptionCreateNestedManyWithoutLocationsInput
+    mailStart?: MailCreateNestedManyWithoutLocation_startInput
+    mailEnd?: MailCreateNestedManyWithoutLocation_endInput
+  }
+
+  export type LocationUncheckedCreateWithoutCollectingOptionsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    postOfficeInChargeId: string
+    LocationTypeId: string
+    serviceId: string
+    processingOptions?: ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput
+    mailStart?: MailUncheckedCreateNestedManyWithoutLocation_startInput
+    mailEnd?: MailUncheckedCreateNestedManyWithoutLocation_endInput
+  }
+
+  export type LocationCreateOrConnectWithoutCollectingOptionsInput = {
+    where: LocationWhereUniqueInput
+    create: XOR<LocationCreateWithoutCollectingOptionsInput, LocationUncheckedCreateWithoutCollectingOptionsInput>
+  }
+
+  export type LocationUpsertWithWhereUniqueWithoutCollectingOptionsInput = {
+    where: LocationWhereUniqueInput
+    update: XOR<LocationUpdateWithoutCollectingOptionsInput, LocationUncheckedUpdateWithoutCollectingOptionsInput>
+    create: XOR<LocationCreateWithoutCollectingOptionsInput, LocationUncheckedCreateWithoutCollectingOptionsInput>
+  }
+
+  export type LocationUpdateWithWhereUniqueWithoutCollectingOptionsInput = {
+    where: LocationWhereUniqueInput
+    data: XOR<LocationUpdateWithoutCollectingOptionsInput, LocationUncheckedUpdateWithoutCollectingOptionsInput>
+  }
+
+  export type LocationUpdateManyWithWhereWithoutCollectingOptionsInput = {
+    where: LocationScalarWhereInput
+    data: XOR<LocationUpdateManyMutationInput, LocationUncheckedUpdateManyWithoutLocationsInput>
+  }
+
+  export type LocationCreateWithoutProcessingOptionsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    postOfficeInCharge: PostOfficeCreateNestedOneWithoutLocationsInput
+    LocationType: LocationTypeCreateNestedOneWithoutLocationInput
+    services: ServiceCreateNestedOneWithoutLocationInput
+    collectingOptions?: CollectingOptionCreateNestedManyWithoutLocationsInput
+    mailStart?: MailCreateNestedManyWithoutLocation_startInput
+    mailEnd?: MailCreateNestedManyWithoutLocation_endInput
+  }
+
+  export type LocationUncheckedCreateWithoutProcessingOptionsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    postOfficeInChargeId: string
+    LocationTypeId: string
+    serviceId: string
+    collectingOptions?: CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput
+    mailStart?: MailUncheckedCreateNestedManyWithoutLocation_startInput
+    mailEnd?: MailUncheckedCreateNestedManyWithoutLocation_endInput
+  }
+
+  export type LocationCreateOrConnectWithoutProcessingOptionsInput = {
+    where: LocationWhereUniqueInput
+    create: XOR<LocationCreateWithoutProcessingOptionsInput, LocationUncheckedCreateWithoutProcessingOptionsInput>
+  }
+
+  export type LocationUpsertWithWhereUniqueWithoutProcessingOptionsInput = {
+    where: LocationWhereUniqueInput
+    update: XOR<LocationUpdateWithoutProcessingOptionsInput, LocationUncheckedUpdateWithoutProcessingOptionsInput>
+    create: XOR<LocationCreateWithoutProcessingOptionsInput, LocationUncheckedCreateWithoutProcessingOptionsInput>
+  }
+
+  export type LocationUpdateWithWhereUniqueWithoutProcessingOptionsInput = {
+    where: LocationWhereUniqueInput
+    data: XOR<LocationUpdateWithoutProcessingOptionsInput, LocationUncheckedUpdateWithoutProcessingOptionsInput>
+  }
+
+  export type LocationUpdateManyWithWhereWithoutProcessingOptionsInput = {
+    where: LocationScalarWhereInput
+    data: XOR<LocationUpdateManyMutationInput, LocationUncheckedUpdateManyWithoutLocationsInput>
+  }
+
+  export type LocationCreateWithoutMailStartInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    postOfficeInCharge: PostOfficeCreateNestedOneWithoutLocationsInput
+    LocationType: LocationTypeCreateNestedOneWithoutLocationInput
+    services: ServiceCreateNestedOneWithoutLocationInput
+    collectingOptions?: CollectingOptionCreateNestedManyWithoutLocationsInput
+    processingOptions?: ProcessingOptionCreateNestedManyWithoutLocationsInput
+    mailEnd?: MailCreateNestedManyWithoutLocation_endInput
+  }
+
+  export type LocationUncheckedCreateWithoutMailStartInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    postOfficeInChargeId: string
+    LocationTypeId: string
+    serviceId: string
+    collectingOptions?: CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput
+    processingOptions?: ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput
+    mailEnd?: MailUncheckedCreateNestedManyWithoutLocation_endInput
+  }
+
+  export type LocationCreateOrConnectWithoutMailStartInput = {
+    where: LocationWhereUniqueInput
+    create: XOR<LocationCreateWithoutMailStartInput, LocationUncheckedCreateWithoutMailStartInput>
+  }
+
+  export type LocationCreateWithoutMailEndInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    postOfficeInCharge: PostOfficeCreateNestedOneWithoutLocationsInput
+    LocationType: LocationTypeCreateNestedOneWithoutLocationInput
+    services: ServiceCreateNestedOneWithoutLocationInput
+    collectingOptions?: CollectingOptionCreateNestedManyWithoutLocationsInput
+    processingOptions?: ProcessingOptionCreateNestedManyWithoutLocationsInput
+    mailStart?: MailCreateNestedManyWithoutLocation_startInput
+  }
+
+  export type LocationUncheckedCreateWithoutMailEndInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    postOfficeInChargeId: string
+    LocationTypeId: string
+    serviceId: string
+    collectingOptions?: CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput
+    processingOptions?: ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput
+    mailStart?: MailUncheckedCreateNestedManyWithoutLocation_startInput
+  }
+
+  export type LocationCreateOrConnectWithoutMailEndInput = {
+    where: LocationWhereUniqueInput
+    create: XOR<LocationCreateWithoutMailEndInput, LocationUncheckedCreateWithoutMailEndInput>
+  }
+
+  export type MailCarrierCreateWithoutMailInput = {
+    id?: string
+    name: string
+    description?: string | null
     createdAt?: Date | string
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
   }
 
-  export type ServiceUncheckedCreateWithoutLocationsAvailableInput = {
+  export type MailCarrierUncheckedCreateWithoutMailInput = {
     id?: string
     name: string
     description?: string | null
-    isActive?: boolean
     createdAt?: Date | string
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
   }
 
-  export type ServiceCreateOrConnectWithoutLocationsAvailableInput = {
-    where: ServiceWhereUniqueInput
-    create: XOR<ServiceCreateWithoutLocationsAvailableInput, ServiceUncheckedCreateWithoutLocationsAvailableInput>
+  export type MailCarrierCreateOrConnectWithoutMailInput = {
+    where: MailCarrierWhereUniqueInput
+    create: XOR<MailCarrierCreateWithoutMailInput, MailCarrierUncheckedCreateWithoutMailInput>
   }
 
-  export type LocationUpsertWithoutServicesAvailableInput = {
-    update: XOR<LocationUpdateWithoutServicesAvailableInput, LocationUncheckedUpdateWithoutServicesAvailableInput>
-    create: XOR<LocationCreateWithoutServicesAvailableInput, LocationUncheckedCreateWithoutServicesAvailableInput>
+  export type LocationUpsertWithoutMailStartInput = {
+    update: XOR<LocationUpdateWithoutMailStartInput, LocationUncheckedUpdateWithoutMailStartInput>
+    create: XOR<LocationCreateWithoutMailStartInput, LocationUncheckedCreateWithoutMailStartInput>
   }
 
-  export type LocationUpdateWithoutServicesAvailableInput = {
+  export type LocationUpdateWithoutMailStartInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -11907,9 +17952,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInCharge?: PostOfficeUpdateOneRequiredWithoutLocationsNestedInput
+    LocationType?: LocationTypeUpdateOneRequiredWithoutLocationNestedInput
+    services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
+    collectingOptions?: CollectingOptionUpdateManyWithoutLocationsNestedInput
+    processingOptions?: ProcessingOptionUpdateManyWithoutLocationsNestedInput
+    mailEnd?: MailUpdateManyWithoutLocation_endNestedInput
   }
 
-  export type LocationUncheckedUpdateWithoutServicesAvailableInput = {
+  export type LocationUncheckedUpdateWithoutMailStartInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -11918,33 +17968,123 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
+    LocationTypeId?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+    collectingOptions?: CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput
+    processingOptions?: ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput
+    mailEnd?: MailUncheckedUpdateManyWithoutLocation_endNestedInput
   }
 
-  export type ServiceUpsertWithoutLocationsAvailableInput = {
-    update: XOR<ServiceUpdateWithoutLocationsAvailableInput, ServiceUncheckedUpdateWithoutLocationsAvailableInput>
-    create: XOR<ServiceCreateWithoutLocationsAvailableInput, ServiceUncheckedCreateWithoutLocationsAvailableInput>
+  export type LocationUpsertWithoutMailEndInput = {
+    update: XOR<LocationUpdateWithoutMailEndInput, LocationUncheckedUpdateWithoutMailEndInput>
+    create: XOR<LocationCreateWithoutMailEndInput, LocationUncheckedCreateWithoutMailEndInput>
   }
 
-  export type ServiceUpdateWithoutLocationsAvailableInput = {
+  export type LocationUpdateWithoutMailEndInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    postOfficeInCharge?: PostOfficeUpdateOneRequiredWithoutLocationsNestedInput
+    LocationType?: LocationTypeUpdateOneRequiredWithoutLocationNestedInput
+    services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
+    collectingOptions?: CollectingOptionUpdateManyWithoutLocationsNestedInput
+    processingOptions?: ProcessingOptionUpdateManyWithoutLocationsNestedInput
+    mailStart?: MailUpdateManyWithoutLocation_startNestedInput
+  }
+
+  export type LocationUncheckedUpdateWithoutMailEndInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
+    LocationTypeId?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+    collectingOptions?: CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput
+    processingOptions?: ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput
+    mailStart?: MailUncheckedUpdateManyWithoutLocation_startNestedInput
+  }
+
+  export type MailCarrierUpsertWithoutMailInput = {
+    update: XOR<MailCarrierUpdateWithoutMailInput, MailCarrierUncheckedUpdateWithoutMailInput>
+    create: XOR<MailCarrierCreateWithoutMailInput, MailCarrierUncheckedCreateWithoutMailInput>
+  }
+
+  export type MailCarrierUpdateWithoutMailInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type ServiceUncheckedUpdateWithoutLocationsAvailableInput = {
+  export type MailCarrierUncheckedUpdateWithoutMailInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type MailCreateWithoutMailCarrierInput = {
+    id?: string
+    mail_code: string
+    mail_category_id: string
+    recipient_address: string
+    sender_address: string
+    time_inserted?: Date | string
+    time_delivered?: Date | string | null
+    location_start: LocationCreateNestedOneWithoutMailStartInput
+    location_end?: LocationCreateNestedOneWithoutMailEndInput
+  }
+
+  export type MailUncheckedCreateWithoutMailCarrierInput = {
+    id?: string
+    mail_code: string
+    mail_category_id: string
+    recipient_address: string
+    sender_address: string
+    location_start_id: string
+    location_end_id?: string | null
+    time_inserted?: Date | string
+    time_delivered?: Date | string | null
+  }
+
+  export type MailCreateOrConnectWithoutMailCarrierInput = {
+    where: MailWhereUniqueInput
+    create: XOR<MailCreateWithoutMailCarrierInput, MailUncheckedCreateWithoutMailCarrierInput>
+  }
+
+  export type MailCreateManyMailCarrierInputEnvelope = {
+    data: Enumerable<MailCreateManyMailCarrierInput>
+    skipDuplicates?: boolean
+  }
+
+  export type MailUpsertWithWhereUniqueWithoutMailCarrierInput = {
+    where: MailWhereUniqueInput
+    update: XOR<MailUpdateWithoutMailCarrierInput, MailUncheckedUpdateWithoutMailCarrierInput>
+    create: XOR<MailCreateWithoutMailCarrierInput, MailUncheckedCreateWithoutMailCarrierInput>
+  }
+
+  export type MailUpdateWithWhereUniqueWithoutMailCarrierInput = {
+    where: MailWhereUniqueInput
+    data: XOR<MailUpdateWithoutMailCarrierInput, MailUncheckedUpdateWithoutMailCarrierInput>
+  }
+
+  export type MailUpdateManyWithWhereWithoutMailCarrierInput = {
+    where: MailScalarWhereInput
+    data: XOR<MailUpdateManyMutationInput, MailUncheckedUpdateManyWithoutMailInput>
   }
 
   export type UserTypeUpdateWithoutUsersInput = {
@@ -12122,6 +18262,8 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
+    LocationTypeId: string
+    serviceId: string
   }
 
   export type LocationUpdateWithoutPostOfficeInChargeInput = {
@@ -12132,7 +18274,12 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    servicesAvailable?: ServiceAvailableUpdateManyWithoutLocationNestedInput
+    LocationType?: LocationTypeUpdateOneRequiredWithoutLocationNestedInput
+    services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
+    collectingOptions?: CollectingOptionUpdateManyWithoutLocationsNestedInput
+    processingOptions?: ProcessingOptionUpdateManyWithoutLocationsNestedInput
+    mailStart?: MailUpdateManyWithoutLocation_startNestedInput
+    mailEnd?: MailUpdateManyWithoutLocation_endNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutPostOfficeInChargeInput = {
@@ -12143,7 +18290,12 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    servicesAvailable?: ServiceAvailableUncheckedUpdateManyWithoutLocationNestedInput
+    LocationTypeId?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+    collectingOptions?: CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput
+    processingOptions?: ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput
+    mailStart?: MailUncheckedUpdateManyWithoutLocation_startNestedInput
+    mailEnd?: MailUncheckedUpdateManyWithoutLocation_endNestedInput
   }
 
   export type LocationUncheckedUpdateManyWithoutLocationsInput = {
@@ -12154,46 +18306,370 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    LocationTypeId?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type ServiceAvailableCreateManyLocationInput = {
+  export type MailCreateManyLocation_startInput = {
     id?: string
+    mail_code: string
+    mail_category_id: string
+    recipient_address: string
+    sender_address: string
+    location_end_id?: string | null
+    time_inserted?: Date | string
+    time_delivered?: Date | string | null
+    mailCarrierId: string
+  }
+
+  export type MailCreateManyLocation_endInput = {
+    id?: string
+    mail_code: string
+    mail_category_id: string
+    recipient_address: string
+    sender_address: string
+    location_start_id: string
+    time_inserted?: Date | string
+    time_delivered?: Date | string | null
+    mailCarrierId: string
+  }
+
+  export type CollectingOptionUpdateWithoutLocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    optionName?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CollectingOptionUncheckedUpdateWithoutLocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    optionName?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CollectingOptionUncheckedUpdateManyWithoutCollectingOptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    optionName?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ProcessingOptionUpdateWithoutLocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    optionName?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ProcessingOptionUncheckedUpdateWithoutLocationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    optionName?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ProcessingOptionUncheckedUpdateManyWithoutProcessingOptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    optionName?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type MailUpdateWithoutLocation_startInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mail_code?: StringFieldUpdateOperationsInput | string
+    mail_category_id?: StringFieldUpdateOperationsInput | string
+    recipient_address?: StringFieldUpdateOperationsInput | string
+    sender_address?: StringFieldUpdateOperationsInput | string
+    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location_end?: LocationUpdateOneWithoutMailEndNestedInput
+    mailCarrier?: MailCarrierUpdateOneRequiredWithoutMailNestedInput
+  }
+
+  export type MailUncheckedUpdateWithoutLocation_startInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mail_code?: StringFieldUpdateOperationsInput | string
+    mail_category_id?: StringFieldUpdateOperationsInput | string
+    recipient_address?: StringFieldUpdateOperationsInput | string
+    sender_address?: StringFieldUpdateOperationsInput | string
+    location_end_id?: NullableStringFieldUpdateOperationsInput | string | null
+    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mailCarrierId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type MailUncheckedUpdateManyWithoutMailStartInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mail_code?: StringFieldUpdateOperationsInput | string
+    mail_category_id?: StringFieldUpdateOperationsInput | string
+    recipient_address?: StringFieldUpdateOperationsInput | string
+    sender_address?: StringFieldUpdateOperationsInput | string
+    location_end_id?: NullableStringFieldUpdateOperationsInput | string | null
+    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mailCarrierId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type MailUpdateWithoutLocation_endInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mail_code?: StringFieldUpdateOperationsInput | string
+    mail_category_id?: StringFieldUpdateOperationsInput | string
+    recipient_address?: StringFieldUpdateOperationsInput | string
+    sender_address?: StringFieldUpdateOperationsInput | string
+    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location_start?: LocationUpdateOneRequiredWithoutMailStartNestedInput
+    mailCarrier?: MailCarrierUpdateOneRequiredWithoutMailNestedInput
+  }
+
+  export type MailUncheckedUpdateWithoutLocation_endInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mail_code?: StringFieldUpdateOperationsInput | string
+    mail_category_id?: StringFieldUpdateOperationsInput | string
+    recipient_address?: StringFieldUpdateOperationsInput | string
+    sender_address?: StringFieldUpdateOperationsInput | string
+    location_start_id?: StringFieldUpdateOperationsInput | string
+    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mailCarrierId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type MailUncheckedUpdateManyWithoutMailEndInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mail_code?: StringFieldUpdateOperationsInput | string
+    mail_category_id?: StringFieldUpdateOperationsInput | string
+    recipient_address?: StringFieldUpdateOperationsInput | string
+    sender_address?: StringFieldUpdateOperationsInput | string
+    location_start_id?: StringFieldUpdateOperationsInput | string
+    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mailCarrierId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type LocationCreateManyLocationTypeInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    postOfficeInChargeId: string
     serviceId: string
   }
 
-  export type ServiceAvailableUpdateWithoutLocationInput = {
+  export type LocationUpdateWithoutLocationTypeInput = {
     id?: StringFieldUpdateOperationsInput | string
-    service?: ServiceUpdateOneRequiredWithoutLocationsAvailableNestedInput
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    postOfficeInCharge?: PostOfficeUpdateOneRequiredWithoutLocationsNestedInput
+    services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
+    collectingOptions?: CollectingOptionUpdateManyWithoutLocationsNestedInput
+    processingOptions?: ProcessingOptionUpdateManyWithoutLocationsNestedInput
+    mailStart?: MailUpdateManyWithoutLocation_startNestedInput
+    mailEnd?: MailUpdateManyWithoutLocation_endNestedInput
   }
 
-  export type ServiceAvailableUncheckedUpdateWithoutLocationInput = {
+  export type LocationUncheckedUpdateWithoutLocationTypeInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+    collectingOptions?: CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput
+    processingOptions?: ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput
+    mailStart?: MailUncheckedUpdateManyWithoutLocation_startNestedInput
+    mailEnd?: MailUncheckedUpdateManyWithoutLocation_endNestedInput
+  }
+
+  export type LocationUncheckedUpdateManyWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
     serviceId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type ServiceAvailableUncheckedUpdateManyWithoutServicesAvailableInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    serviceId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type ServiceAvailableCreateManyServiceInput = {
+  export type LocationCreateManyServicesInput = {
     id?: string
-    locationId: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    postOfficeInChargeId: string
+    LocationTypeId: string
   }
 
-  export type ServiceAvailableUpdateWithoutServiceInput = {
+  export type LocationUpdateWithoutServicesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    location?: LocationUpdateOneRequiredWithoutServicesAvailableNestedInput
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    postOfficeInCharge?: PostOfficeUpdateOneRequiredWithoutLocationsNestedInput
+    LocationType?: LocationTypeUpdateOneRequiredWithoutLocationNestedInput
+    collectingOptions?: CollectingOptionUpdateManyWithoutLocationsNestedInput
+    processingOptions?: ProcessingOptionUpdateManyWithoutLocationsNestedInput
+    mailStart?: MailUpdateManyWithoutLocation_startNestedInput
+    mailEnd?: MailUpdateManyWithoutLocation_endNestedInput
   }
 
-  export type ServiceAvailableUncheckedUpdateWithoutServiceInput = {
+  export type LocationUncheckedUpdateWithoutServicesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    locationId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
+    LocationTypeId?: StringFieldUpdateOperationsInput | string
+    collectingOptions?: CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput
+    processingOptions?: ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput
+    mailStart?: MailUncheckedUpdateManyWithoutLocation_startNestedInput
+    mailEnd?: MailUncheckedUpdateManyWithoutLocation_endNestedInput
   }
 
-  export type ServiceAvailableUncheckedUpdateManyWithoutLocationsAvailableInput = {
+  export type LocationUpdateWithoutCollectingOptionsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    locationId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    postOfficeInCharge?: PostOfficeUpdateOneRequiredWithoutLocationsNestedInput
+    LocationType?: LocationTypeUpdateOneRequiredWithoutLocationNestedInput
+    services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
+    processingOptions?: ProcessingOptionUpdateManyWithoutLocationsNestedInput
+    mailStart?: MailUpdateManyWithoutLocation_startNestedInput
+    mailEnd?: MailUpdateManyWithoutLocation_endNestedInput
+  }
+
+  export type LocationUncheckedUpdateWithoutCollectingOptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
+    LocationTypeId?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+    processingOptions?: ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput
+    mailStart?: MailUncheckedUpdateManyWithoutLocation_startNestedInput
+    mailEnd?: MailUncheckedUpdateManyWithoutLocation_endNestedInput
+  }
+
+  export type LocationUpdateWithoutProcessingOptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    postOfficeInCharge?: PostOfficeUpdateOneRequiredWithoutLocationsNestedInput
+    LocationType?: LocationTypeUpdateOneRequiredWithoutLocationNestedInput
+    services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
+    collectingOptions?: CollectingOptionUpdateManyWithoutLocationsNestedInput
+    mailStart?: MailUpdateManyWithoutLocation_startNestedInput
+    mailEnd?: MailUpdateManyWithoutLocation_endNestedInput
+  }
+
+  export type LocationUncheckedUpdateWithoutProcessingOptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
+    LocationTypeId?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+    collectingOptions?: CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput
+    mailStart?: MailUncheckedUpdateManyWithoutLocation_startNestedInput
+    mailEnd?: MailUncheckedUpdateManyWithoutLocation_endNestedInput
+  }
+
+  export type MailCreateManyMailCarrierInput = {
+    id?: string
+    mail_code: string
+    mail_category_id: string
+    recipient_address: string
+    sender_address: string
+    location_start_id: string
+    location_end_id?: string | null
+    time_inserted?: Date | string
+    time_delivered?: Date | string | null
+  }
+
+  export type MailUpdateWithoutMailCarrierInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mail_code?: StringFieldUpdateOperationsInput | string
+    mail_category_id?: StringFieldUpdateOperationsInput | string
+    recipient_address?: StringFieldUpdateOperationsInput | string
+    sender_address?: StringFieldUpdateOperationsInput | string
+    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location_start?: LocationUpdateOneRequiredWithoutMailStartNestedInput
+    location_end?: LocationUpdateOneWithoutMailEndNestedInput
+  }
+
+  export type MailUncheckedUpdateWithoutMailCarrierInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mail_code?: StringFieldUpdateOperationsInput | string
+    mail_category_id?: StringFieldUpdateOperationsInput | string
+    recipient_address?: StringFieldUpdateOperationsInput | string
+    sender_address?: StringFieldUpdateOperationsInput | string
+    location_start_id?: StringFieldUpdateOperationsInput | string
+    location_end_id?: NullableStringFieldUpdateOperationsInput | string | null
+    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type MailUncheckedUpdateManyWithoutMailInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mail_code?: StringFieldUpdateOperationsInput | string
+    mail_category_id?: StringFieldUpdateOperationsInput | string
+    recipient_address?: StringFieldUpdateOperationsInput | string
+    sender_address?: StringFieldUpdateOperationsInput | string
+    location_start_id?: StringFieldUpdateOperationsInput | string
+    location_end_id?: NullableStringFieldUpdateOperationsInput | string | null
+    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
 

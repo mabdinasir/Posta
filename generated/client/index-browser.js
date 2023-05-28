@@ -96,6 +96,15 @@ exports.Prisma.CityScalarFieldEnum = {
   countryId: 'countryId'
 };
 
+exports.Prisma.CollectingOptionScalarFieldEnum = {
+  id: 'id',
+  optionName: 'optionName',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy'
+};
+
 exports.Prisma.CountryScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -113,7 +122,41 @@ exports.Prisma.LocationScalarFieldEnum = {
   createdBy: 'createdBy',
   updatedAt: 'updatedAt',
   updatedBy: 'updatedBy',
-  postOfficeInChargeId: 'postOfficeInChargeId'
+  postOfficeInChargeId: 'postOfficeInChargeId',
+  LocationTypeId: 'LocationTypeId',
+  serviceId: 'serviceId'
+};
+
+exports.Prisma.LocationTypeScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy'
+};
+
+exports.Prisma.MailCarrierScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy'
+};
+
+exports.Prisma.MailScalarFieldEnum = {
+  id: 'id',
+  mail_code: 'mail_code',
+  mail_category_id: 'mail_category_id',
+  recipient_address: 'recipient_address',
+  sender_address: 'sender_address',
+  location_start_id: 'location_start_id',
+  location_end_id: 'location_end_id',
+  time_inserted: 'time_inserted',
+  time_delivered: 'time_delivered',
+  mailCarrierId: 'mailCarrierId'
 };
 
 exports.Prisma.PostOfficeScalarFieldEnum = {
@@ -130,15 +173,18 @@ exports.Prisma.PostOfficeScalarFieldEnum = {
   cityId: 'cityId'
 };
 
+exports.Prisma.ProcessingOptionScalarFieldEnum = {
+  id: 'id',
+  optionName: 'optionName',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy'
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
-};
-
-exports.Prisma.ServiceAvailableScalarFieldEnum = {
-  id: 'id',
-  locationId: 'locationId',
-  serviceId: 'serviceId'
 };
 
 exports.Prisma.ServiceScalarFieldEnum = {
@@ -197,8 +243,12 @@ exports.Prisma.ModelName = {
   City: 'City',
   PostOffice: 'PostOffice',
   Location: 'Location',
+  LocationType: 'LocationType',
   Service: 'Service',
-  ServiceAvailable: 'ServiceAvailable'
+  CollectingOption: 'CollectingOption',
+  ProcessingOption: 'ProcessingOption',
+  Mail: 'Mail',
+  MailCarrier: 'MailCarrier'
 };
 
 /**
