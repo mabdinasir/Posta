@@ -168,11 +168,11 @@ export type ProcessingOption = {
 export type Mail = {
   id: string
   mailCode: string
-  mailCategory_id: string
+  mailCategoryId: string
   recipientAddress: string
   senderAddress: string
-  locationStart_id: string
-  locationEnd_id: string | null
+  locationStartId: string
+  locationEndId: string | null
   timeInserted: Date
   timeDelivered: Date | null
   mailCarrierId: string
@@ -11470,11 +11470,11 @@ export namespace Prisma {
   export type MailMinAggregateOutputType = {
     id: string | null
     mailCode: string | null
-    mailCategory_id: string | null
+    mailCategoryId: string | null
     recipientAddress: string | null
     senderAddress: string | null
-    locationStart_id: string | null
-    locationEnd_id: string | null
+    locationStartId: string | null
+    locationEndId: string | null
     timeInserted: Date | null
     timeDelivered: Date | null
     mailCarrierId: string | null
@@ -11483,11 +11483,11 @@ export namespace Prisma {
   export type MailMaxAggregateOutputType = {
     id: string | null
     mailCode: string | null
-    mailCategory_id: string | null
+    mailCategoryId: string | null
     recipientAddress: string | null
     senderAddress: string | null
-    locationStart_id: string | null
-    locationEnd_id: string | null
+    locationStartId: string | null
+    locationEndId: string | null
     timeInserted: Date | null
     timeDelivered: Date | null
     mailCarrierId: string | null
@@ -11496,11 +11496,11 @@ export namespace Prisma {
   export type MailCountAggregateOutputType = {
     id: number
     mailCode: number
-    mailCategory_id: number
+    mailCategoryId: number
     recipientAddress: number
     senderAddress: number
-    locationStart_id: number
-    locationEnd_id: number
+    locationStartId: number
+    locationEndId: number
     timeInserted: number
     timeDelivered: number
     mailCarrierId: number
@@ -11511,11 +11511,11 @@ export namespace Prisma {
   export type MailMinAggregateInputType = {
     id?: true
     mailCode?: true
-    mailCategory_id?: true
+    mailCategoryId?: true
     recipientAddress?: true
     senderAddress?: true
-    locationStart_id?: true
-    locationEnd_id?: true
+    locationStartId?: true
+    locationEndId?: true
     timeInserted?: true
     timeDelivered?: true
     mailCarrierId?: true
@@ -11524,11 +11524,11 @@ export namespace Prisma {
   export type MailMaxAggregateInputType = {
     id?: true
     mailCode?: true
-    mailCategory_id?: true
+    mailCategoryId?: true
     recipientAddress?: true
     senderAddress?: true
-    locationStart_id?: true
-    locationEnd_id?: true
+    locationStartId?: true
+    locationEndId?: true
     timeInserted?: true
     timeDelivered?: true
     mailCarrierId?: true
@@ -11537,11 +11537,11 @@ export namespace Prisma {
   export type MailCountAggregateInputType = {
     id?: true
     mailCode?: true
-    mailCategory_id?: true
+    mailCategoryId?: true
     recipientAddress?: true
     senderAddress?: true
-    locationStart_id?: true
-    locationEnd_id?: true
+    locationStartId?: true
+    locationEndId?: true
     timeInserted?: true
     timeDelivered?: true
     mailCarrierId?: true
@@ -11624,11 +11624,11 @@ export namespace Prisma {
   export type MailGroupByOutputType = {
     id: string
     mailCode: string
-    mailCategory_id: string
+    mailCategoryId: string
     recipientAddress: string
     senderAddress: string
-    locationStart_id: string
-    locationEnd_id: string | null
+    locationStartId: string
+    locationEndId: string | null
     timeInserted: Date
     timeDelivered: Date | null
     mailCarrierId: string
@@ -11654,11 +11654,11 @@ export namespace Prisma {
   export type MailSelect = {
     id?: boolean
     mailCode?: boolean
-    mailCategory_id?: boolean
+    mailCategoryId?: boolean
     recipientAddress?: boolean
     senderAddress?: boolean
-    locationStart_id?: boolean
-    locationEnd_id?: boolean
+    locationStartId?: boolean
+    locationEndId?: boolean
     timeInserted?: boolean
     timeDelivered?: boolean
     mailCarrierId?: boolean
@@ -13499,11 +13499,11 @@ export namespace Prisma {
   export const MailScalarFieldEnum: {
     id: 'id',
     mailCode: 'mailCode',
-    mailCategory_id: 'mailCategory_id',
+    mailCategoryId: 'mailCategoryId',
     recipientAddress: 'recipientAddress',
     senderAddress: 'senderAddress',
-    locationStart_id: 'locationStart_id',
-    locationEnd_id: 'locationEnd_id',
+    locationStartId: 'locationStartId',
+    locationEndId: 'locationEndId',
     timeInserted: 'timeInserted',
     timeDelivered: 'timeDelivered',
     mailCarrierId: 'mailCarrierId'
@@ -14231,11 +14231,11 @@ export namespace Prisma {
     NOT?: Enumerable<MailWhereInput>
     id?: StringFilter | string
     mailCode?: StringFilter | string
-    mailCategory_id?: StringFilter | string
+    mailCategoryId?: StringFilter | string
     recipientAddress?: StringFilter | string
     senderAddress?: StringFilter | string
-    locationStart_id?: StringFilter | string
-    locationEnd_id?: StringNullableFilter | string | null
+    locationStartId?: StringFilter | string
+    locationEndId?: StringNullableFilter | string | null
     timeInserted?: DateTimeFilter | Date | string
     timeDelivered?: DateTimeNullableFilter | Date | string | null
     mailCarrierId?: StringFilter | string
@@ -14247,11 +14247,11 @@ export namespace Prisma {
   export type MailOrderByWithRelationInput = {
     id?: SortOrder
     mailCode?: SortOrder
-    mailCategory_id?: SortOrder
+    mailCategoryId?: SortOrder
     recipientAddress?: SortOrder
     senderAddress?: SortOrder
-    locationStart_id?: SortOrder
-    locationEnd_id?: SortOrder
+    locationStartId?: SortOrder
+    locationEndId?: SortOrder
     timeInserted?: SortOrder
     timeDelivered?: SortOrder
     mailCarrierId?: SortOrder
@@ -14268,11 +14268,11 @@ export namespace Prisma {
   export type MailOrderByWithAggregationInput = {
     id?: SortOrder
     mailCode?: SortOrder
-    mailCategory_id?: SortOrder
+    mailCategoryId?: SortOrder
     recipientAddress?: SortOrder
     senderAddress?: SortOrder
-    locationStart_id?: SortOrder
-    locationEnd_id?: SortOrder
+    locationStartId?: SortOrder
+    locationEndId?: SortOrder
     timeInserted?: SortOrder
     timeDelivered?: SortOrder
     mailCarrierId?: SortOrder
@@ -14287,11 +14287,11 @@ export namespace Prisma {
     NOT?: Enumerable<MailScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
     mailCode?: StringWithAggregatesFilter | string
-    mailCategory_id?: StringWithAggregatesFilter | string
+    mailCategoryId?: StringWithAggregatesFilter | string
     recipientAddress?: StringWithAggregatesFilter | string
     senderAddress?: StringWithAggregatesFilter | string
-    locationStart_id?: StringWithAggregatesFilter | string
-    locationEnd_id?: StringNullableWithAggregatesFilter | string | null
+    locationStartId?: StringWithAggregatesFilter | string
+    locationEndId?: StringNullableWithAggregatesFilter | string | null
     timeInserted?: DateTimeWithAggregatesFilter | Date | string
     timeDelivered?: DateTimeNullableWithAggregatesFilter | Date | string | null
     mailCarrierId?: StringWithAggregatesFilter | string
@@ -15166,7 +15166,7 @@ export namespace Prisma {
   export type MailCreateInput = {
     id?: string
     mailCode: string
-    mailCategory_id: string
+    mailCategoryId: string
     recipientAddress: string
     senderAddress: string
     timeInserted?: Date | string
@@ -15179,11 +15179,11 @@ export namespace Prisma {
   export type MailUncheckedCreateInput = {
     id?: string
     mailCode: string
-    mailCategory_id: string
+    mailCategoryId: string
     recipientAddress: string
     senderAddress: string
-    locationStart_id: string
-    locationEnd_id?: string | null
+    locationStartId: string
+    locationEndId?: string | null
     timeInserted?: Date | string
     timeDelivered?: Date | string | null
     mailCarrierId: string
@@ -15192,7 +15192,7 @@ export namespace Prisma {
   export type MailUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     mailCode?: StringFieldUpdateOperationsInput | string
-    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    mailCategoryId?: StringFieldUpdateOperationsInput | string
     recipientAddress?: StringFieldUpdateOperationsInput | string
     senderAddress?: StringFieldUpdateOperationsInput | string
     timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15205,11 +15205,11 @@ export namespace Prisma {
   export type MailUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     mailCode?: StringFieldUpdateOperationsInput | string
-    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    mailCategoryId?: StringFieldUpdateOperationsInput | string
     recipientAddress?: StringFieldUpdateOperationsInput | string
     senderAddress?: StringFieldUpdateOperationsInput | string
-    locationStart_id?: StringFieldUpdateOperationsInput | string
-    locationEnd_id?: NullableStringFieldUpdateOperationsInput | string | null
+    locationStartId?: StringFieldUpdateOperationsInput | string
+    locationEndId?: NullableStringFieldUpdateOperationsInput | string | null
     timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
     timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     mailCarrierId?: StringFieldUpdateOperationsInput | string
@@ -15218,11 +15218,11 @@ export namespace Prisma {
   export type MailCreateManyInput = {
     id?: string
     mailCode: string
-    mailCategory_id: string
+    mailCategoryId: string
     recipientAddress: string
     senderAddress: string
-    locationStart_id: string
-    locationEnd_id?: string | null
+    locationStartId: string
+    locationEndId?: string | null
     timeInserted?: Date | string
     timeDelivered?: Date | string | null
     mailCarrierId: string
@@ -15231,7 +15231,7 @@ export namespace Prisma {
   export type MailUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     mailCode?: StringFieldUpdateOperationsInput | string
-    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    mailCategoryId?: StringFieldUpdateOperationsInput | string
     recipientAddress?: StringFieldUpdateOperationsInput | string
     senderAddress?: StringFieldUpdateOperationsInput | string
     timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15241,11 +15241,11 @@ export namespace Prisma {
   export type MailUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     mailCode?: StringFieldUpdateOperationsInput | string
-    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    mailCategoryId?: StringFieldUpdateOperationsInput | string
     recipientAddress?: StringFieldUpdateOperationsInput | string
     senderAddress?: StringFieldUpdateOperationsInput | string
-    locationStart_id?: StringFieldUpdateOperationsInput | string
-    locationEnd_id?: NullableStringFieldUpdateOperationsInput | string | null
+    locationStartId?: StringFieldUpdateOperationsInput | string
+    locationEndId?: NullableStringFieldUpdateOperationsInput | string | null
     timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
     timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     mailCarrierId?: StringFieldUpdateOperationsInput | string
@@ -15885,11 +15885,11 @@ export namespace Prisma {
   export type MailCountOrderByAggregateInput = {
     id?: SortOrder
     mailCode?: SortOrder
-    mailCategory_id?: SortOrder
+    mailCategoryId?: SortOrder
     recipientAddress?: SortOrder
     senderAddress?: SortOrder
-    locationStart_id?: SortOrder
-    locationEnd_id?: SortOrder
+    locationStartId?: SortOrder
+    locationEndId?: SortOrder
     timeInserted?: SortOrder
     timeDelivered?: SortOrder
     mailCarrierId?: SortOrder
@@ -15898,11 +15898,11 @@ export namespace Prisma {
   export type MailMaxOrderByAggregateInput = {
     id?: SortOrder
     mailCode?: SortOrder
-    mailCategory_id?: SortOrder
+    mailCategoryId?: SortOrder
     recipientAddress?: SortOrder
     senderAddress?: SortOrder
-    locationStart_id?: SortOrder
-    locationEnd_id?: SortOrder
+    locationStartId?: SortOrder
+    locationEndId?: SortOrder
     timeInserted?: SortOrder
     timeDelivered?: SortOrder
     mailCarrierId?: SortOrder
@@ -15911,11 +15911,11 @@ export namespace Prisma {
   export type MailMinOrderByAggregateInput = {
     id?: SortOrder
     mailCode?: SortOrder
-    mailCategory_id?: SortOrder
+    mailCategoryId?: SortOrder
     recipientAddress?: SortOrder
     senderAddress?: SortOrder
-    locationStart_id?: SortOrder
-    locationEnd_id?: SortOrder
+    locationStartId?: SortOrder
+    locationEndId?: SortOrder
     timeInserted?: SortOrder
     timeDelivered?: SortOrder
     mailCarrierId?: SortOrder
@@ -17365,7 +17365,7 @@ export namespace Prisma {
   export type MailCreateWithoutLocationStartInput = {
     id?: string
     mailCode: string
-    mailCategory_id: string
+    mailCategoryId: string
     recipientAddress: string
     senderAddress: string
     timeInserted?: Date | string
@@ -17377,10 +17377,10 @@ export namespace Prisma {
   export type MailUncheckedCreateWithoutLocationStartInput = {
     id?: string
     mailCode: string
-    mailCategory_id: string
+    mailCategoryId: string
     recipientAddress: string
     senderAddress: string
-    locationEnd_id?: string | null
+    locationEndId?: string | null
     timeInserted?: Date | string
     timeDelivered?: Date | string | null
     mailCarrierId: string
@@ -17399,7 +17399,7 @@ export namespace Prisma {
   export type MailCreateWithoutLocationEndInput = {
     id?: string
     mailCode: string
-    mailCategory_id: string
+    mailCategoryId: string
     recipientAddress: string
     senderAddress: string
     timeInserted?: Date | string
@@ -17411,10 +17411,10 @@ export namespace Prisma {
   export type MailUncheckedCreateWithoutLocationEndInput = {
     id?: string
     mailCode: string
-    mailCategory_id: string
+    mailCategoryId: string
     recipientAddress: string
     senderAddress: string
-    locationStart_id: string
+    locationStartId: string
     timeInserted?: Date | string
     timeDelivered?: Date | string | null
     mailCarrierId: string
@@ -17591,11 +17591,11 @@ export namespace Prisma {
     NOT?: Enumerable<MailScalarWhereInput>
     id?: StringFilter | string
     mailCode?: StringFilter | string
-    mailCategory_id?: StringFilter | string
+    mailCategoryId?: StringFilter | string
     recipientAddress?: StringFilter | string
     senderAddress?: StringFilter | string
-    locationStart_id?: StringFilter | string
-    locationEnd_id?: StringNullableFilter | string | null
+    locationStartId?: StringFilter | string
+    locationEndId?: StringNullableFilter | string | null
     timeInserted?: DateTimeFilter | Date | string
     timeDelivered?: DateTimeNullableFilter | Date | string | null
     mailCarrierId?: StringFilter | string
@@ -18040,7 +18040,7 @@ export namespace Prisma {
   export type MailCreateWithoutMailCarrierInput = {
     id?: string
     mailCode: string
-    mailCategory_id: string
+    mailCategoryId: string
     recipientAddress: string
     senderAddress: string
     timeInserted?: Date | string
@@ -18052,11 +18052,11 @@ export namespace Prisma {
   export type MailUncheckedCreateWithoutMailCarrierInput = {
     id?: string
     mailCode: string
-    mailCategory_id: string
+    mailCategoryId: string
     recipientAddress: string
     senderAddress: string
-    locationStart_id: string
-    locationEnd_id?: string | null
+    locationStartId: string
+    locationEndId?: string | null
     timeInserted?: Date | string
     timeDelivered?: Date | string | null
   }
@@ -18313,10 +18313,10 @@ export namespace Prisma {
   export type MailCreateManyLocationStartInput = {
     id?: string
     mailCode: string
-    mailCategory_id: string
+    mailCategoryId: string
     recipientAddress: string
     senderAddress: string
-    locationEnd_id?: string | null
+    locationEndId?: string | null
     timeInserted?: Date | string
     timeDelivered?: Date | string | null
     mailCarrierId: string
@@ -18325,10 +18325,10 @@ export namespace Prisma {
   export type MailCreateManyLocationEndInput = {
     id?: string
     mailCode: string
-    mailCategory_id: string
+    mailCategoryId: string
     recipientAddress: string
     senderAddress: string
-    locationStart_id: string
+    locationStartId: string
     timeInserted?: Date | string
     timeDelivered?: Date | string | null
     mailCarrierId: string
@@ -18391,7 +18391,7 @@ export namespace Prisma {
   export type MailUpdateWithoutLocationStartInput = {
     id?: StringFieldUpdateOperationsInput | string
     mailCode?: StringFieldUpdateOperationsInput | string
-    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    mailCategoryId?: StringFieldUpdateOperationsInput | string
     recipientAddress?: StringFieldUpdateOperationsInput | string
     senderAddress?: StringFieldUpdateOperationsInput | string
     timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18403,10 +18403,10 @@ export namespace Prisma {
   export type MailUncheckedUpdateWithoutLocationStartInput = {
     id?: StringFieldUpdateOperationsInput | string
     mailCode?: StringFieldUpdateOperationsInput | string
-    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    mailCategoryId?: StringFieldUpdateOperationsInput | string
     recipientAddress?: StringFieldUpdateOperationsInput | string
     senderAddress?: StringFieldUpdateOperationsInput | string
-    locationEnd_id?: NullableStringFieldUpdateOperationsInput | string | null
+    locationEndId?: NullableStringFieldUpdateOperationsInput | string | null
     timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
     timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     mailCarrierId?: StringFieldUpdateOperationsInput | string
@@ -18415,10 +18415,10 @@ export namespace Prisma {
   export type MailUncheckedUpdateManyWithoutMailStartInput = {
     id?: StringFieldUpdateOperationsInput | string
     mailCode?: StringFieldUpdateOperationsInput | string
-    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    mailCategoryId?: StringFieldUpdateOperationsInput | string
     recipientAddress?: StringFieldUpdateOperationsInput | string
     senderAddress?: StringFieldUpdateOperationsInput | string
-    locationEnd_id?: NullableStringFieldUpdateOperationsInput | string | null
+    locationEndId?: NullableStringFieldUpdateOperationsInput | string | null
     timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
     timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     mailCarrierId?: StringFieldUpdateOperationsInput | string
@@ -18427,7 +18427,7 @@ export namespace Prisma {
   export type MailUpdateWithoutLocationEndInput = {
     id?: StringFieldUpdateOperationsInput | string
     mailCode?: StringFieldUpdateOperationsInput | string
-    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    mailCategoryId?: StringFieldUpdateOperationsInput | string
     recipientAddress?: StringFieldUpdateOperationsInput | string
     senderAddress?: StringFieldUpdateOperationsInput | string
     timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18439,10 +18439,10 @@ export namespace Prisma {
   export type MailUncheckedUpdateWithoutLocationEndInput = {
     id?: StringFieldUpdateOperationsInput | string
     mailCode?: StringFieldUpdateOperationsInput | string
-    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    mailCategoryId?: StringFieldUpdateOperationsInput | string
     recipientAddress?: StringFieldUpdateOperationsInput | string
     senderAddress?: StringFieldUpdateOperationsInput | string
-    locationStart_id?: StringFieldUpdateOperationsInput | string
+    locationStartId?: StringFieldUpdateOperationsInput | string
     timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
     timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     mailCarrierId?: StringFieldUpdateOperationsInput | string
@@ -18451,10 +18451,10 @@ export namespace Prisma {
   export type MailUncheckedUpdateManyWithoutMailEndInput = {
     id?: StringFieldUpdateOperationsInput | string
     mailCode?: StringFieldUpdateOperationsInput | string
-    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    mailCategoryId?: StringFieldUpdateOperationsInput | string
     recipientAddress?: StringFieldUpdateOperationsInput | string
     senderAddress?: StringFieldUpdateOperationsInput | string
-    locationStart_id?: StringFieldUpdateOperationsInput | string
+    locationStartId?: StringFieldUpdateOperationsInput | string
     timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
     timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     mailCarrierId?: StringFieldUpdateOperationsInput | string
@@ -18627,11 +18627,11 @@ export namespace Prisma {
   export type MailCreateManyMailCarrierInput = {
     id?: string
     mailCode: string
-    mailCategory_id: string
+    mailCategoryId: string
     recipientAddress: string
     senderAddress: string
-    locationStart_id: string
-    locationEnd_id?: string | null
+    locationStartId: string
+    locationEndId?: string | null
     timeInserted?: Date | string
     timeDelivered?: Date | string | null
   }
@@ -18639,7 +18639,7 @@ export namespace Prisma {
   export type MailUpdateWithoutMailCarrierInput = {
     id?: StringFieldUpdateOperationsInput | string
     mailCode?: StringFieldUpdateOperationsInput | string
-    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    mailCategoryId?: StringFieldUpdateOperationsInput | string
     recipientAddress?: StringFieldUpdateOperationsInput | string
     senderAddress?: StringFieldUpdateOperationsInput | string
     timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18651,11 +18651,11 @@ export namespace Prisma {
   export type MailUncheckedUpdateWithoutMailCarrierInput = {
     id?: StringFieldUpdateOperationsInput | string
     mailCode?: StringFieldUpdateOperationsInput | string
-    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    mailCategoryId?: StringFieldUpdateOperationsInput | string
     recipientAddress?: StringFieldUpdateOperationsInput | string
     senderAddress?: StringFieldUpdateOperationsInput | string
-    locationStart_id?: StringFieldUpdateOperationsInput | string
-    locationEnd_id?: NullableStringFieldUpdateOperationsInput | string | null
+    locationStartId?: StringFieldUpdateOperationsInput | string
+    locationEndId?: NullableStringFieldUpdateOperationsInput | string | null
     timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
     timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -18663,11 +18663,11 @@ export namespace Prisma {
   export type MailUncheckedUpdateManyWithoutMailInput = {
     id?: StringFieldUpdateOperationsInput | string
     mailCode?: StringFieldUpdateOperationsInput | string
-    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    mailCategoryId?: StringFieldUpdateOperationsInput | string
     recipientAddress?: StringFieldUpdateOperationsInput | string
     senderAddress?: StringFieldUpdateOperationsInput | string
-    locationStart_id?: StringFieldUpdateOperationsInput | string
-    locationEnd_id?: NullableStringFieldUpdateOperationsInput | string | null
+    locationStartId?: StringFieldUpdateOperationsInput | string
+    locationEndId?: NullableStringFieldUpdateOperationsInput | string | null
     timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
     timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
