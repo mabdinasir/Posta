@@ -123,8 +123,7 @@ exports.Prisma.LocationScalarFieldEnum = {
   updatedAt: 'updatedAt',
   updatedBy: 'updatedBy',
   postOfficeInChargeId: 'postOfficeInChargeId',
-  LocationTypeId: 'LocationTypeId',
-  serviceId: 'serviceId'
+  LocationTypeId: 'LocationTypeId'
 };
 
 exports.Prisma.LocationTypeScalarFieldEnum = {
@@ -223,7 +222,8 @@ exports.Prisma.UserScalarFieldEnum = {
   createdAt: 'createdAt',
   createdBy: 'createdBy',
   updatedAt: 'updatedAt',
-  updatedBy: 'updatedBy'
+  updatedBy: 'updatedBy',
+  mailCarrierId: 'mailCarrierId'
 };
 
 exports.Prisma.UserTypeScalarFieldEnum = {

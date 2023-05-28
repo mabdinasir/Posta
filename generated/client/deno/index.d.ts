@@ -30,6 +30,7 @@ export type User = {
   createdBy: string | null
   updatedAt: Date
   updatedBy: string | null
+  mailCarrierId: string | null
 }
 
 /**
@@ -104,7 +105,6 @@ export type Location = {
   updatedBy: string | null
   postOfficeInChargeId: string
   LocationTypeId: string
-  serviceId: string
 }
 
 /**
@@ -1291,6 +1291,7 @@ export namespace Prisma {
 
 
   export type LocationCountOutputType = {
+    services: number
     collectingOptions: number
     processingOptions: number
     mailStart: number
@@ -1298,6 +1299,7 @@ export namespace Prisma {
   }
 
   export type LocationCountOutputTypeSelect = {
+    services?: boolean
     collectingOptions?: boolean
     processingOptions?: boolean
     mailStart?: boolean
@@ -1578,6 +1580,7 @@ export namespace Prisma {
     createdBy: string | null
     updatedAt: Date | null
     updatedBy: string | null
+    mailCarrierId: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1594,6 +1597,7 @@ export namespace Prisma {
     createdBy: string | null
     updatedAt: Date | null
     updatedBy: string | null
+    mailCarrierId: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1610,6 +1614,7 @@ export namespace Prisma {
     createdBy: number
     updatedAt: number
     updatedBy: number
+    mailCarrierId: number
     _all: number
   }
 
@@ -1628,6 +1633,7 @@ export namespace Prisma {
     createdBy?: true
     updatedAt?: true
     updatedBy?: true
+    mailCarrierId?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1644,6 +1650,7 @@ export namespace Prisma {
     createdBy?: true
     updatedAt?: true
     updatedBy?: true
+    mailCarrierId?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1660,6 +1667,7 @@ export namespace Prisma {
     createdBy?: true
     updatedAt?: true
     updatedBy?: true
+    mailCarrierId?: true
     _all?: true
   }
 
@@ -1750,6 +1758,7 @@ export namespace Prisma {
     createdBy: string | null
     updatedAt: Date
     updatedBy: string | null
+    mailCarrierId: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -1783,13 +1792,16 @@ export namespace Prisma {
     createdBy?: boolean
     updatedAt?: boolean
     updatedBy?: boolean
+    mailCarrierId?: boolean
     userTypes?: boolean | User$userTypesArgs
+    mailCarrier?: boolean | MailCarrierArgs
     _count?: boolean | UserCountOutputTypeArgs
   }
 
 
   export type UserInclude = {
     userTypes?: boolean | User$userTypesArgs
+    mailCarrier?: boolean | MailCarrierArgs
     _count?: boolean | UserCountOutputTypeArgs
   }
 
@@ -1801,12 +1813,14 @@ export namespace Prisma {
     ? User  & {
     [P in TruthyKeys<S['include']>]:
         P extends 'userTypes' ? Array < UserTypeGetPayload<S['include'][P]>>  :
+        P extends 'mailCarrier' ? MailCarrierGetPayload<S['include'][P]> | null :
         P extends '_count' ? UserCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : S extends { select: any } & (UserArgs | UserFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
         P extends 'userTypes' ? Array < UserTypeGetPayload<S['select'][P]>>  :
+        P extends 'mailCarrier' ? MailCarrierGetPayload<S['select'][P]> | null :
         P extends '_count' ? UserCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof User ? User[P] : never
   } 
       : User
@@ -2180,6 +2194,8 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
 
     userTypes<T extends User$userTypesArgs= {}>(args?: Subset<T, User$userTypesArgs>): Prisma.PrismaPromise<Array<UserTypeGetPayload<T>>| Null>;
+
+    mailCarrier<T extends MailCarrierArgs= {}>(args?: Subset<T, MailCarrierArgs>): Prisma__MailCarrierClient<MailCarrierGetPayload<T> | Null>;
 
     private get _document();
     /**
@@ -6510,7 +6526,6 @@ export namespace Prisma {
     updatedBy: string | null
     postOfficeInChargeId: string | null
     LocationTypeId: string | null
-    serviceId: string | null
   }
 
   export type LocationMaxAggregateOutputType = {
@@ -6523,7 +6538,6 @@ export namespace Prisma {
     updatedBy: string | null
     postOfficeInChargeId: string | null
     LocationTypeId: string | null
-    serviceId: string | null
   }
 
   export type LocationCountAggregateOutputType = {
@@ -6536,7 +6550,6 @@ export namespace Prisma {
     updatedBy: number
     postOfficeInChargeId: number
     LocationTypeId: number
-    serviceId: number
     _all: number
   }
 
@@ -6551,7 +6564,6 @@ export namespace Prisma {
     updatedBy?: true
     postOfficeInChargeId?: true
     LocationTypeId?: true
-    serviceId?: true
   }
 
   export type LocationMaxAggregateInputType = {
@@ -6564,7 +6576,6 @@ export namespace Prisma {
     updatedBy?: true
     postOfficeInChargeId?: true
     LocationTypeId?: true
-    serviceId?: true
   }
 
   export type LocationCountAggregateInputType = {
@@ -6577,7 +6588,6 @@ export namespace Prisma {
     updatedBy?: true
     postOfficeInChargeId?: true
     LocationTypeId?: true
-    serviceId?: true
     _all?: true
   }
 
@@ -6664,7 +6674,6 @@ export namespace Prisma {
     updatedBy: string | null
     postOfficeInChargeId: string
     LocationTypeId: string
-    serviceId: string
     _count: LocationCountAggregateOutputType | null
     _min: LocationMinAggregateOutputType | null
     _max: LocationMaxAggregateOutputType | null
@@ -6694,10 +6703,9 @@ export namespace Prisma {
     updatedBy?: boolean
     postOfficeInChargeId?: boolean
     LocationTypeId?: boolean
-    serviceId?: boolean
     postOfficeInCharge?: boolean | PostOfficeArgs
     LocationType?: boolean | LocationTypeArgs
-    services?: boolean | ServiceArgs
+    services?: boolean | Location$servicesArgs
     collectingOptions?: boolean | Location$collectingOptionsArgs
     processingOptions?: boolean | Location$processingOptionsArgs
     mailStart?: boolean | Location$mailStartArgs
@@ -6709,7 +6717,7 @@ export namespace Prisma {
   export type LocationInclude = {
     postOfficeInCharge?: boolean | PostOfficeArgs
     LocationType?: boolean | LocationTypeArgs
-    services?: boolean | ServiceArgs
+    services?: boolean | Location$servicesArgs
     collectingOptions?: boolean | Location$collectingOptionsArgs
     processingOptions?: boolean | Location$processingOptionsArgs
     mailStart?: boolean | Location$mailStartArgs
@@ -6726,7 +6734,7 @@ export namespace Prisma {
     [P in TruthyKeys<S['include']>]:
         P extends 'postOfficeInCharge' ? PostOfficeGetPayload<S['include'][P]> :
         P extends 'LocationType' ? LocationTypeGetPayload<S['include'][P]> :
-        P extends 'services' ? ServiceGetPayload<S['include'][P]> :
+        P extends 'services' ? Array < ServiceGetPayload<S['include'][P]>>  :
         P extends 'collectingOptions' ? Array < CollectingOptionGetPayload<S['include'][P]>>  :
         P extends 'processingOptions' ? Array < ProcessingOptionGetPayload<S['include'][P]>>  :
         P extends 'mailStart' ? Array < MailGetPayload<S['include'][P]>>  :
@@ -6738,7 +6746,7 @@ export namespace Prisma {
     [P in TruthyKeys<S['select']>]:
         P extends 'postOfficeInCharge' ? PostOfficeGetPayload<S['select'][P]> :
         P extends 'LocationType' ? LocationTypeGetPayload<S['select'][P]> :
-        P extends 'services' ? ServiceGetPayload<S['select'][P]> :
+        P extends 'services' ? Array < ServiceGetPayload<S['select'][P]>>  :
         P extends 'collectingOptions' ? Array < CollectingOptionGetPayload<S['select'][P]>>  :
         P extends 'processingOptions' ? Array < ProcessingOptionGetPayload<S['select'][P]>>  :
         P extends 'mailStart' ? Array < MailGetPayload<S['select'][P]>>  :
@@ -7119,7 +7127,7 @@ export namespace Prisma {
 
     LocationType<T extends LocationTypeArgs= {}>(args?: Subset<T, LocationTypeArgs>): Prisma__LocationTypeClient<LocationTypeGetPayload<T> | Null>;
 
-    services<T extends ServiceArgs= {}>(args?: Subset<T, ServiceArgs>): Prisma__ServiceClient<ServiceGetPayload<T> | Null>;
+    services<T extends Location$servicesArgs= {}>(args?: Subset<T, Location$servicesArgs>): Prisma.PrismaPromise<Array<ServiceGetPayload<T>>| Null>;
 
     collectingOptions<T extends Location$collectingOptionsArgs= {}>(args?: Subset<T, Location$collectingOptionsArgs>): Prisma.PrismaPromise<Array<CollectingOptionGetPayload<T>>| Null>;
 
@@ -7481,6 +7489,27 @@ export namespace Prisma {
      * Filter which Locations to delete
      */
     where?: LocationWhereInput
+  }
+
+
+  /**
+   * Location.services
+   */
+  export type Location$servicesArgs = {
+    /**
+     * Select specific fields to fetch from the Service
+     */
+    select?: ServiceSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ServiceInclude | null
+    where?: ServiceWhereInput
+    orderBy?: Enumerable<ServiceOrderByWithRelationInput>
+    cursor?: ServiceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<ServiceScalarFieldEnum>
   }
 
 
@@ -12622,12 +12651,14 @@ export namespace Prisma {
     updatedAt?: boolean
     updatedBy?: boolean
     mail?: boolean | MailCarrier$mailArgs
+    User?: boolean | UserArgs
     _count?: boolean | MailCarrierCountOutputTypeArgs
   }
 
 
   export type MailCarrierInclude = {
     mail?: boolean | MailCarrier$mailArgs
+    User?: boolean | UserArgs
     _count?: boolean | MailCarrierCountOutputTypeArgs
   }
 
@@ -12639,12 +12670,14 @@ export namespace Prisma {
     ? MailCarrier  & {
     [P in TruthyKeys<S['include']>]:
         P extends 'mail' ? Array < MailGetPayload<S['include'][P]>>  :
+        P extends 'User' ? UserGetPayload<S['include'][P]> | null :
         P extends '_count' ? MailCarrierCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : S extends { select: any } & (MailCarrierArgs | MailCarrierFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
         P extends 'mail' ? Array < MailGetPayload<S['select'][P]>>  :
+        P extends 'User' ? UserGetPayload<S['select'][P]> | null :
         P extends '_count' ? MailCarrierCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof MailCarrier ? MailCarrier[P] : never
   } 
       : MailCarrier
@@ -13018,6 +13051,8 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
 
     mail<T extends MailCarrier$mailArgs= {}>(args?: Subset<T, MailCarrier$mailArgs>): Prisma.PrismaPromise<Array<MailGetPayload<T>>| Null>;
+
+    User<T extends UserArgs= {}>(args?: Subset<T, UserArgs>): Prisma__UserClient<UserGetPayload<T> | Null>;
 
     private get _document();
     /**
@@ -13464,8 +13499,7 @@ export namespace Prisma {
     updatedAt: 'updatedAt',
     updatedBy: 'updatedBy',
     postOfficeInChargeId: 'postOfficeInChargeId',
-    LocationTypeId: 'LocationTypeId',
-    serviceId: 'serviceId'
+    LocationTypeId: 'LocationTypeId'
   };
 
   export type LocationScalarFieldEnum = (typeof LocationScalarFieldEnum)[keyof typeof LocationScalarFieldEnum]
@@ -13594,7 +13628,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     createdBy: 'createdBy',
     updatedAt: 'updatedAt',
-    updatedBy: 'updatedBy'
+    updatedBy: 'updatedBy',
+    mailCarrierId: 'mailCarrierId'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -13634,7 +13669,9 @@ export namespace Prisma {
     createdBy?: StringNullableFilter | string | null
     updatedAt?: DateTimeFilter | Date | string
     updatedBy?: StringNullableFilter | string | null
+    mailCarrierId?: StringNullableFilter | string | null
     userTypes?: UserTypeListRelationFilter
+    mailCarrier?: XOR<MailCarrierRelationFilter, MailCarrierWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -13651,12 +13688,15 @@ export namespace Prisma {
     createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
+    mailCarrierId?: SortOrder
     userTypes?: UserTypeOrderByRelationAggregateInput
+    mailCarrier?: MailCarrierOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = {
     id?: string
     email?: string
+    mailCarrierId?: string
   }
 
   export type UserOrderByWithAggregationInput = {
@@ -13673,6 +13713,7 @@ export namespace Prisma {
     createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
+    mailCarrierId?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -13695,6 +13736,7 @@ export namespace Prisma {
     createdBy?: StringNullableWithAggregatesFilter | string | null
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
     updatedBy?: StringNullableWithAggregatesFilter | string | null
+    mailCarrierId?: StringNullableWithAggregatesFilter | string | null
   }
 
   export type UserTypeWhereInput = {
@@ -13942,10 +13984,9 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter | string | null
     postOfficeInChargeId?: StringFilter | string
     LocationTypeId?: StringFilter | string
-    serviceId?: StringFilter | string
     postOfficeInCharge?: XOR<PostOfficeRelationFilter, PostOfficeWhereInput>
     LocationType?: XOR<LocationTypeRelationFilter, LocationTypeWhereInput>
-    services?: XOR<ServiceRelationFilter, ServiceWhereInput>
+    services?: ServiceListRelationFilter
     collectingOptions?: CollectingOptionListRelationFilter
     processingOptions?: ProcessingOptionListRelationFilter
     mailStart?: MailListRelationFilter
@@ -13962,10 +14003,9 @@ export namespace Prisma {
     updatedBy?: SortOrder
     postOfficeInChargeId?: SortOrder
     LocationTypeId?: SortOrder
-    serviceId?: SortOrder
     postOfficeInCharge?: PostOfficeOrderByWithRelationInput
     LocationType?: LocationTypeOrderByWithRelationInput
-    services?: ServiceOrderByWithRelationInput
+    services?: ServiceOrderByRelationAggregateInput
     collectingOptions?: CollectingOptionOrderByRelationAggregateInput
     processingOptions?: ProcessingOptionOrderByRelationAggregateInput
     mailStart?: MailOrderByRelationAggregateInput
@@ -13987,7 +14027,6 @@ export namespace Prisma {
     updatedBy?: SortOrder
     postOfficeInChargeId?: SortOrder
     LocationTypeId?: SortOrder
-    serviceId?: SortOrder
     _count?: LocationCountOrderByAggregateInput
     _max?: LocationMaxOrderByAggregateInput
     _min?: LocationMinOrderByAggregateInput
@@ -14006,7 +14045,6 @@ export namespace Prisma {
     updatedBy?: StringNullableWithAggregatesFilter | string | null
     postOfficeInChargeId?: StringWithAggregatesFilter | string
     LocationTypeId?: StringWithAggregatesFilter | string
-    serviceId?: StringWithAggregatesFilter | string
   }
 
   export type LocationTypeWhereInput = {
@@ -14309,6 +14347,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter | Date | string
     updatedBy?: StringNullableFilter | string | null
     mail?: MailListRelationFilter
+    User?: XOR<UserRelationFilter, UserWhereInput> | null
   }
 
   export type MailCarrierOrderByWithRelationInput = {
@@ -14320,6 +14359,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     updatedBy?: SortOrder
     mail?: MailOrderByRelationAggregateInput
+    User?: UserOrderByWithRelationInput
   }
 
   export type MailCarrierWhereUniqueInput = {
@@ -14368,6 +14408,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     updatedBy?: string | null
     userTypes?: UserTypeCreateNestedManyWithoutUsersInput
+    mailCarrier?: MailCarrierCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -14384,6 +14425,7 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
+    mailCarrierId?: string | null
     userTypes?: UserTypeUncheckedCreateNestedManyWithoutUsersInput
   }
 
@@ -14402,6 +14444,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     userTypes?: UserTypeUpdateManyWithoutUsersNestedInput
+    mailCarrier?: MailCarrierUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -14418,6 +14461,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    mailCarrierId?: NullableStringFieldUpdateOperationsInput | string | null
     userTypes?: UserTypeUncheckedUpdateManyWithoutUsersNestedInput
   }
 
@@ -14435,6 +14479,7 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
+    mailCarrierId?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -14467,6 +14512,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    mailCarrierId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserTypeCreateInput = {
@@ -14787,7 +14833,7 @@ export namespace Prisma {
     updatedBy?: string | null
     postOfficeInCharge: PostOfficeCreateNestedOneWithoutLocationsInput
     LocationType: LocationTypeCreateNestedOneWithoutLocationInput
-    services: ServiceCreateNestedOneWithoutLocationInput
+    services?: ServiceCreateNestedManyWithoutLocationInput
     collectingOptions?: CollectingOptionCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionCreateNestedManyWithoutLocationsInput
     mailStart?: MailCreateNestedManyWithoutLocationStartInput
@@ -14804,7 +14850,7 @@ export namespace Prisma {
     updatedBy?: string | null
     postOfficeInChargeId: string
     LocationTypeId: string
-    serviceId: string
+    services?: ServiceUncheckedCreateNestedManyWithoutLocationInput
     collectingOptions?: CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput
     mailStart?: MailUncheckedCreateNestedManyWithoutLocationStartInput
@@ -14821,7 +14867,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInCharge?: PostOfficeUpdateOneRequiredWithoutLocationsNestedInput
     LocationType?: LocationTypeUpdateOneRequiredWithoutLocationNestedInput
-    services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
+    services?: ServiceUpdateManyWithoutLocationNestedInput
     collectingOptions?: CollectingOptionUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUpdateManyWithoutLocationsNestedInput
     mailStart?: MailUpdateManyWithoutLocationStartNestedInput
@@ -14838,7 +14884,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
     LocationTypeId?: StringFieldUpdateOperationsInput | string
-    serviceId?: StringFieldUpdateOperationsInput | string
+    services?: ServiceUncheckedUpdateManyWithoutLocationNestedInput
     collectingOptions?: CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput
     mailStart?: MailUncheckedUpdateManyWithoutLocationStartNestedInput
@@ -14855,7 +14901,6 @@ export namespace Prisma {
     updatedBy?: string | null
     postOfficeInChargeId: string
     LocationTypeId: string
-    serviceId: string
   }
 
   export type LocationUpdateManyMutationInput = {
@@ -14878,7 +14923,6 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
     LocationTypeId?: StringFieldUpdateOperationsInput | string
-    serviceId?: StringFieldUpdateOperationsInput | string
   }
 
   export type LocationTypeCreateInput = {
@@ -15260,6 +15304,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     updatedBy?: string | null
     mail?: MailCreateNestedManyWithoutMailCarrierInput
+    User?: UserCreateNestedOneWithoutMailCarrierInput
   }
 
   export type MailCarrierUncheckedCreateInput = {
@@ -15271,6 +15316,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     updatedBy?: string | null
     mail?: MailUncheckedCreateNestedManyWithoutMailCarrierInput
+    User?: UserUncheckedCreateNestedOneWithoutMailCarrierInput
   }
 
   export type MailCarrierUpdateInput = {
@@ -15282,6 +15328,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     mail?: MailUpdateManyWithoutMailCarrierNestedInput
+    User?: UserUpdateOneWithoutMailCarrierNestedInput
   }
 
   export type MailCarrierUncheckedUpdateInput = {
@@ -15293,6 +15340,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     mail?: MailUncheckedUpdateManyWithoutMailCarrierNestedInput
+    User?: UserUncheckedUpdateOneWithoutMailCarrierNestedInput
   }
 
   export type MailCarrierCreateManyInput = {
@@ -15377,6 +15425,11 @@ export namespace Prisma {
     none?: UserTypeWhereInput
   }
 
+  export type MailCarrierRelationFilter = {
+    is?: MailCarrierWhereInput
+    isNot?: MailCarrierWhereInput
+  }
+
   export type UserTypeOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -15395,6 +15448,7 @@ export namespace Prisma {
     createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
+    mailCarrierId?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -15411,6 +15465,7 @@ export namespace Prisma {
     createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
+    mailCarrierId?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -15427,6 +15482,7 @@ export namespace Prisma {
     createdBy?: SortOrder
     updatedAt?: SortOrder
     updatedBy?: SortOrder
+    mailCarrierId?: SortOrder
   }
 
   export type StringWithAggregatesFilter = {
@@ -15673,9 +15729,10 @@ export namespace Prisma {
     isNot?: LocationTypeWhereInput
   }
 
-  export type ServiceRelationFilter = {
-    is?: ServiceWhereInput
-    isNot?: ServiceWhereInput
+  export type ServiceListRelationFilter = {
+    every?: ServiceWhereInput
+    some?: ServiceWhereInput
+    none?: ServiceWhereInput
   }
 
   export type CollectingOptionListRelationFilter = {
@@ -15694,6 +15751,10 @@ export namespace Prisma {
     every?: MailWhereInput
     some?: MailWhereInput
     none?: MailWhereInput
+  }
+
+  export type ServiceOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type CollectingOptionOrderByRelationAggregateInput = {
@@ -15718,7 +15779,6 @@ export namespace Prisma {
     updatedBy?: SortOrder
     postOfficeInChargeId?: SortOrder
     LocationTypeId?: SortOrder
-    serviceId?: SortOrder
   }
 
   export type LocationMaxOrderByAggregateInput = {
@@ -15731,7 +15791,6 @@ export namespace Prisma {
     updatedBy?: SortOrder
     postOfficeInChargeId?: SortOrder
     LocationTypeId?: SortOrder
-    serviceId?: SortOrder
   }
 
   export type LocationMinOrderByAggregateInput = {
@@ -15744,7 +15803,6 @@ export namespace Prisma {
     updatedBy?: SortOrder
     postOfficeInChargeId?: SortOrder
     LocationTypeId?: SortOrder
-    serviceId?: SortOrder
   }
 
   export type LocationTypeCountOrderByAggregateInput = {
@@ -15877,11 +15935,6 @@ export namespace Prisma {
     isNot?: LocationWhereInput
   }
 
-  export type MailCarrierRelationFilter = {
-    is?: MailCarrierWhereInput
-    isNot?: MailCarrierWhereInput
-  }
-
   export type MailCountOrderByAggregateInput = {
     id?: SortOrder
     mailCode?: SortOrder
@@ -15935,6 +15988,11 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter
   }
 
+  export type UserRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
   export type MailCarrierCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -15971,6 +16029,12 @@ export namespace Prisma {
     connect?: Enumerable<UserTypeWhereUniqueInput>
   }
 
+  export type MailCarrierCreateNestedOneWithoutUserInput = {
+    create?: XOR<MailCarrierCreateWithoutUserInput, MailCarrierUncheckedCreateWithoutUserInput>
+    connectOrCreate?: MailCarrierCreateOrConnectWithoutUserInput
+    connect?: MailCarrierWhereUniqueInput
+  }
+
   export type UserTypeUncheckedCreateNestedManyWithoutUsersInput = {
     create?: XOR<Enumerable<UserTypeCreateWithoutUsersInput>, Enumerable<UserTypeUncheckedCreateWithoutUsersInput>>
     connectOrCreate?: Enumerable<UserTypeCreateOrConnectWithoutUsersInput>
@@ -16004,6 +16068,16 @@ export namespace Prisma {
     update?: Enumerable<UserTypeUpdateWithWhereUniqueWithoutUsersInput>
     updateMany?: Enumerable<UserTypeUpdateManyWithWhereWithoutUsersInput>
     deleteMany?: Enumerable<UserTypeScalarWhereInput>
+  }
+
+  export type MailCarrierUpdateOneWithoutUserNestedInput = {
+    create?: XOR<MailCarrierCreateWithoutUserInput, MailCarrierUncheckedCreateWithoutUserInput>
+    connectOrCreate?: MailCarrierCreateOrConnectWithoutUserInput
+    upsert?: MailCarrierUpsertWithoutUserInput
+    disconnect?: boolean
+    delete?: boolean
+    connect?: MailCarrierWhereUniqueInput
+    update?: XOR<MailCarrierUpdateWithoutUserInput, MailCarrierUncheckedUpdateWithoutUserInput>
   }
 
   export type UserTypeUncheckedUpdateManyWithoutUsersNestedInput = {
@@ -16223,10 +16297,10 @@ export namespace Prisma {
     connect?: LocationTypeWhereUniqueInput
   }
 
-  export type ServiceCreateNestedOneWithoutLocationInput = {
-    create?: XOR<ServiceCreateWithoutLocationInput, ServiceUncheckedCreateWithoutLocationInput>
-    connectOrCreate?: ServiceCreateOrConnectWithoutLocationInput
-    connect?: ServiceWhereUniqueInput
+  export type ServiceCreateNestedManyWithoutLocationInput = {
+    create?: XOR<Enumerable<ServiceCreateWithoutLocationInput>, Enumerable<ServiceUncheckedCreateWithoutLocationInput>>
+    connectOrCreate?: Enumerable<ServiceCreateOrConnectWithoutLocationInput>
+    connect?: Enumerable<ServiceWhereUniqueInput>
   }
 
   export type CollectingOptionCreateNestedManyWithoutLocationsInput = {
@@ -16253,6 +16327,12 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocationEndInput>
     createMany?: MailCreateManyLocationEndInputEnvelope
     connect?: Enumerable<MailWhereUniqueInput>
+  }
+
+  export type ServiceUncheckedCreateNestedManyWithoutLocationInput = {
+    create?: XOR<Enumerable<ServiceCreateWithoutLocationInput>, Enumerable<ServiceUncheckedCreateWithoutLocationInput>>
+    connectOrCreate?: Enumerable<ServiceCreateOrConnectWithoutLocationInput>
+    connect?: Enumerable<ServiceWhereUniqueInput>
   }
 
   export type CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput = {
@@ -16297,12 +16377,17 @@ export namespace Prisma {
     update?: XOR<LocationTypeUpdateWithoutLocationInput, LocationTypeUncheckedUpdateWithoutLocationInput>
   }
 
-  export type ServiceUpdateOneRequiredWithoutLocationNestedInput = {
-    create?: XOR<ServiceCreateWithoutLocationInput, ServiceUncheckedCreateWithoutLocationInput>
-    connectOrCreate?: ServiceCreateOrConnectWithoutLocationInput
-    upsert?: ServiceUpsertWithoutLocationInput
-    connect?: ServiceWhereUniqueInput
-    update?: XOR<ServiceUpdateWithoutLocationInput, ServiceUncheckedUpdateWithoutLocationInput>
+  export type ServiceUpdateManyWithoutLocationNestedInput = {
+    create?: XOR<Enumerable<ServiceCreateWithoutLocationInput>, Enumerable<ServiceUncheckedCreateWithoutLocationInput>>
+    connectOrCreate?: Enumerable<ServiceCreateOrConnectWithoutLocationInput>
+    upsert?: Enumerable<ServiceUpsertWithWhereUniqueWithoutLocationInput>
+    set?: Enumerable<ServiceWhereUniqueInput>
+    disconnect?: Enumerable<ServiceWhereUniqueInput>
+    delete?: Enumerable<ServiceWhereUniqueInput>
+    connect?: Enumerable<ServiceWhereUniqueInput>
+    update?: Enumerable<ServiceUpdateWithWhereUniqueWithoutLocationInput>
+    updateMany?: Enumerable<ServiceUpdateManyWithWhereWithoutLocationInput>
+    deleteMany?: Enumerable<ServiceScalarWhereInput>
   }
 
   export type CollectingOptionUpdateManyWithoutLocationsNestedInput = {
@@ -16357,6 +16442,19 @@ export namespace Prisma {
     update?: Enumerable<MailUpdateWithWhereUniqueWithoutLocationEndInput>
     updateMany?: Enumerable<MailUpdateManyWithWhereWithoutLocationEndInput>
     deleteMany?: Enumerable<MailScalarWhereInput>
+  }
+
+  export type ServiceUncheckedUpdateManyWithoutLocationNestedInput = {
+    create?: XOR<Enumerable<ServiceCreateWithoutLocationInput>, Enumerable<ServiceUncheckedCreateWithoutLocationInput>>
+    connectOrCreate?: Enumerable<ServiceCreateOrConnectWithoutLocationInput>
+    upsert?: Enumerable<ServiceUpsertWithWhereUniqueWithoutLocationInput>
+    set?: Enumerable<ServiceWhereUniqueInput>
+    disconnect?: Enumerable<ServiceWhereUniqueInput>
+    delete?: Enumerable<ServiceWhereUniqueInput>
+    connect?: Enumerable<ServiceWhereUniqueInput>
+    update?: Enumerable<ServiceUpdateWithWhereUniqueWithoutLocationInput>
+    updateMany?: Enumerable<ServiceUpdateManyWithWhereWithoutLocationInput>
+    deleteMany?: Enumerable<ServiceScalarWhereInput>
   }
 
   export type CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput = {
@@ -16458,14 +16556,12 @@ export namespace Prisma {
   export type LocationCreateNestedManyWithoutServicesInput = {
     create?: XOR<Enumerable<LocationCreateWithoutServicesInput>, Enumerable<LocationUncheckedCreateWithoutServicesInput>>
     connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutServicesInput>
-    createMany?: LocationCreateManyServicesInputEnvelope
     connect?: Enumerable<LocationWhereUniqueInput>
   }
 
   export type LocationUncheckedCreateNestedManyWithoutServicesInput = {
     create?: XOR<Enumerable<LocationCreateWithoutServicesInput>, Enumerable<LocationUncheckedCreateWithoutServicesInput>>
     connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutServicesInput>
-    createMany?: LocationCreateManyServicesInputEnvelope
     connect?: Enumerable<LocationWhereUniqueInput>
   }
 
@@ -16473,7 +16569,6 @@ export namespace Prisma {
     create?: XOR<Enumerable<LocationCreateWithoutServicesInput>, Enumerable<LocationUncheckedCreateWithoutServicesInput>>
     connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutServicesInput>
     upsert?: Enumerable<LocationUpsertWithWhereUniqueWithoutServicesInput>
-    createMany?: LocationCreateManyServicesInputEnvelope
     set?: Enumerable<LocationWhereUniqueInput>
     disconnect?: Enumerable<LocationWhereUniqueInput>
     delete?: Enumerable<LocationWhereUniqueInput>
@@ -16487,7 +16582,6 @@ export namespace Prisma {
     create?: XOR<Enumerable<LocationCreateWithoutServicesInput>, Enumerable<LocationUncheckedCreateWithoutServicesInput>>
     connectOrCreate?: Enumerable<LocationCreateOrConnectWithoutServicesInput>
     upsert?: Enumerable<LocationUpsertWithWhereUniqueWithoutServicesInput>
-    createMany?: LocationCreateManyServicesInputEnvelope
     set?: Enumerable<LocationWhereUniqueInput>
     disconnect?: Enumerable<LocationWhereUniqueInput>
     delete?: Enumerable<LocationWhereUniqueInput>
@@ -16628,11 +16722,23 @@ export namespace Prisma {
     connect?: Enumerable<MailWhereUniqueInput>
   }
 
+  export type UserCreateNestedOneWithoutMailCarrierInput = {
+    create?: XOR<UserCreateWithoutMailCarrierInput, UserUncheckedCreateWithoutMailCarrierInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMailCarrierInput
+    connect?: UserWhereUniqueInput
+  }
+
   export type MailUncheckedCreateNestedManyWithoutMailCarrierInput = {
     create?: XOR<Enumerable<MailCreateWithoutMailCarrierInput>, Enumerable<MailUncheckedCreateWithoutMailCarrierInput>>
     connectOrCreate?: Enumerable<MailCreateOrConnectWithoutMailCarrierInput>
     createMany?: MailCreateManyMailCarrierInputEnvelope
     connect?: Enumerable<MailWhereUniqueInput>
+  }
+
+  export type UserUncheckedCreateNestedOneWithoutMailCarrierInput = {
+    create?: XOR<UserCreateWithoutMailCarrierInput, UserUncheckedCreateWithoutMailCarrierInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMailCarrierInput
+    connect?: UserWhereUniqueInput
   }
 
   export type MailUpdateManyWithoutMailCarrierNestedInput = {
@@ -16649,6 +16755,16 @@ export namespace Prisma {
     deleteMany?: Enumerable<MailScalarWhereInput>
   }
 
+  export type UserUpdateOneWithoutMailCarrierNestedInput = {
+    create?: XOR<UserCreateWithoutMailCarrierInput, UserUncheckedCreateWithoutMailCarrierInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMailCarrierInput
+    upsert?: UserUpsertWithoutMailCarrierInput
+    disconnect?: boolean
+    delete?: boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<UserUpdateWithoutMailCarrierInput, UserUncheckedUpdateWithoutMailCarrierInput>
+  }
+
   export type MailUncheckedUpdateManyWithoutMailCarrierNestedInput = {
     create?: XOR<Enumerable<MailCreateWithoutMailCarrierInput>, Enumerable<MailUncheckedCreateWithoutMailCarrierInput>>
     connectOrCreate?: Enumerable<MailCreateOrConnectWithoutMailCarrierInput>
@@ -16661,6 +16777,16 @@ export namespace Prisma {
     update?: Enumerable<MailUpdateWithWhereUniqueWithoutMailCarrierInput>
     updateMany?: Enumerable<MailUpdateManyWithWhereWithoutMailCarrierInput>
     deleteMany?: Enumerable<MailScalarWhereInput>
+  }
+
+  export type UserUncheckedUpdateOneWithoutMailCarrierNestedInput = {
+    create?: XOR<UserCreateWithoutMailCarrierInput, UserUncheckedCreateWithoutMailCarrierInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMailCarrierInput
+    upsert?: UserUpsertWithoutMailCarrierInput
+    disconnect?: boolean
+    delete?: boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<UserUpdateWithoutMailCarrierInput, UserUncheckedUpdateWithoutMailCarrierInput>
   }
 
   export type NestedStringFilter = {
@@ -16833,6 +16959,33 @@ export namespace Prisma {
     create: XOR<UserTypeCreateWithoutUsersInput, UserTypeUncheckedCreateWithoutUsersInput>
   }
 
+  export type MailCarrierCreateWithoutUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    mail?: MailCreateNestedManyWithoutMailCarrierInput
+  }
+
+  export type MailCarrierUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    mail?: MailUncheckedCreateNestedManyWithoutMailCarrierInput
+  }
+
+  export type MailCarrierCreateOrConnectWithoutUserInput = {
+    where: MailCarrierWhereUniqueInput
+    create: XOR<MailCarrierCreateWithoutUserInput, MailCarrierUncheckedCreateWithoutUserInput>
+  }
+
   export type UserTypeUpsertWithWhereUniqueWithoutUsersInput = {
     where: UserTypeWhereUniqueInput
     update: XOR<UserTypeUpdateWithoutUsersInput, UserTypeUncheckedUpdateWithoutUsersInput>
@@ -16861,6 +17014,33 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter | string | null
   }
 
+  export type MailCarrierUpsertWithoutUserInput = {
+    update: XOR<MailCarrierUpdateWithoutUserInput, MailCarrierUncheckedUpdateWithoutUserInput>
+    create: XOR<MailCarrierCreateWithoutUserInput, MailCarrierUncheckedCreateWithoutUserInput>
+  }
+
+  export type MailCarrierUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    mail?: MailUpdateManyWithoutMailCarrierNestedInput
+  }
+
+  export type MailCarrierUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    mail?: MailUncheckedUpdateManyWithoutMailCarrierNestedInput
+  }
+
   export type UserCreateWithoutUserTypesInput = {
     id?: string
     email: string
@@ -16875,6 +17055,7 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
+    mailCarrier?: MailCarrierCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserTypesInput = {
@@ -16891,6 +17072,7 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
+    mailCarrierId?: string | null
   }
 
   export type UserCreateOrConnectWithoutUserTypesInput = {
@@ -16931,6 +17113,7 @@ export namespace Prisma {
     createdBy?: StringNullableFilter | string | null
     updatedAt?: DateTimeFilter | Date | string
     updatedBy?: StringNullableFilter | string | null
+    mailCarrierId?: StringNullableFilter | string | null
   }
 
   export type CityCreateWithoutCountryInput = {
@@ -17143,7 +17326,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     updatedBy?: string | null
     LocationType: LocationTypeCreateNestedOneWithoutLocationInput
-    services: ServiceCreateNestedOneWithoutLocationInput
+    services?: ServiceCreateNestedManyWithoutLocationInput
     collectingOptions?: CollectingOptionCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionCreateNestedManyWithoutLocationsInput
     mailStart?: MailCreateNestedManyWithoutLocationStartInput
@@ -17159,7 +17342,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     updatedBy?: string | null
     LocationTypeId: string
-    serviceId: string
+    services?: ServiceUncheckedCreateNestedManyWithoutLocationInput
     collectingOptions?: CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput
     mailStart?: MailUncheckedCreateNestedManyWithoutLocationStartInput
@@ -17230,7 +17413,6 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter | string | null
     postOfficeInChargeId?: StringFilter | string
     LocationTypeId?: StringFilter | string
-    serviceId?: StringFilter | string
   }
 
   export type PostOfficeCreateWithoutLocationsInput = {
@@ -17486,31 +17668,34 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type ServiceUpsertWithoutLocationInput = {
+  export type ServiceUpsertWithWhereUniqueWithoutLocationInput = {
+    where: ServiceWhereUniqueInput
     update: XOR<ServiceUpdateWithoutLocationInput, ServiceUncheckedUpdateWithoutLocationInput>
     create: XOR<ServiceCreateWithoutLocationInput, ServiceUncheckedCreateWithoutLocationInput>
   }
 
-  export type ServiceUpdateWithoutLocationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  export type ServiceUpdateWithWhereUniqueWithoutLocationInput = {
+    where: ServiceWhereUniqueInput
+    data: XOR<ServiceUpdateWithoutLocationInput, ServiceUncheckedUpdateWithoutLocationInput>
   }
 
-  export type ServiceUncheckedUpdateWithoutLocationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  export type ServiceUpdateManyWithWhereWithoutLocationInput = {
+    where: ServiceScalarWhereInput
+    data: XOR<ServiceUpdateManyMutationInput, ServiceUncheckedUpdateManyWithoutServicesInput>
+  }
+
+  export type ServiceScalarWhereInput = {
+    AND?: Enumerable<ServiceScalarWhereInput>
+    OR?: Enumerable<ServiceScalarWhereInput>
+    NOT?: Enumerable<ServiceScalarWhereInput>
+    id?: StringFilter | string
+    name?: StringFilter | string
+    description?: StringNullableFilter | string | null
+    isActive?: BoolFilter | boolean
+    createdAt?: DateTimeFilter | Date | string
+    createdBy?: StringNullableFilter | string | null
+    updatedAt?: DateTimeFilter | Date | string
+    updatedBy?: StringNullableFilter | string | null
   }
 
   export type CollectingOptionUpsertWithWhereUniqueWithoutLocationsInput = {
@@ -17626,7 +17811,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     updatedBy?: string | null
     postOfficeInCharge: PostOfficeCreateNestedOneWithoutLocationsInput
-    services: ServiceCreateNestedOneWithoutLocationInput
+    services?: ServiceCreateNestedManyWithoutLocationInput
     collectingOptions?: CollectingOptionCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionCreateNestedManyWithoutLocationsInput
     mailStart?: MailCreateNestedManyWithoutLocationStartInput
@@ -17642,7 +17827,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     updatedBy?: string | null
     postOfficeInChargeId: string
-    serviceId: string
+    services?: ServiceUncheckedCreateNestedManyWithoutLocationInput
     collectingOptions?: CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput
     mailStart?: MailUncheckedCreateNestedManyWithoutLocationStartInput
@@ -17712,11 +17897,6 @@ export namespace Prisma {
     create: XOR<LocationCreateWithoutServicesInput, LocationUncheckedCreateWithoutServicesInput>
   }
 
-  export type LocationCreateManyServicesInputEnvelope = {
-    data: Enumerable<LocationCreateManyServicesInput>
-    skipDuplicates?: boolean
-  }
-
   export type LocationUpsertWithWhereUniqueWithoutServicesInput = {
     where: LocationWhereUniqueInput
     update: XOR<LocationUpdateWithoutServicesInput, LocationUncheckedUpdateWithoutServicesInput>
@@ -17743,7 +17923,7 @@ export namespace Prisma {
     updatedBy?: string | null
     postOfficeInCharge: PostOfficeCreateNestedOneWithoutLocationsInput
     LocationType: LocationTypeCreateNestedOneWithoutLocationInput
-    services: ServiceCreateNestedOneWithoutLocationInput
+    services?: ServiceCreateNestedManyWithoutLocationInput
     processingOptions?: ProcessingOptionCreateNestedManyWithoutLocationsInput
     mailStart?: MailCreateNestedManyWithoutLocationStartInput
     mailEnd?: MailCreateNestedManyWithoutLocationEndInput
@@ -17759,7 +17939,7 @@ export namespace Prisma {
     updatedBy?: string | null
     postOfficeInChargeId: string
     LocationTypeId: string
-    serviceId: string
+    services?: ServiceUncheckedCreateNestedManyWithoutLocationInput
     processingOptions?: ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput
     mailStart?: MailUncheckedCreateNestedManyWithoutLocationStartInput
     mailEnd?: MailUncheckedCreateNestedManyWithoutLocationEndInput
@@ -17796,7 +17976,7 @@ export namespace Prisma {
     updatedBy?: string | null
     postOfficeInCharge: PostOfficeCreateNestedOneWithoutLocationsInput
     LocationType: LocationTypeCreateNestedOneWithoutLocationInput
-    services: ServiceCreateNestedOneWithoutLocationInput
+    services?: ServiceCreateNestedManyWithoutLocationInput
     collectingOptions?: CollectingOptionCreateNestedManyWithoutLocationsInput
     mailStart?: MailCreateNestedManyWithoutLocationStartInput
     mailEnd?: MailCreateNestedManyWithoutLocationEndInput
@@ -17812,7 +17992,7 @@ export namespace Prisma {
     updatedBy?: string | null
     postOfficeInChargeId: string
     LocationTypeId: string
-    serviceId: string
+    services?: ServiceUncheckedCreateNestedManyWithoutLocationInput
     collectingOptions?: CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput
     mailStart?: MailUncheckedCreateNestedManyWithoutLocationStartInput
     mailEnd?: MailUncheckedCreateNestedManyWithoutLocationEndInput
@@ -17849,7 +18029,7 @@ export namespace Prisma {
     updatedBy?: string | null
     postOfficeInCharge: PostOfficeCreateNestedOneWithoutLocationsInput
     LocationType: LocationTypeCreateNestedOneWithoutLocationInput
-    services: ServiceCreateNestedOneWithoutLocationInput
+    services?: ServiceCreateNestedManyWithoutLocationInput
     collectingOptions?: CollectingOptionCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionCreateNestedManyWithoutLocationsInput
     mailEnd?: MailCreateNestedManyWithoutLocationEndInput
@@ -17865,7 +18045,7 @@ export namespace Prisma {
     updatedBy?: string | null
     postOfficeInChargeId: string
     LocationTypeId: string
-    serviceId: string
+    services?: ServiceUncheckedCreateNestedManyWithoutLocationInput
     collectingOptions?: CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput
     mailEnd?: MailUncheckedCreateNestedManyWithoutLocationEndInput
@@ -17886,7 +18066,7 @@ export namespace Prisma {
     updatedBy?: string | null
     postOfficeInCharge: PostOfficeCreateNestedOneWithoutLocationsInput
     LocationType: LocationTypeCreateNestedOneWithoutLocationInput
-    services: ServiceCreateNestedOneWithoutLocationInput
+    services?: ServiceCreateNestedManyWithoutLocationInput
     collectingOptions?: CollectingOptionCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionCreateNestedManyWithoutLocationsInput
     mailStart?: MailCreateNestedManyWithoutLocationStartInput
@@ -17902,7 +18082,7 @@ export namespace Prisma {
     updatedBy?: string | null
     postOfficeInChargeId: string
     LocationTypeId: string
-    serviceId: string
+    services?: ServiceUncheckedCreateNestedManyWithoutLocationInput
     collectingOptions?: CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput
     mailStart?: MailUncheckedCreateNestedManyWithoutLocationStartInput
@@ -17921,6 +18101,7 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
+    User?: UserCreateNestedOneWithoutMailCarrierInput
   }
 
   export type MailCarrierUncheckedCreateWithoutMailInput = {
@@ -17931,6 +18112,7 @@ export namespace Prisma {
     createdBy?: string | null
     updatedAt?: Date | string
     updatedBy?: string | null
+    User?: UserUncheckedCreateNestedOneWithoutMailCarrierInput
   }
 
   export type MailCarrierCreateOrConnectWithoutMailInput = {
@@ -17953,7 +18135,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInCharge?: PostOfficeUpdateOneRequiredWithoutLocationsNestedInput
     LocationType?: LocationTypeUpdateOneRequiredWithoutLocationNestedInput
-    services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
+    services?: ServiceUpdateManyWithoutLocationNestedInput
     collectingOptions?: CollectingOptionUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUpdateManyWithoutLocationsNestedInput
     mailEnd?: MailUpdateManyWithoutLocationEndNestedInput
@@ -17969,7 +18151,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
     LocationTypeId?: StringFieldUpdateOperationsInput | string
-    serviceId?: StringFieldUpdateOperationsInput | string
+    services?: ServiceUncheckedUpdateManyWithoutLocationNestedInput
     collectingOptions?: CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput
     mailEnd?: MailUncheckedUpdateManyWithoutLocationEndNestedInput
@@ -17990,7 +18172,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInCharge?: PostOfficeUpdateOneRequiredWithoutLocationsNestedInput
     LocationType?: LocationTypeUpdateOneRequiredWithoutLocationNestedInput
-    services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
+    services?: ServiceUpdateManyWithoutLocationNestedInput
     collectingOptions?: CollectingOptionUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUpdateManyWithoutLocationsNestedInput
     mailStart?: MailUpdateManyWithoutLocationStartNestedInput
@@ -18006,7 +18188,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
     LocationTypeId?: StringFieldUpdateOperationsInput | string
-    serviceId?: StringFieldUpdateOperationsInput | string
+    services?: ServiceUncheckedUpdateManyWithoutLocationNestedInput
     collectingOptions?: CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput
     mailStart?: MailUncheckedUpdateManyWithoutLocationStartNestedInput
@@ -18025,6 +18207,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    User?: UserUpdateOneWithoutMailCarrierNestedInput
   }
 
   export type MailCarrierUncheckedUpdateWithoutMailInput = {
@@ -18035,6 +18218,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    User?: UserUncheckedUpdateOneWithoutMailCarrierNestedInput
   }
 
   export type MailCreateWithoutMailCarrierInput = {
@@ -18071,6 +18255,45 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type UserCreateWithoutMailCarrierInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    isGoogleAuth?: boolean
+    isEmailVerified?: boolean
+    isDeleted?: boolean
+    isSignedIn?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    userTypes?: UserTypeCreateNestedManyWithoutUsersInput
+  }
+
+  export type UserUncheckedCreateWithoutMailCarrierInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    isGoogleAuth?: boolean
+    isEmailVerified?: boolean
+    isDeleted?: boolean
+    isSignedIn?: boolean
+    createdAt?: Date | string
+    createdBy?: string | null
+    updatedAt?: Date | string
+    updatedBy?: string | null
+    userTypes?: UserTypeUncheckedCreateNestedManyWithoutUsersInput
+  }
+
+  export type UserCreateOrConnectWithoutMailCarrierInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutMailCarrierInput, UserUncheckedCreateWithoutMailCarrierInput>
+  }
+
   export type MailUpsertWithWhereUniqueWithoutMailCarrierInput = {
     where: MailWhereUniqueInput
     update: XOR<MailUpdateWithoutMailCarrierInput, MailUncheckedUpdateWithoutMailCarrierInput>
@@ -18085,6 +18308,45 @@ export namespace Prisma {
   export type MailUpdateManyWithWhereWithoutMailCarrierInput = {
     where: MailScalarWhereInput
     data: XOR<MailUpdateManyMutationInput, MailUncheckedUpdateManyWithoutMailInput>
+  }
+
+  export type UserUpsertWithoutMailCarrierInput = {
+    update: XOR<UserUpdateWithoutMailCarrierInput, UserUncheckedUpdateWithoutMailCarrierInput>
+    create: XOR<UserCreateWithoutMailCarrierInput, UserUncheckedCreateWithoutMailCarrierInput>
+  }
+
+  export type UserUpdateWithoutMailCarrierInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isSignedIn?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    userTypes?: UserTypeUpdateManyWithoutUsersNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutMailCarrierInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    isGoogleAuth?: BoolFieldUpdateOperationsInput | boolean
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isSignedIn?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    userTypes?: UserTypeUncheckedUpdateManyWithoutUsersNestedInput
   }
 
   export type UserTypeUpdateWithoutUsersInput = {
@@ -18128,6 +18390,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    mailCarrier?: MailCarrierUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserTypesInput = {
@@ -18144,6 +18407,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    mailCarrierId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyWithoutUsersInput = {
@@ -18160,6 +18424,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    mailCarrierId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CityCreateManyCountryInput = {
@@ -18263,7 +18528,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     updatedBy?: string | null
     LocationTypeId: string
-    serviceId: string
   }
 
   export type LocationUpdateWithoutPostOfficeInChargeInput = {
@@ -18275,7 +18539,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     LocationType?: LocationTypeUpdateOneRequiredWithoutLocationNestedInput
-    services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
+    services?: ServiceUpdateManyWithoutLocationNestedInput
     collectingOptions?: CollectingOptionUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUpdateManyWithoutLocationsNestedInput
     mailStart?: MailUpdateManyWithoutLocationStartNestedInput
@@ -18291,7 +18555,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     LocationTypeId?: StringFieldUpdateOperationsInput | string
-    serviceId?: StringFieldUpdateOperationsInput | string
+    services?: ServiceUncheckedUpdateManyWithoutLocationNestedInput
     collectingOptions?: CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput
     mailStart?: MailUncheckedUpdateManyWithoutLocationStartNestedInput
@@ -18307,7 +18571,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     LocationTypeId?: StringFieldUpdateOperationsInput | string
-    serviceId?: StringFieldUpdateOperationsInput | string
   }
 
   export type MailCreateManyLocationStartInput = {
@@ -18332,6 +18595,39 @@ export namespace Prisma {
     timeInserted?: Date | string
     timeDelivered?: Date | string | null
     mailCarrierId: string
+  }
+
+  export type ServiceUpdateWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ServiceUncheckedUpdateWithoutLocationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ServiceUncheckedUpdateManyWithoutServicesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CollectingOptionUpdateWithoutLocationsInput = {
@@ -18469,7 +18765,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     updatedBy?: string | null
     postOfficeInChargeId: string
-    serviceId: string
   }
 
   export type LocationUpdateWithoutLocationTypeInput = {
@@ -18481,7 +18776,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInCharge?: PostOfficeUpdateOneRequiredWithoutLocationsNestedInput
-    services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
+    services?: ServiceUpdateManyWithoutLocationNestedInput
     collectingOptions?: CollectingOptionUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUpdateManyWithoutLocationsNestedInput
     mailStart?: MailUpdateManyWithoutLocationStartNestedInput
@@ -18497,7 +18792,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
-    serviceId?: StringFieldUpdateOperationsInput | string
+    services?: ServiceUncheckedUpdateManyWithoutLocationNestedInput
     collectingOptions?: CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput
     mailStart?: MailUncheckedUpdateManyWithoutLocationStartNestedInput
@@ -18513,19 +18808,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
-    serviceId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type LocationCreateManyServicesInput = {
-    id?: string
-    name: string
-    description?: string | null
-    createdAt?: Date | string
-    createdBy?: string | null
-    updatedAt?: Date | string
-    updatedBy?: string | null
-    postOfficeInChargeId: string
-    LocationTypeId: string
   }
 
   export type LocationUpdateWithoutServicesInput = {
@@ -18570,7 +18852,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInCharge?: PostOfficeUpdateOneRequiredWithoutLocationsNestedInput
     LocationType?: LocationTypeUpdateOneRequiredWithoutLocationNestedInput
-    services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
+    services?: ServiceUpdateManyWithoutLocationNestedInput
     processingOptions?: ProcessingOptionUpdateManyWithoutLocationsNestedInput
     mailStart?: MailUpdateManyWithoutLocationStartNestedInput
     mailEnd?: MailUpdateManyWithoutLocationEndNestedInput
@@ -18586,7 +18868,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
     LocationTypeId?: StringFieldUpdateOperationsInput | string
-    serviceId?: StringFieldUpdateOperationsInput | string
+    services?: ServiceUncheckedUpdateManyWithoutLocationNestedInput
     processingOptions?: ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput
     mailStart?: MailUncheckedUpdateManyWithoutLocationStartNestedInput
     mailEnd?: MailUncheckedUpdateManyWithoutLocationEndNestedInput
@@ -18602,7 +18884,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInCharge?: PostOfficeUpdateOneRequiredWithoutLocationsNestedInput
     LocationType?: LocationTypeUpdateOneRequiredWithoutLocationNestedInput
-    services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
+    services?: ServiceUpdateManyWithoutLocationNestedInput
     collectingOptions?: CollectingOptionUpdateManyWithoutLocationsNestedInput
     mailStart?: MailUpdateManyWithoutLocationStartNestedInput
     mailEnd?: MailUpdateManyWithoutLocationEndNestedInput
@@ -18618,7 +18900,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     postOfficeInChargeId?: StringFieldUpdateOperationsInput | string
     LocationTypeId?: StringFieldUpdateOperationsInput | string
-    serviceId?: StringFieldUpdateOperationsInput | string
+    services?: ServiceUncheckedUpdateManyWithoutLocationNestedInput
     collectingOptions?: CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput
     mailStart?: MailUncheckedUpdateManyWithoutLocationStartNestedInput
     mailEnd?: MailUncheckedUpdateManyWithoutLocationEndNestedInput

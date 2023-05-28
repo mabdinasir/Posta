@@ -13,6 +13,7 @@ CREATE TABLE "User" (
     "createdBy" TEXT,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "updatedBy" TEXT,
+    "mailCarrierId" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -82,7 +83,6 @@ CREATE TABLE "Location" (
     "updatedBy" TEXT,
     "postOfficeInChargeId" TEXT NOT NULL,
     "LocationTypeId" TEXT NOT NULL,
-    "serviceId" TEXT NOT NULL,
 
     CONSTRAINT "Location_pkey" PRIMARY KEY ("id")
 );
@@ -140,14 +140,14 @@ CREATE TABLE "ProcessingOption" (
 -- CreateTable
 CREATE TABLE "Mail" (
     "id" TEXT NOT NULL,
-    "mail_code" TEXT NOT NULL,
-    "mail_category_id" TEXT NOT NULL,
-    "recipient_address" TEXT NOT NULL,
-    "sender_address" TEXT NOT NULL,
-    "location_start_id" TEXT NOT NULL,
-    "location_end_id" TEXT,
-    "time_inserted" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "time_delivered" TIMESTAMP(3),
+    "mailCode" TEXT NOT NULL,
+    "mailCategoryId" TEXT NOT NULL,
+    "recipientAddress" TEXT NOT NULL,
+    "senderAddress" TEXT NOT NULL,
+    "locationStartId" TEXT NOT NULL,
+    "locationEndId" TEXT,
+    "timeInserted" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "timeDelivered" TIMESTAMP(3),
     "mailCarrierId" TEXT NOT NULL,
 
     CONSTRAINT "Mail_pkey" PRIMARY KEY ("id")
@@ -173,6 +173,12 @@ CREATE TABLE "_UserToUserType" (
 );
 
 -- CreateTable
+CREATE TABLE "_LocationToService" (
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL
+);
+
+-- CreateTable
 CREATE TABLE "_LocationToProcessingOption" (
     "A" TEXT NOT NULL,
     "B" TEXT NOT NULL
@@ -189,6 +195,9 @@ CREATE UNIQUE INDEX "User_id_key" ON "User"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_mailCarrierId_key" ON "User"("mailCarrierId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "UserType_id_key" ON "UserType"("id");
@@ -236,7 +245,7 @@ CREATE UNIQUE INDEX "ProcessingOption_optionName_key" ON "ProcessingOption"("opt
 CREATE UNIQUE INDEX "Mail_id_key" ON "Mail"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Mail_mail_code_key" ON "Mail"("mail_code");
+CREATE UNIQUE INDEX "Mail_mailCode_key" ON "Mail"("mailCode");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "MailCarrier_id_key" ON "MailCarrier"("id");
@@ -251,6 +260,12 @@ CREATE UNIQUE INDEX "_UserToUserType_AB_unique" ON "_UserToUserType"("A", "B");
 CREATE INDEX "_UserToUserType_B_index" ON "_UserToUserType"("B");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "_LocationToService_AB_unique" ON "_LocationToService"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_LocationToService_B_index" ON "_LocationToService"("B");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "_LocationToProcessingOption_AB_unique" ON "_LocationToProcessingOption"("A", "B");
 
 -- CreateIndex
@@ -261,6 +276,9 @@ CREATE UNIQUE INDEX "_CollectingOptionToLocation_AB_unique" ON "_CollectingOptio
 
 -- CreateIndex
 CREATE INDEX "_CollectingOptionToLocation_B_index" ON "_CollectingOptionToLocation"("B");
+
+-- AddForeignKey
+ALTER TABLE "User" ADD CONSTRAINT "User_mailCarrierId_fkey" FOREIGN KEY ("mailCarrierId") REFERENCES "MailCarrier"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "City" ADD CONSTRAINT "City_countryId_fkey" FOREIGN KEY ("countryId") REFERENCES "Country"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -275,13 +293,10 @@ ALTER TABLE "Location" ADD CONSTRAINT "Location_postOfficeInChargeId_fkey" FOREI
 ALTER TABLE "Location" ADD CONSTRAINT "Location_LocationTypeId_fkey" FOREIGN KEY ("LocationTypeId") REFERENCES "LocationType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Location" ADD CONSTRAINT "Location_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "Service"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Mail" ADD CONSTRAINT "Mail_locationStartId_fkey" FOREIGN KEY ("locationStartId") REFERENCES "Location"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Mail" ADD CONSTRAINT "Mail_location_start_id_fkey" FOREIGN KEY ("location_start_id") REFERENCES "Location"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Mail" ADD CONSTRAINT "Mail_location_end_id_fkey" FOREIGN KEY ("location_end_id") REFERENCES "Location"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Mail" ADD CONSTRAINT "Mail_locationEndId_fkey" FOREIGN KEY ("locationEndId") REFERENCES "Location"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Mail" ADD CONSTRAINT "Mail_mailCarrierId_fkey" FOREIGN KEY ("mailCarrierId") REFERENCES "MailCarrier"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -291,6 +306,12 @@ ALTER TABLE "_UserToUserType" ADD CONSTRAINT "_UserToUserType_A_fkey" FOREIGN KE
 
 -- AddForeignKey
 ALTER TABLE "_UserToUserType" ADD CONSTRAINT "_UserToUserType_B_fkey" FOREIGN KEY ("B") REFERENCES "UserType"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_LocationToService" ADD CONSTRAINT "_LocationToService_A_fkey" FOREIGN KEY ("A") REFERENCES "Location"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_LocationToService" ADD CONSTRAINT "_LocationToService_B_fkey" FOREIGN KEY ("B") REFERENCES "Service"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_LocationToProcessingOption" ADD CONSTRAINT "_LocationToProcessingOption_A_fkey" FOREIGN KEY ("A") REFERENCES "Location"("id") ON DELETE CASCADE ON UPDATE CASCADE;
