@@ -3,7 +3,7 @@
  * Client
 **/
 
-import * as runtime from './runtime/data-proxy';
+import * as runtime from './runtime/library';
 type UnwrapPromise<P extends any> = P extends Promise<infer R> ? R : P
 type UnwrapTuple<Tuple extends readonly unknown[]> = {
   [K in keyof Tuple]: K extends `${number}` ? Tuple[K] extends Prisma.PrismaPromise<infer X> ? X : UnwrapPromise<Tuple[K]> : UnwrapPromise<Tuple[K]>
@@ -167,14 +167,14 @@ export type ProcessingOption = {
  */
 export type Mail = {
   id: string
-  mail_code: string
-  mail_category_id: string
-  recipient_address: string
-  sender_address: string
-  location_start_id: string
-  location_end_id: string | null
-  time_inserted: Date
-  time_delivered: Date | null
+  mailCode: string
+  mailCategory_id: string
+  recipientAddress: string
+  senderAddress: string
+  locationStart_id: string
+  locationEnd_id: string | null
+  timeInserted: Date
+  timeDelivered: Date | null
   mailCarrierId: string
 }
 
@@ -11469,40 +11469,40 @@ export namespace Prisma {
 
   export type MailMinAggregateOutputType = {
     id: string | null
-    mail_code: string | null
-    mail_category_id: string | null
-    recipient_address: string | null
-    sender_address: string | null
-    location_start_id: string | null
-    location_end_id: string | null
-    time_inserted: Date | null
-    time_delivered: Date | null
+    mailCode: string | null
+    mailCategory_id: string | null
+    recipientAddress: string | null
+    senderAddress: string | null
+    locationStart_id: string | null
+    locationEnd_id: string | null
+    timeInserted: Date | null
+    timeDelivered: Date | null
     mailCarrierId: string | null
   }
 
   export type MailMaxAggregateOutputType = {
     id: string | null
-    mail_code: string | null
-    mail_category_id: string | null
-    recipient_address: string | null
-    sender_address: string | null
-    location_start_id: string | null
-    location_end_id: string | null
-    time_inserted: Date | null
-    time_delivered: Date | null
+    mailCode: string | null
+    mailCategory_id: string | null
+    recipientAddress: string | null
+    senderAddress: string | null
+    locationStart_id: string | null
+    locationEnd_id: string | null
+    timeInserted: Date | null
+    timeDelivered: Date | null
     mailCarrierId: string | null
   }
 
   export type MailCountAggregateOutputType = {
     id: number
-    mail_code: number
-    mail_category_id: number
-    recipient_address: number
-    sender_address: number
-    location_start_id: number
-    location_end_id: number
-    time_inserted: number
-    time_delivered: number
+    mailCode: number
+    mailCategory_id: number
+    recipientAddress: number
+    senderAddress: number
+    locationStart_id: number
+    locationEnd_id: number
+    timeInserted: number
+    timeDelivered: number
     mailCarrierId: number
     _all: number
   }
@@ -11510,40 +11510,40 @@ export namespace Prisma {
 
   export type MailMinAggregateInputType = {
     id?: true
-    mail_code?: true
-    mail_category_id?: true
-    recipient_address?: true
-    sender_address?: true
-    location_start_id?: true
-    location_end_id?: true
-    time_inserted?: true
-    time_delivered?: true
+    mailCode?: true
+    mailCategory_id?: true
+    recipientAddress?: true
+    senderAddress?: true
+    locationStart_id?: true
+    locationEnd_id?: true
+    timeInserted?: true
+    timeDelivered?: true
     mailCarrierId?: true
   }
 
   export type MailMaxAggregateInputType = {
     id?: true
-    mail_code?: true
-    mail_category_id?: true
-    recipient_address?: true
-    sender_address?: true
-    location_start_id?: true
-    location_end_id?: true
-    time_inserted?: true
-    time_delivered?: true
+    mailCode?: true
+    mailCategory_id?: true
+    recipientAddress?: true
+    senderAddress?: true
+    locationStart_id?: true
+    locationEnd_id?: true
+    timeInserted?: true
+    timeDelivered?: true
     mailCarrierId?: true
   }
 
   export type MailCountAggregateInputType = {
     id?: true
-    mail_code?: true
-    mail_category_id?: true
-    recipient_address?: true
-    sender_address?: true
-    location_start_id?: true
-    location_end_id?: true
-    time_inserted?: true
-    time_delivered?: true
+    mailCode?: true
+    mailCategory_id?: true
+    recipientAddress?: true
+    senderAddress?: true
+    locationStart_id?: true
+    locationEnd_id?: true
+    timeInserted?: true
+    timeDelivered?: true
     mailCarrierId?: true
     _all?: true
   }
@@ -11623,14 +11623,14 @@ export namespace Prisma {
 
   export type MailGroupByOutputType = {
     id: string
-    mail_code: string
-    mail_category_id: string
-    recipient_address: string
-    sender_address: string
-    location_start_id: string
-    location_end_id: string | null
-    time_inserted: Date
-    time_delivered: Date | null
+    mailCode: string
+    mailCategory_id: string
+    recipientAddress: string
+    senderAddress: string
+    locationStart_id: string
+    locationEnd_id: string | null
+    timeInserted: Date
+    timeDelivered: Date | null
     mailCarrierId: string
     _count: MailCountAggregateOutputType | null
     _min: MailMinAggregateOutputType | null
@@ -11653,24 +11653,24 @@ export namespace Prisma {
 
   export type MailSelect = {
     id?: boolean
-    mail_code?: boolean
-    mail_category_id?: boolean
-    recipient_address?: boolean
-    sender_address?: boolean
-    location_start_id?: boolean
-    location_end_id?: boolean
-    time_inserted?: boolean
-    time_delivered?: boolean
+    mailCode?: boolean
+    mailCategory_id?: boolean
+    recipientAddress?: boolean
+    senderAddress?: boolean
+    locationStart_id?: boolean
+    locationEnd_id?: boolean
+    timeInserted?: boolean
+    timeDelivered?: boolean
     mailCarrierId?: boolean
-    location_start?: boolean | LocationArgs
-    location_end?: boolean | LocationArgs
+    locationStart?: boolean | LocationArgs
+    locationEnd?: boolean | LocationArgs
     mailCarrier?: boolean | MailCarrierArgs
   }
 
 
   export type MailInclude = {
-    location_start?: boolean | LocationArgs
-    location_end?: boolean | LocationArgs
+    locationStart?: boolean | LocationArgs
+    locationEnd?: boolean | LocationArgs
     mailCarrier?: boolean | MailCarrierArgs
   }
 
@@ -11681,15 +11681,15 @@ export namespace Prisma {
     S extends { include: any } & (MailArgs | MailFindManyArgs)
     ? Mail  & {
     [P in TruthyKeys<S['include']>]:
-        P extends 'location_start' ? LocationGetPayload<S['include'][P]> :
-        P extends 'location_end' ? LocationGetPayload<S['include'][P]> | null :
+        P extends 'locationStart' ? LocationGetPayload<S['include'][P]> :
+        P extends 'locationEnd' ? LocationGetPayload<S['include'][P]> | null :
         P extends 'mailCarrier' ? MailCarrierGetPayload<S['include'][P]> :  never
   } 
     : S extends { select: any } & (MailArgs | MailFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
-        P extends 'location_start' ? LocationGetPayload<S['select'][P]> :
-        P extends 'location_end' ? LocationGetPayload<S['select'][P]> | null :
+        P extends 'locationStart' ? LocationGetPayload<S['select'][P]> :
+        P extends 'locationEnd' ? LocationGetPayload<S['select'][P]> | null :
         P extends 'mailCarrier' ? MailCarrierGetPayload<S['select'][P]> :  P extends keyof Mail ? Mail[P] : never
   } 
       : Mail
@@ -12062,9 +12062,9 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
     constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
 
-    location_start<T extends LocationArgs= {}>(args?: Subset<T, LocationArgs>): Prisma__LocationClient<LocationGetPayload<T> | Null>;
+    locationStart<T extends LocationArgs= {}>(args?: Subset<T, LocationArgs>): Prisma__LocationClient<LocationGetPayload<T> | Null>;
 
-    location_end<T extends LocationArgs= {}>(args?: Subset<T, LocationArgs>): Prisma__LocationClient<LocationGetPayload<T> | Null>;
+    locationEnd<T extends LocationArgs= {}>(args?: Subset<T, LocationArgs>): Prisma__LocationClient<LocationGetPayload<T> | Null>;
 
     mailCarrier<T extends MailCarrierArgs= {}>(args?: Subset<T, MailCarrierArgs>): Prisma__MailCarrierClient<MailCarrierGetPayload<T> | Null>;
 
@@ -13498,14 +13498,14 @@ export namespace Prisma {
 
   export const MailScalarFieldEnum: {
     id: 'id',
-    mail_code: 'mail_code',
-    mail_category_id: 'mail_category_id',
-    recipient_address: 'recipient_address',
-    sender_address: 'sender_address',
-    location_start_id: 'location_start_id',
-    location_end_id: 'location_end_id',
-    time_inserted: 'time_inserted',
-    time_delivered: 'time_delivered',
+    mailCode: 'mailCode',
+    mailCategory_id: 'mailCategory_id',
+    recipientAddress: 'recipientAddress',
+    senderAddress: 'senderAddress',
+    locationStart_id: 'locationStart_id',
+    locationEnd_id: 'locationEnd_id',
+    timeInserted: 'timeInserted',
+    timeDelivered: 'timeDelivered',
     mailCarrierId: 'mailCarrierId'
   };
 
@@ -14230,51 +14230,51 @@ export namespace Prisma {
     OR?: Enumerable<MailWhereInput>
     NOT?: Enumerable<MailWhereInput>
     id?: StringFilter | string
-    mail_code?: StringFilter | string
-    mail_category_id?: StringFilter | string
-    recipient_address?: StringFilter | string
-    sender_address?: StringFilter | string
-    location_start_id?: StringFilter | string
-    location_end_id?: StringNullableFilter | string | null
-    time_inserted?: DateTimeFilter | Date | string
-    time_delivered?: DateTimeNullableFilter | Date | string | null
+    mailCode?: StringFilter | string
+    mailCategory_id?: StringFilter | string
+    recipientAddress?: StringFilter | string
+    senderAddress?: StringFilter | string
+    locationStart_id?: StringFilter | string
+    locationEnd_id?: StringNullableFilter | string | null
+    timeInserted?: DateTimeFilter | Date | string
+    timeDelivered?: DateTimeNullableFilter | Date | string | null
     mailCarrierId?: StringFilter | string
-    location_start?: XOR<LocationRelationFilter, LocationWhereInput>
-    location_end?: XOR<LocationRelationFilter, LocationWhereInput> | null
+    locationStart?: XOR<LocationRelationFilter, LocationWhereInput>
+    locationEnd?: XOR<LocationRelationFilter, LocationWhereInput> | null
     mailCarrier?: XOR<MailCarrierRelationFilter, MailCarrierWhereInput>
   }
 
   export type MailOrderByWithRelationInput = {
     id?: SortOrder
-    mail_code?: SortOrder
-    mail_category_id?: SortOrder
-    recipient_address?: SortOrder
-    sender_address?: SortOrder
-    location_start_id?: SortOrder
-    location_end_id?: SortOrder
-    time_inserted?: SortOrder
-    time_delivered?: SortOrder
+    mailCode?: SortOrder
+    mailCategory_id?: SortOrder
+    recipientAddress?: SortOrder
+    senderAddress?: SortOrder
+    locationStart_id?: SortOrder
+    locationEnd_id?: SortOrder
+    timeInserted?: SortOrder
+    timeDelivered?: SortOrder
     mailCarrierId?: SortOrder
-    location_start?: LocationOrderByWithRelationInput
-    location_end?: LocationOrderByWithRelationInput
+    locationStart?: LocationOrderByWithRelationInput
+    locationEnd?: LocationOrderByWithRelationInput
     mailCarrier?: MailCarrierOrderByWithRelationInput
   }
 
   export type MailWhereUniqueInput = {
     id?: string
-    mail_code?: string
+    mailCode?: string
   }
 
   export type MailOrderByWithAggregationInput = {
     id?: SortOrder
-    mail_code?: SortOrder
-    mail_category_id?: SortOrder
-    recipient_address?: SortOrder
-    sender_address?: SortOrder
-    location_start_id?: SortOrder
-    location_end_id?: SortOrder
-    time_inserted?: SortOrder
-    time_delivered?: SortOrder
+    mailCode?: SortOrder
+    mailCategory_id?: SortOrder
+    recipientAddress?: SortOrder
+    senderAddress?: SortOrder
+    locationStart_id?: SortOrder
+    locationEnd_id?: SortOrder
+    timeInserted?: SortOrder
+    timeDelivered?: SortOrder
     mailCarrierId?: SortOrder
     _count?: MailCountOrderByAggregateInput
     _max?: MailMaxOrderByAggregateInput
@@ -14286,14 +14286,14 @@ export namespace Prisma {
     OR?: Enumerable<MailScalarWhereWithAggregatesInput>
     NOT?: Enumerable<MailScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
-    mail_code?: StringWithAggregatesFilter | string
-    mail_category_id?: StringWithAggregatesFilter | string
-    recipient_address?: StringWithAggregatesFilter | string
-    sender_address?: StringWithAggregatesFilter | string
-    location_start_id?: StringWithAggregatesFilter | string
-    location_end_id?: StringNullableWithAggregatesFilter | string | null
-    time_inserted?: DateTimeWithAggregatesFilter | Date | string
-    time_delivered?: DateTimeNullableWithAggregatesFilter | Date | string | null
+    mailCode?: StringWithAggregatesFilter | string
+    mailCategory_id?: StringWithAggregatesFilter | string
+    recipientAddress?: StringWithAggregatesFilter | string
+    senderAddress?: StringWithAggregatesFilter | string
+    locationStart_id?: StringWithAggregatesFilter | string
+    locationEnd_id?: StringNullableWithAggregatesFilter | string | null
+    timeInserted?: DateTimeWithAggregatesFilter | Date | string
+    timeDelivered?: DateTimeNullableWithAggregatesFilter | Date | string | null
     mailCarrierId?: StringWithAggregatesFilter | string
   }
 
@@ -14790,8 +14790,8 @@ export namespace Prisma {
     services: ServiceCreateNestedOneWithoutLocationInput
     collectingOptions?: CollectingOptionCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionCreateNestedManyWithoutLocationsInput
-    mailStart?: MailCreateNestedManyWithoutLocation_startInput
-    mailEnd?: MailCreateNestedManyWithoutLocation_endInput
+    mailStart?: MailCreateNestedManyWithoutLocationStartInput
+    mailEnd?: MailCreateNestedManyWithoutLocationEndInput
   }
 
   export type LocationUncheckedCreateInput = {
@@ -14807,8 +14807,8 @@ export namespace Prisma {
     serviceId: string
     collectingOptions?: CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput
-    mailStart?: MailUncheckedCreateNestedManyWithoutLocation_startInput
-    mailEnd?: MailUncheckedCreateNestedManyWithoutLocation_endInput
+    mailStart?: MailUncheckedCreateNestedManyWithoutLocationStartInput
+    mailEnd?: MailUncheckedCreateNestedManyWithoutLocationEndInput
   }
 
   export type LocationUpdateInput = {
@@ -14824,8 +14824,8 @@ export namespace Prisma {
     services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
     collectingOptions?: CollectingOptionUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUpdateManyWithoutLocationsNestedInput
-    mailStart?: MailUpdateManyWithoutLocation_startNestedInput
-    mailEnd?: MailUpdateManyWithoutLocation_endNestedInput
+    mailStart?: MailUpdateManyWithoutLocationStartNestedInput
+    mailEnd?: MailUpdateManyWithoutLocationEndNestedInput
   }
 
   export type LocationUncheckedUpdateInput = {
@@ -14841,8 +14841,8 @@ export namespace Prisma {
     serviceId?: StringFieldUpdateOperationsInput | string
     collectingOptions?: CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput
-    mailStart?: MailUncheckedUpdateManyWithoutLocation_startNestedInput
-    mailEnd?: MailUncheckedUpdateManyWithoutLocation_endNestedInput
+    mailStart?: MailUncheckedUpdateManyWithoutLocationStartNestedInput
+    mailEnd?: MailUncheckedUpdateManyWithoutLocationEndNestedInput
   }
 
   export type LocationCreateManyInput = {
@@ -15165,89 +15165,89 @@ export namespace Prisma {
 
   export type MailCreateInput = {
     id?: string
-    mail_code: string
-    mail_category_id: string
-    recipient_address: string
-    sender_address: string
-    time_inserted?: Date | string
-    time_delivered?: Date | string | null
-    location_start: LocationCreateNestedOneWithoutMailStartInput
-    location_end?: LocationCreateNestedOneWithoutMailEndInput
+    mailCode: string
+    mailCategory_id: string
+    recipientAddress: string
+    senderAddress: string
+    timeInserted?: Date | string
+    timeDelivered?: Date | string | null
+    locationStart: LocationCreateNestedOneWithoutMailStartInput
+    locationEnd?: LocationCreateNestedOneWithoutMailEndInput
     mailCarrier: MailCarrierCreateNestedOneWithoutMailInput
   }
 
   export type MailUncheckedCreateInput = {
     id?: string
-    mail_code: string
-    mail_category_id: string
-    recipient_address: string
-    sender_address: string
-    location_start_id: string
-    location_end_id?: string | null
-    time_inserted?: Date | string
-    time_delivered?: Date | string | null
+    mailCode: string
+    mailCategory_id: string
+    recipientAddress: string
+    senderAddress: string
+    locationStart_id: string
+    locationEnd_id?: string | null
+    timeInserted?: Date | string
+    timeDelivered?: Date | string | null
     mailCarrierId: string
   }
 
   export type MailUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    mail_code?: StringFieldUpdateOperationsInput | string
-    mail_category_id?: StringFieldUpdateOperationsInput | string
-    recipient_address?: StringFieldUpdateOperationsInput | string
-    sender_address?: StringFieldUpdateOperationsInput | string
-    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
-    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    location_start?: LocationUpdateOneRequiredWithoutMailStartNestedInput
-    location_end?: LocationUpdateOneWithoutMailEndNestedInput
+    mailCode?: StringFieldUpdateOperationsInput | string
+    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    recipientAddress?: StringFieldUpdateOperationsInput | string
+    senderAddress?: StringFieldUpdateOperationsInput | string
+    timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    locationStart?: LocationUpdateOneRequiredWithoutMailStartNestedInput
+    locationEnd?: LocationUpdateOneWithoutMailEndNestedInput
     mailCarrier?: MailCarrierUpdateOneRequiredWithoutMailNestedInput
   }
 
   export type MailUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    mail_code?: StringFieldUpdateOperationsInput | string
-    mail_category_id?: StringFieldUpdateOperationsInput | string
-    recipient_address?: StringFieldUpdateOperationsInput | string
-    sender_address?: StringFieldUpdateOperationsInput | string
-    location_start_id?: StringFieldUpdateOperationsInput | string
-    location_end_id?: NullableStringFieldUpdateOperationsInput | string | null
-    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
-    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mailCode?: StringFieldUpdateOperationsInput | string
+    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    recipientAddress?: StringFieldUpdateOperationsInput | string
+    senderAddress?: StringFieldUpdateOperationsInput | string
+    locationStart_id?: StringFieldUpdateOperationsInput | string
+    locationEnd_id?: NullableStringFieldUpdateOperationsInput | string | null
+    timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     mailCarrierId?: StringFieldUpdateOperationsInput | string
   }
 
   export type MailCreateManyInput = {
     id?: string
-    mail_code: string
-    mail_category_id: string
-    recipient_address: string
-    sender_address: string
-    location_start_id: string
-    location_end_id?: string | null
-    time_inserted?: Date | string
-    time_delivered?: Date | string | null
+    mailCode: string
+    mailCategory_id: string
+    recipientAddress: string
+    senderAddress: string
+    locationStart_id: string
+    locationEnd_id?: string | null
+    timeInserted?: Date | string
+    timeDelivered?: Date | string | null
     mailCarrierId: string
   }
 
   export type MailUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    mail_code?: StringFieldUpdateOperationsInput | string
-    mail_category_id?: StringFieldUpdateOperationsInput | string
-    recipient_address?: StringFieldUpdateOperationsInput | string
-    sender_address?: StringFieldUpdateOperationsInput | string
-    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
-    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mailCode?: StringFieldUpdateOperationsInput | string
+    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    recipientAddress?: StringFieldUpdateOperationsInput | string
+    senderAddress?: StringFieldUpdateOperationsInput | string
+    timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type MailUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    mail_code?: StringFieldUpdateOperationsInput | string
-    mail_category_id?: StringFieldUpdateOperationsInput | string
-    recipient_address?: StringFieldUpdateOperationsInput | string
-    sender_address?: StringFieldUpdateOperationsInput | string
-    location_start_id?: StringFieldUpdateOperationsInput | string
-    location_end_id?: NullableStringFieldUpdateOperationsInput | string | null
-    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
-    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mailCode?: StringFieldUpdateOperationsInput | string
+    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    recipientAddress?: StringFieldUpdateOperationsInput | string
+    senderAddress?: StringFieldUpdateOperationsInput | string
+    locationStart_id?: StringFieldUpdateOperationsInput | string
+    locationEnd_id?: NullableStringFieldUpdateOperationsInput | string | null
+    timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     mailCarrierId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -15884,40 +15884,40 @@ export namespace Prisma {
 
   export type MailCountOrderByAggregateInput = {
     id?: SortOrder
-    mail_code?: SortOrder
-    mail_category_id?: SortOrder
-    recipient_address?: SortOrder
-    sender_address?: SortOrder
-    location_start_id?: SortOrder
-    location_end_id?: SortOrder
-    time_inserted?: SortOrder
-    time_delivered?: SortOrder
+    mailCode?: SortOrder
+    mailCategory_id?: SortOrder
+    recipientAddress?: SortOrder
+    senderAddress?: SortOrder
+    locationStart_id?: SortOrder
+    locationEnd_id?: SortOrder
+    timeInserted?: SortOrder
+    timeDelivered?: SortOrder
     mailCarrierId?: SortOrder
   }
 
   export type MailMaxOrderByAggregateInput = {
     id?: SortOrder
-    mail_code?: SortOrder
-    mail_category_id?: SortOrder
-    recipient_address?: SortOrder
-    sender_address?: SortOrder
-    location_start_id?: SortOrder
-    location_end_id?: SortOrder
-    time_inserted?: SortOrder
-    time_delivered?: SortOrder
+    mailCode?: SortOrder
+    mailCategory_id?: SortOrder
+    recipientAddress?: SortOrder
+    senderAddress?: SortOrder
+    locationStart_id?: SortOrder
+    locationEnd_id?: SortOrder
+    timeInserted?: SortOrder
+    timeDelivered?: SortOrder
     mailCarrierId?: SortOrder
   }
 
   export type MailMinOrderByAggregateInput = {
     id?: SortOrder
-    mail_code?: SortOrder
-    mail_category_id?: SortOrder
-    recipient_address?: SortOrder
-    sender_address?: SortOrder
-    location_start_id?: SortOrder
-    location_end_id?: SortOrder
-    time_inserted?: SortOrder
-    time_delivered?: SortOrder
+    mailCode?: SortOrder
+    mailCategory_id?: SortOrder
+    recipientAddress?: SortOrder
+    senderAddress?: SortOrder
+    locationStart_id?: SortOrder
+    locationEnd_id?: SortOrder
+    timeInserted?: SortOrder
+    timeDelivered?: SortOrder
     mailCarrierId?: SortOrder
   }
 
@@ -16241,17 +16241,17 @@ export namespace Prisma {
     connect?: Enumerable<ProcessingOptionWhereUniqueInput>
   }
 
-  export type MailCreateNestedManyWithoutLocation_startInput = {
-    create?: XOR<Enumerable<MailCreateWithoutLocation_startInput>, Enumerable<MailUncheckedCreateWithoutLocation_startInput>>
-    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocation_startInput>
-    createMany?: MailCreateManyLocation_startInputEnvelope
+  export type MailCreateNestedManyWithoutLocationStartInput = {
+    create?: XOR<Enumerable<MailCreateWithoutLocationStartInput>, Enumerable<MailUncheckedCreateWithoutLocationStartInput>>
+    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocationStartInput>
+    createMany?: MailCreateManyLocationStartInputEnvelope
     connect?: Enumerable<MailWhereUniqueInput>
   }
 
-  export type MailCreateNestedManyWithoutLocation_endInput = {
-    create?: XOR<Enumerable<MailCreateWithoutLocation_endInput>, Enumerable<MailUncheckedCreateWithoutLocation_endInput>>
-    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocation_endInput>
-    createMany?: MailCreateManyLocation_endInputEnvelope
+  export type MailCreateNestedManyWithoutLocationEndInput = {
+    create?: XOR<Enumerable<MailCreateWithoutLocationEndInput>, Enumerable<MailUncheckedCreateWithoutLocationEndInput>>
+    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocationEndInput>
+    createMany?: MailCreateManyLocationEndInputEnvelope
     connect?: Enumerable<MailWhereUniqueInput>
   }
 
@@ -16267,17 +16267,17 @@ export namespace Prisma {
     connect?: Enumerable<ProcessingOptionWhereUniqueInput>
   }
 
-  export type MailUncheckedCreateNestedManyWithoutLocation_startInput = {
-    create?: XOR<Enumerable<MailCreateWithoutLocation_startInput>, Enumerable<MailUncheckedCreateWithoutLocation_startInput>>
-    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocation_startInput>
-    createMany?: MailCreateManyLocation_startInputEnvelope
+  export type MailUncheckedCreateNestedManyWithoutLocationStartInput = {
+    create?: XOR<Enumerable<MailCreateWithoutLocationStartInput>, Enumerable<MailUncheckedCreateWithoutLocationStartInput>>
+    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocationStartInput>
+    createMany?: MailCreateManyLocationStartInputEnvelope
     connect?: Enumerable<MailWhereUniqueInput>
   }
 
-  export type MailUncheckedCreateNestedManyWithoutLocation_endInput = {
-    create?: XOR<Enumerable<MailCreateWithoutLocation_endInput>, Enumerable<MailUncheckedCreateWithoutLocation_endInput>>
-    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocation_endInput>
-    createMany?: MailCreateManyLocation_endInputEnvelope
+  export type MailUncheckedCreateNestedManyWithoutLocationEndInput = {
+    create?: XOR<Enumerable<MailCreateWithoutLocationEndInput>, Enumerable<MailUncheckedCreateWithoutLocationEndInput>>
+    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocationEndInput>
+    createMany?: MailCreateManyLocationEndInputEnvelope
     connect?: Enumerable<MailWhereUniqueInput>
   }
 
@@ -16331,31 +16331,31 @@ export namespace Prisma {
     deleteMany?: Enumerable<ProcessingOptionScalarWhereInput>
   }
 
-  export type MailUpdateManyWithoutLocation_startNestedInput = {
-    create?: XOR<Enumerable<MailCreateWithoutLocation_startInput>, Enumerable<MailUncheckedCreateWithoutLocation_startInput>>
-    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocation_startInput>
-    upsert?: Enumerable<MailUpsertWithWhereUniqueWithoutLocation_startInput>
-    createMany?: MailCreateManyLocation_startInputEnvelope
+  export type MailUpdateManyWithoutLocationStartNestedInput = {
+    create?: XOR<Enumerable<MailCreateWithoutLocationStartInput>, Enumerable<MailUncheckedCreateWithoutLocationStartInput>>
+    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocationStartInput>
+    upsert?: Enumerable<MailUpsertWithWhereUniqueWithoutLocationStartInput>
+    createMany?: MailCreateManyLocationStartInputEnvelope
     set?: Enumerable<MailWhereUniqueInput>
     disconnect?: Enumerable<MailWhereUniqueInput>
     delete?: Enumerable<MailWhereUniqueInput>
     connect?: Enumerable<MailWhereUniqueInput>
-    update?: Enumerable<MailUpdateWithWhereUniqueWithoutLocation_startInput>
-    updateMany?: Enumerable<MailUpdateManyWithWhereWithoutLocation_startInput>
+    update?: Enumerable<MailUpdateWithWhereUniqueWithoutLocationStartInput>
+    updateMany?: Enumerable<MailUpdateManyWithWhereWithoutLocationStartInput>
     deleteMany?: Enumerable<MailScalarWhereInput>
   }
 
-  export type MailUpdateManyWithoutLocation_endNestedInput = {
-    create?: XOR<Enumerable<MailCreateWithoutLocation_endInput>, Enumerable<MailUncheckedCreateWithoutLocation_endInput>>
-    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocation_endInput>
-    upsert?: Enumerable<MailUpsertWithWhereUniqueWithoutLocation_endInput>
-    createMany?: MailCreateManyLocation_endInputEnvelope
+  export type MailUpdateManyWithoutLocationEndNestedInput = {
+    create?: XOR<Enumerable<MailCreateWithoutLocationEndInput>, Enumerable<MailUncheckedCreateWithoutLocationEndInput>>
+    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocationEndInput>
+    upsert?: Enumerable<MailUpsertWithWhereUniqueWithoutLocationEndInput>
+    createMany?: MailCreateManyLocationEndInputEnvelope
     set?: Enumerable<MailWhereUniqueInput>
     disconnect?: Enumerable<MailWhereUniqueInput>
     delete?: Enumerable<MailWhereUniqueInput>
     connect?: Enumerable<MailWhereUniqueInput>
-    update?: Enumerable<MailUpdateWithWhereUniqueWithoutLocation_endInput>
-    updateMany?: Enumerable<MailUpdateManyWithWhereWithoutLocation_endInput>
+    update?: Enumerable<MailUpdateWithWhereUniqueWithoutLocationEndInput>
+    updateMany?: Enumerable<MailUpdateManyWithWhereWithoutLocationEndInput>
     deleteMany?: Enumerable<MailScalarWhereInput>
   }
 
@@ -16385,31 +16385,31 @@ export namespace Prisma {
     deleteMany?: Enumerable<ProcessingOptionScalarWhereInput>
   }
 
-  export type MailUncheckedUpdateManyWithoutLocation_startNestedInput = {
-    create?: XOR<Enumerable<MailCreateWithoutLocation_startInput>, Enumerable<MailUncheckedCreateWithoutLocation_startInput>>
-    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocation_startInput>
-    upsert?: Enumerable<MailUpsertWithWhereUniqueWithoutLocation_startInput>
-    createMany?: MailCreateManyLocation_startInputEnvelope
+  export type MailUncheckedUpdateManyWithoutLocationStartNestedInput = {
+    create?: XOR<Enumerable<MailCreateWithoutLocationStartInput>, Enumerable<MailUncheckedCreateWithoutLocationStartInput>>
+    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocationStartInput>
+    upsert?: Enumerable<MailUpsertWithWhereUniqueWithoutLocationStartInput>
+    createMany?: MailCreateManyLocationStartInputEnvelope
     set?: Enumerable<MailWhereUniqueInput>
     disconnect?: Enumerable<MailWhereUniqueInput>
     delete?: Enumerable<MailWhereUniqueInput>
     connect?: Enumerable<MailWhereUniqueInput>
-    update?: Enumerable<MailUpdateWithWhereUniqueWithoutLocation_startInput>
-    updateMany?: Enumerable<MailUpdateManyWithWhereWithoutLocation_startInput>
+    update?: Enumerable<MailUpdateWithWhereUniqueWithoutLocationStartInput>
+    updateMany?: Enumerable<MailUpdateManyWithWhereWithoutLocationStartInput>
     deleteMany?: Enumerable<MailScalarWhereInput>
   }
 
-  export type MailUncheckedUpdateManyWithoutLocation_endNestedInput = {
-    create?: XOR<Enumerable<MailCreateWithoutLocation_endInput>, Enumerable<MailUncheckedCreateWithoutLocation_endInput>>
-    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocation_endInput>
-    upsert?: Enumerable<MailUpsertWithWhereUniqueWithoutLocation_endInput>
-    createMany?: MailCreateManyLocation_endInputEnvelope
+  export type MailUncheckedUpdateManyWithoutLocationEndNestedInput = {
+    create?: XOR<Enumerable<MailCreateWithoutLocationEndInput>, Enumerable<MailUncheckedCreateWithoutLocationEndInput>>
+    connectOrCreate?: Enumerable<MailCreateOrConnectWithoutLocationEndInput>
+    upsert?: Enumerable<MailUpsertWithWhereUniqueWithoutLocationEndInput>
+    createMany?: MailCreateManyLocationEndInputEnvelope
     set?: Enumerable<MailWhereUniqueInput>
     disconnect?: Enumerable<MailWhereUniqueInput>
     delete?: Enumerable<MailWhereUniqueInput>
     connect?: Enumerable<MailWhereUniqueInput>
-    update?: Enumerable<MailUpdateWithWhereUniqueWithoutLocation_endInput>
-    updateMany?: Enumerable<MailUpdateManyWithWhereWithoutLocation_endInput>
+    update?: Enumerable<MailUpdateWithWhereUniqueWithoutLocationEndInput>
+    updateMany?: Enumerable<MailUpdateManyWithWhereWithoutLocationEndInput>
     deleteMany?: Enumerable<MailScalarWhereInput>
   }
 
@@ -17146,8 +17146,8 @@ export namespace Prisma {
     services: ServiceCreateNestedOneWithoutLocationInput
     collectingOptions?: CollectingOptionCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionCreateNestedManyWithoutLocationsInput
-    mailStart?: MailCreateNestedManyWithoutLocation_startInput
-    mailEnd?: MailCreateNestedManyWithoutLocation_endInput
+    mailStart?: MailCreateNestedManyWithoutLocationStartInput
+    mailEnd?: MailCreateNestedManyWithoutLocationEndInput
   }
 
   export type LocationUncheckedCreateWithoutPostOfficeInChargeInput = {
@@ -17162,8 +17162,8 @@ export namespace Prisma {
     serviceId: string
     collectingOptions?: CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput
-    mailStart?: MailUncheckedCreateNestedManyWithoutLocation_startInput
-    mailEnd?: MailUncheckedCreateNestedManyWithoutLocation_endInput
+    mailStart?: MailUncheckedCreateNestedManyWithoutLocationStartInput
+    mailEnd?: MailUncheckedCreateNestedManyWithoutLocationEndInput
   }
 
   export type LocationCreateOrConnectWithoutPostOfficeInChargeInput = {
@@ -17362,71 +17362,71 @@ export namespace Prisma {
     create: XOR<ProcessingOptionCreateWithoutLocationsInput, ProcessingOptionUncheckedCreateWithoutLocationsInput>
   }
 
-  export type MailCreateWithoutLocation_startInput = {
+  export type MailCreateWithoutLocationStartInput = {
     id?: string
-    mail_code: string
-    mail_category_id: string
-    recipient_address: string
-    sender_address: string
-    time_inserted?: Date | string
-    time_delivered?: Date | string | null
-    location_end?: LocationCreateNestedOneWithoutMailEndInput
+    mailCode: string
+    mailCategory_id: string
+    recipientAddress: string
+    senderAddress: string
+    timeInserted?: Date | string
+    timeDelivered?: Date | string | null
+    locationEnd?: LocationCreateNestedOneWithoutMailEndInput
     mailCarrier: MailCarrierCreateNestedOneWithoutMailInput
   }
 
-  export type MailUncheckedCreateWithoutLocation_startInput = {
+  export type MailUncheckedCreateWithoutLocationStartInput = {
     id?: string
-    mail_code: string
-    mail_category_id: string
-    recipient_address: string
-    sender_address: string
-    location_end_id?: string | null
-    time_inserted?: Date | string
-    time_delivered?: Date | string | null
+    mailCode: string
+    mailCategory_id: string
+    recipientAddress: string
+    senderAddress: string
+    locationEnd_id?: string | null
+    timeInserted?: Date | string
+    timeDelivered?: Date | string | null
     mailCarrierId: string
   }
 
-  export type MailCreateOrConnectWithoutLocation_startInput = {
+  export type MailCreateOrConnectWithoutLocationStartInput = {
     where: MailWhereUniqueInput
-    create: XOR<MailCreateWithoutLocation_startInput, MailUncheckedCreateWithoutLocation_startInput>
+    create: XOR<MailCreateWithoutLocationStartInput, MailUncheckedCreateWithoutLocationStartInput>
   }
 
-  export type MailCreateManyLocation_startInputEnvelope = {
-    data: Enumerable<MailCreateManyLocation_startInput>
+  export type MailCreateManyLocationStartInputEnvelope = {
+    data: Enumerable<MailCreateManyLocationStartInput>
     skipDuplicates?: boolean
   }
 
-  export type MailCreateWithoutLocation_endInput = {
+  export type MailCreateWithoutLocationEndInput = {
     id?: string
-    mail_code: string
-    mail_category_id: string
-    recipient_address: string
-    sender_address: string
-    time_inserted?: Date | string
-    time_delivered?: Date | string | null
-    location_start: LocationCreateNestedOneWithoutMailStartInput
+    mailCode: string
+    mailCategory_id: string
+    recipientAddress: string
+    senderAddress: string
+    timeInserted?: Date | string
+    timeDelivered?: Date | string | null
+    locationStart: LocationCreateNestedOneWithoutMailStartInput
     mailCarrier: MailCarrierCreateNestedOneWithoutMailInput
   }
 
-  export type MailUncheckedCreateWithoutLocation_endInput = {
+  export type MailUncheckedCreateWithoutLocationEndInput = {
     id?: string
-    mail_code: string
-    mail_category_id: string
-    recipient_address: string
-    sender_address: string
-    location_start_id: string
-    time_inserted?: Date | string
-    time_delivered?: Date | string | null
+    mailCode: string
+    mailCategory_id: string
+    recipientAddress: string
+    senderAddress: string
+    locationStart_id: string
+    timeInserted?: Date | string
+    timeDelivered?: Date | string | null
     mailCarrierId: string
   }
 
-  export type MailCreateOrConnectWithoutLocation_endInput = {
+  export type MailCreateOrConnectWithoutLocationEndInput = {
     where: MailWhereUniqueInput
-    create: XOR<MailCreateWithoutLocation_endInput, MailUncheckedCreateWithoutLocation_endInput>
+    create: XOR<MailCreateWithoutLocationEndInput, MailUncheckedCreateWithoutLocationEndInput>
   }
 
-  export type MailCreateManyLocation_endInputEnvelope = {
-    data: Enumerable<MailCreateManyLocation_endInput>
+  export type MailCreateManyLocationEndInputEnvelope = {
+    data: Enumerable<MailCreateManyLocationEndInput>
     skipDuplicates?: boolean
   }
 
@@ -17569,18 +17569,18 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter | string | null
   }
 
-  export type MailUpsertWithWhereUniqueWithoutLocation_startInput = {
+  export type MailUpsertWithWhereUniqueWithoutLocationStartInput = {
     where: MailWhereUniqueInput
-    update: XOR<MailUpdateWithoutLocation_startInput, MailUncheckedUpdateWithoutLocation_startInput>
-    create: XOR<MailCreateWithoutLocation_startInput, MailUncheckedCreateWithoutLocation_startInput>
+    update: XOR<MailUpdateWithoutLocationStartInput, MailUncheckedUpdateWithoutLocationStartInput>
+    create: XOR<MailCreateWithoutLocationStartInput, MailUncheckedCreateWithoutLocationStartInput>
   }
 
-  export type MailUpdateWithWhereUniqueWithoutLocation_startInput = {
+  export type MailUpdateWithWhereUniqueWithoutLocationStartInput = {
     where: MailWhereUniqueInput
-    data: XOR<MailUpdateWithoutLocation_startInput, MailUncheckedUpdateWithoutLocation_startInput>
+    data: XOR<MailUpdateWithoutLocationStartInput, MailUncheckedUpdateWithoutLocationStartInput>
   }
 
-  export type MailUpdateManyWithWhereWithoutLocation_startInput = {
+  export type MailUpdateManyWithWhereWithoutLocationStartInput = {
     where: MailScalarWhereInput
     data: XOR<MailUpdateManyMutationInput, MailUncheckedUpdateManyWithoutMailStartInput>
   }
@@ -17590,29 +17590,29 @@ export namespace Prisma {
     OR?: Enumerable<MailScalarWhereInput>
     NOT?: Enumerable<MailScalarWhereInput>
     id?: StringFilter | string
-    mail_code?: StringFilter | string
-    mail_category_id?: StringFilter | string
-    recipient_address?: StringFilter | string
-    sender_address?: StringFilter | string
-    location_start_id?: StringFilter | string
-    location_end_id?: StringNullableFilter | string | null
-    time_inserted?: DateTimeFilter | Date | string
-    time_delivered?: DateTimeNullableFilter | Date | string | null
+    mailCode?: StringFilter | string
+    mailCategory_id?: StringFilter | string
+    recipientAddress?: StringFilter | string
+    senderAddress?: StringFilter | string
+    locationStart_id?: StringFilter | string
+    locationEnd_id?: StringNullableFilter | string | null
+    timeInserted?: DateTimeFilter | Date | string
+    timeDelivered?: DateTimeNullableFilter | Date | string | null
     mailCarrierId?: StringFilter | string
   }
 
-  export type MailUpsertWithWhereUniqueWithoutLocation_endInput = {
+  export type MailUpsertWithWhereUniqueWithoutLocationEndInput = {
     where: MailWhereUniqueInput
-    update: XOR<MailUpdateWithoutLocation_endInput, MailUncheckedUpdateWithoutLocation_endInput>
-    create: XOR<MailCreateWithoutLocation_endInput, MailUncheckedCreateWithoutLocation_endInput>
+    update: XOR<MailUpdateWithoutLocationEndInput, MailUncheckedUpdateWithoutLocationEndInput>
+    create: XOR<MailCreateWithoutLocationEndInput, MailUncheckedCreateWithoutLocationEndInput>
   }
 
-  export type MailUpdateWithWhereUniqueWithoutLocation_endInput = {
+  export type MailUpdateWithWhereUniqueWithoutLocationEndInput = {
     where: MailWhereUniqueInput
-    data: XOR<MailUpdateWithoutLocation_endInput, MailUncheckedUpdateWithoutLocation_endInput>
+    data: XOR<MailUpdateWithoutLocationEndInput, MailUncheckedUpdateWithoutLocationEndInput>
   }
 
-  export type MailUpdateManyWithWhereWithoutLocation_endInput = {
+  export type MailUpdateManyWithWhereWithoutLocationEndInput = {
     where: MailScalarWhereInput
     data: XOR<MailUpdateManyMutationInput, MailUncheckedUpdateManyWithoutMailEndInput>
   }
@@ -17629,8 +17629,8 @@ export namespace Prisma {
     services: ServiceCreateNestedOneWithoutLocationInput
     collectingOptions?: CollectingOptionCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionCreateNestedManyWithoutLocationsInput
-    mailStart?: MailCreateNestedManyWithoutLocation_startInput
-    mailEnd?: MailCreateNestedManyWithoutLocation_endInput
+    mailStart?: MailCreateNestedManyWithoutLocationStartInput
+    mailEnd?: MailCreateNestedManyWithoutLocationEndInput
   }
 
   export type LocationUncheckedCreateWithoutLocationTypeInput = {
@@ -17645,8 +17645,8 @@ export namespace Prisma {
     serviceId: string
     collectingOptions?: CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput
-    mailStart?: MailUncheckedCreateNestedManyWithoutLocation_startInput
-    mailEnd?: MailUncheckedCreateNestedManyWithoutLocation_endInput
+    mailStart?: MailUncheckedCreateNestedManyWithoutLocationStartInput
+    mailEnd?: MailUncheckedCreateNestedManyWithoutLocationEndInput
   }
 
   export type LocationCreateOrConnectWithoutLocationTypeInput = {
@@ -17687,8 +17687,8 @@ export namespace Prisma {
     LocationType: LocationTypeCreateNestedOneWithoutLocationInput
     collectingOptions?: CollectingOptionCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionCreateNestedManyWithoutLocationsInput
-    mailStart?: MailCreateNestedManyWithoutLocation_startInput
-    mailEnd?: MailCreateNestedManyWithoutLocation_endInput
+    mailStart?: MailCreateNestedManyWithoutLocationStartInput
+    mailEnd?: MailCreateNestedManyWithoutLocationEndInput
   }
 
   export type LocationUncheckedCreateWithoutServicesInput = {
@@ -17703,8 +17703,8 @@ export namespace Prisma {
     LocationTypeId: string
     collectingOptions?: CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput
-    mailStart?: MailUncheckedCreateNestedManyWithoutLocation_startInput
-    mailEnd?: MailUncheckedCreateNestedManyWithoutLocation_endInput
+    mailStart?: MailUncheckedCreateNestedManyWithoutLocationStartInput
+    mailEnd?: MailUncheckedCreateNestedManyWithoutLocationEndInput
   }
 
   export type LocationCreateOrConnectWithoutServicesInput = {
@@ -17745,8 +17745,8 @@ export namespace Prisma {
     LocationType: LocationTypeCreateNestedOneWithoutLocationInput
     services: ServiceCreateNestedOneWithoutLocationInput
     processingOptions?: ProcessingOptionCreateNestedManyWithoutLocationsInput
-    mailStart?: MailCreateNestedManyWithoutLocation_startInput
-    mailEnd?: MailCreateNestedManyWithoutLocation_endInput
+    mailStart?: MailCreateNestedManyWithoutLocationStartInput
+    mailEnd?: MailCreateNestedManyWithoutLocationEndInput
   }
 
   export type LocationUncheckedCreateWithoutCollectingOptionsInput = {
@@ -17761,8 +17761,8 @@ export namespace Prisma {
     LocationTypeId: string
     serviceId: string
     processingOptions?: ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput
-    mailStart?: MailUncheckedCreateNestedManyWithoutLocation_startInput
-    mailEnd?: MailUncheckedCreateNestedManyWithoutLocation_endInput
+    mailStart?: MailUncheckedCreateNestedManyWithoutLocationStartInput
+    mailEnd?: MailUncheckedCreateNestedManyWithoutLocationEndInput
   }
 
   export type LocationCreateOrConnectWithoutCollectingOptionsInput = {
@@ -17798,8 +17798,8 @@ export namespace Prisma {
     LocationType: LocationTypeCreateNestedOneWithoutLocationInput
     services: ServiceCreateNestedOneWithoutLocationInput
     collectingOptions?: CollectingOptionCreateNestedManyWithoutLocationsInput
-    mailStart?: MailCreateNestedManyWithoutLocation_startInput
-    mailEnd?: MailCreateNestedManyWithoutLocation_endInput
+    mailStart?: MailCreateNestedManyWithoutLocationStartInput
+    mailEnd?: MailCreateNestedManyWithoutLocationEndInput
   }
 
   export type LocationUncheckedCreateWithoutProcessingOptionsInput = {
@@ -17814,8 +17814,8 @@ export namespace Prisma {
     LocationTypeId: string
     serviceId: string
     collectingOptions?: CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput
-    mailStart?: MailUncheckedCreateNestedManyWithoutLocation_startInput
-    mailEnd?: MailUncheckedCreateNestedManyWithoutLocation_endInput
+    mailStart?: MailUncheckedCreateNestedManyWithoutLocationStartInput
+    mailEnd?: MailUncheckedCreateNestedManyWithoutLocationEndInput
   }
 
   export type LocationCreateOrConnectWithoutProcessingOptionsInput = {
@@ -17852,7 +17852,7 @@ export namespace Prisma {
     services: ServiceCreateNestedOneWithoutLocationInput
     collectingOptions?: CollectingOptionCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionCreateNestedManyWithoutLocationsInput
-    mailEnd?: MailCreateNestedManyWithoutLocation_endInput
+    mailEnd?: MailCreateNestedManyWithoutLocationEndInput
   }
 
   export type LocationUncheckedCreateWithoutMailStartInput = {
@@ -17868,7 +17868,7 @@ export namespace Prisma {
     serviceId: string
     collectingOptions?: CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput
-    mailEnd?: MailUncheckedCreateNestedManyWithoutLocation_endInput
+    mailEnd?: MailUncheckedCreateNestedManyWithoutLocationEndInput
   }
 
   export type LocationCreateOrConnectWithoutMailStartInput = {
@@ -17889,7 +17889,7 @@ export namespace Prisma {
     services: ServiceCreateNestedOneWithoutLocationInput
     collectingOptions?: CollectingOptionCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionCreateNestedManyWithoutLocationsInput
-    mailStart?: MailCreateNestedManyWithoutLocation_startInput
+    mailStart?: MailCreateNestedManyWithoutLocationStartInput
   }
 
   export type LocationUncheckedCreateWithoutMailEndInput = {
@@ -17905,7 +17905,7 @@ export namespace Prisma {
     serviceId: string
     collectingOptions?: CollectingOptionUncheckedCreateNestedManyWithoutLocationsInput
     processingOptions?: ProcessingOptionUncheckedCreateNestedManyWithoutLocationsInput
-    mailStart?: MailUncheckedCreateNestedManyWithoutLocation_startInput
+    mailStart?: MailUncheckedCreateNestedManyWithoutLocationStartInput
   }
 
   export type LocationCreateOrConnectWithoutMailEndInput = {
@@ -17956,7 +17956,7 @@ export namespace Prisma {
     services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
     collectingOptions?: CollectingOptionUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUpdateManyWithoutLocationsNestedInput
-    mailEnd?: MailUpdateManyWithoutLocation_endNestedInput
+    mailEnd?: MailUpdateManyWithoutLocationEndNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutMailStartInput = {
@@ -17972,7 +17972,7 @@ export namespace Prisma {
     serviceId?: StringFieldUpdateOperationsInput | string
     collectingOptions?: CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput
-    mailEnd?: MailUncheckedUpdateManyWithoutLocation_endNestedInput
+    mailEnd?: MailUncheckedUpdateManyWithoutLocationEndNestedInput
   }
 
   export type LocationUpsertWithoutMailEndInput = {
@@ -17993,7 +17993,7 @@ export namespace Prisma {
     services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
     collectingOptions?: CollectingOptionUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUpdateManyWithoutLocationsNestedInput
-    mailStart?: MailUpdateManyWithoutLocation_startNestedInput
+    mailStart?: MailUpdateManyWithoutLocationStartNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutMailEndInput = {
@@ -18009,7 +18009,7 @@ export namespace Prisma {
     serviceId?: StringFieldUpdateOperationsInput | string
     collectingOptions?: CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput
-    mailStart?: MailUncheckedUpdateManyWithoutLocation_startNestedInput
+    mailStart?: MailUncheckedUpdateManyWithoutLocationStartNestedInput
   }
 
   export type MailCarrierUpsertWithoutMailInput = {
@@ -18039,26 +18039,26 @@ export namespace Prisma {
 
   export type MailCreateWithoutMailCarrierInput = {
     id?: string
-    mail_code: string
-    mail_category_id: string
-    recipient_address: string
-    sender_address: string
-    time_inserted?: Date | string
-    time_delivered?: Date | string | null
-    location_start: LocationCreateNestedOneWithoutMailStartInput
-    location_end?: LocationCreateNestedOneWithoutMailEndInput
+    mailCode: string
+    mailCategory_id: string
+    recipientAddress: string
+    senderAddress: string
+    timeInserted?: Date | string
+    timeDelivered?: Date | string | null
+    locationStart: LocationCreateNestedOneWithoutMailStartInput
+    locationEnd?: LocationCreateNestedOneWithoutMailEndInput
   }
 
   export type MailUncheckedCreateWithoutMailCarrierInput = {
     id?: string
-    mail_code: string
-    mail_category_id: string
-    recipient_address: string
-    sender_address: string
-    location_start_id: string
-    location_end_id?: string | null
-    time_inserted?: Date | string
-    time_delivered?: Date | string | null
+    mailCode: string
+    mailCategory_id: string
+    recipientAddress: string
+    senderAddress: string
+    locationStart_id: string
+    locationEnd_id?: string | null
+    timeInserted?: Date | string
+    timeDelivered?: Date | string | null
   }
 
   export type MailCreateOrConnectWithoutMailCarrierInput = {
@@ -18278,8 +18278,8 @@ export namespace Prisma {
     services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
     collectingOptions?: CollectingOptionUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUpdateManyWithoutLocationsNestedInput
-    mailStart?: MailUpdateManyWithoutLocation_startNestedInput
-    mailEnd?: MailUpdateManyWithoutLocation_endNestedInput
+    mailStart?: MailUpdateManyWithoutLocationStartNestedInput
+    mailEnd?: MailUpdateManyWithoutLocationEndNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutPostOfficeInChargeInput = {
@@ -18294,8 +18294,8 @@ export namespace Prisma {
     serviceId?: StringFieldUpdateOperationsInput | string
     collectingOptions?: CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput
-    mailStart?: MailUncheckedUpdateManyWithoutLocation_startNestedInput
-    mailEnd?: MailUncheckedUpdateManyWithoutLocation_endNestedInput
+    mailStart?: MailUncheckedUpdateManyWithoutLocationStartNestedInput
+    mailEnd?: MailUncheckedUpdateManyWithoutLocationEndNestedInput
   }
 
   export type LocationUncheckedUpdateManyWithoutLocationsInput = {
@@ -18310,27 +18310,27 @@ export namespace Prisma {
     serviceId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type MailCreateManyLocation_startInput = {
+  export type MailCreateManyLocationStartInput = {
     id?: string
-    mail_code: string
-    mail_category_id: string
-    recipient_address: string
-    sender_address: string
-    location_end_id?: string | null
-    time_inserted?: Date | string
-    time_delivered?: Date | string | null
+    mailCode: string
+    mailCategory_id: string
+    recipientAddress: string
+    senderAddress: string
+    locationEnd_id?: string | null
+    timeInserted?: Date | string
+    timeDelivered?: Date | string | null
     mailCarrierId: string
   }
 
-  export type MailCreateManyLocation_endInput = {
+  export type MailCreateManyLocationEndInput = {
     id?: string
-    mail_code: string
-    mail_category_id: string
-    recipient_address: string
-    sender_address: string
-    location_start_id: string
-    time_inserted?: Date | string
-    time_delivered?: Date | string | null
+    mailCode: string
+    mailCategory_id: string
+    recipientAddress: string
+    senderAddress: string
+    locationStart_id: string
+    timeInserted?: Date | string
+    timeDelivered?: Date | string | null
     mailCarrierId: string
   }
 
@@ -18388,75 +18388,75 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type MailUpdateWithoutLocation_startInput = {
+  export type MailUpdateWithoutLocationStartInput = {
     id?: StringFieldUpdateOperationsInput | string
-    mail_code?: StringFieldUpdateOperationsInput | string
-    mail_category_id?: StringFieldUpdateOperationsInput | string
-    recipient_address?: StringFieldUpdateOperationsInput | string
-    sender_address?: StringFieldUpdateOperationsInput | string
-    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
-    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    location_end?: LocationUpdateOneWithoutMailEndNestedInput
+    mailCode?: StringFieldUpdateOperationsInput | string
+    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    recipientAddress?: StringFieldUpdateOperationsInput | string
+    senderAddress?: StringFieldUpdateOperationsInput | string
+    timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    locationEnd?: LocationUpdateOneWithoutMailEndNestedInput
     mailCarrier?: MailCarrierUpdateOneRequiredWithoutMailNestedInput
   }
 
-  export type MailUncheckedUpdateWithoutLocation_startInput = {
+  export type MailUncheckedUpdateWithoutLocationStartInput = {
     id?: StringFieldUpdateOperationsInput | string
-    mail_code?: StringFieldUpdateOperationsInput | string
-    mail_category_id?: StringFieldUpdateOperationsInput | string
-    recipient_address?: StringFieldUpdateOperationsInput | string
-    sender_address?: StringFieldUpdateOperationsInput | string
-    location_end_id?: NullableStringFieldUpdateOperationsInput | string | null
-    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
-    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mailCode?: StringFieldUpdateOperationsInput | string
+    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    recipientAddress?: StringFieldUpdateOperationsInput | string
+    senderAddress?: StringFieldUpdateOperationsInput | string
+    locationEnd_id?: NullableStringFieldUpdateOperationsInput | string | null
+    timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     mailCarrierId?: StringFieldUpdateOperationsInput | string
   }
 
   export type MailUncheckedUpdateManyWithoutMailStartInput = {
     id?: StringFieldUpdateOperationsInput | string
-    mail_code?: StringFieldUpdateOperationsInput | string
-    mail_category_id?: StringFieldUpdateOperationsInput | string
-    recipient_address?: StringFieldUpdateOperationsInput | string
-    sender_address?: StringFieldUpdateOperationsInput | string
-    location_end_id?: NullableStringFieldUpdateOperationsInput | string | null
-    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
-    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mailCode?: StringFieldUpdateOperationsInput | string
+    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    recipientAddress?: StringFieldUpdateOperationsInput | string
+    senderAddress?: StringFieldUpdateOperationsInput | string
+    locationEnd_id?: NullableStringFieldUpdateOperationsInput | string | null
+    timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     mailCarrierId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type MailUpdateWithoutLocation_endInput = {
+  export type MailUpdateWithoutLocationEndInput = {
     id?: StringFieldUpdateOperationsInput | string
-    mail_code?: StringFieldUpdateOperationsInput | string
-    mail_category_id?: StringFieldUpdateOperationsInput | string
-    recipient_address?: StringFieldUpdateOperationsInput | string
-    sender_address?: StringFieldUpdateOperationsInput | string
-    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
-    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    location_start?: LocationUpdateOneRequiredWithoutMailStartNestedInput
+    mailCode?: StringFieldUpdateOperationsInput | string
+    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    recipientAddress?: StringFieldUpdateOperationsInput | string
+    senderAddress?: StringFieldUpdateOperationsInput | string
+    timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    locationStart?: LocationUpdateOneRequiredWithoutMailStartNestedInput
     mailCarrier?: MailCarrierUpdateOneRequiredWithoutMailNestedInput
   }
 
-  export type MailUncheckedUpdateWithoutLocation_endInput = {
+  export type MailUncheckedUpdateWithoutLocationEndInput = {
     id?: StringFieldUpdateOperationsInput | string
-    mail_code?: StringFieldUpdateOperationsInput | string
-    mail_category_id?: StringFieldUpdateOperationsInput | string
-    recipient_address?: StringFieldUpdateOperationsInput | string
-    sender_address?: StringFieldUpdateOperationsInput | string
-    location_start_id?: StringFieldUpdateOperationsInput | string
-    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
-    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mailCode?: StringFieldUpdateOperationsInput | string
+    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    recipientAddress?: StringFieldUpdateOperationsInput | string
+    senderAddress?: StringFieldUpdateOperationsInput | string
+    locationStart_id?: StringFieldUpdateOperationsInput | string
+    timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     mailCarrierId?: StringFieldUpdateOperationsInput | string
   }
 
   export type MailUncheckedUpdateManyWithoutMailEndInput = {
     id?: StringFieldUpdateOperationsInput | string
-    mail_code?: StringFieldUpdateOperationsInput | string
-    mail_category_id?: StringFieldUpdateOperationsInput | string
-    recipient_address?: StringFieldUpdateOperationsInput | string
-    sender_address?: StringFieldUpdateOperationsInput | string
-    location_start_id?: StringFieldUpdateOperationsInput | string
-    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
-    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mailCode?: StringFieldUpdateOperationsInput | string
+    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    recipientAddress?: StringFieldUpdateOperationsInput | string
+    senderAddress?: StringFieldUpdateOperationsInput | string
+    locationStart_id?: StringFieldUpdateOperationsInput | string
+    timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     mailCarrierId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -18484,8 +18484,8 @@ export namespace Prisma {
     services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
     collectingOptions?: CollectingOptionUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUpdateManyWithoutLocationsNestedInput
-    mailStart?: MailUpdateManyWithoutLocation_startNestedInput
-    mailEnd?: MailUpdateManyWithoutLocation_endNestedInput
+    mailStart?: MailUpdateManyWithoutLocationStartNestedInput
+    mailEnd?: MailUpdateManyWithoutLocationEndNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutLocationTypeInput = {
@@ -18500,8 +18500,8 @@ export namespace Prisma {
     serviceId?: StringFieldUpdateOperationsInput | string
     collectingOptions?: CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput
-    mailStart?: MailUncheckedUpdateManyWithoutLocation_startNestedInput
-    mailEnd?: MailUncheckedUpdateManyWithoutLocation_endNestedInput
+    mailStart?: MailUncheckedUpdateManyWithoutLocationStartNestedInput
+    mailEnd?: MailUncheckedUpdateManyWithoutLocationEndNestedInput
   }
 
   export type LocationUncheckedUpdateManyWithoutLocationInput = {
@@ -18540,8 +18540,8 @@ export namespace Prisma {
     LocationType?: LocationTypeUpdateOneRequiredWithoutLocationNestedInput
     collectingOptions?: CollectingOptionUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUpdateManyWithoutLocationsNestedInput
-    mailStart?: MailUpdateManyWithoutLocation_startNestedInput
-    mailEnd?: MailUpdateManyWithoutLocation_endNestedInput
+    mailStart?: MailUpdateManyWithoutLocationStartNestedInput
+    mailEnd?: MailUpdateManyWithoutLocationEndNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutServicesInput = {
@@ -18556,8 +18556,8 @@ export namespace Prisma {
     LocationTypeId?: StringFieldUpdateOperationsInput | string
     collectingOptions?: CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput
     processingOptions?: ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput
-    mailStart?: MailUncheckedUpdateManyWithoutLocation_startNestedInput
-    mailEnd?: MailUncheckedUpdateManyWithoutLocation_endNestedInput
+    mailStart?: MailUncheckedUpdateManyWithoutLocationStartNestedInput
+    mailEnd?: MailUncheckedUpdateManyWithoutLocationEndNestedInput
   }
 
   export type LocationUpdateWithoutCollectingOptionsInput = {
@@ -18572,8 +18572,8 @@ export namespace Prisma {
     LocationType?: LocationTypeUpdateOneRequiredWithoutLocationNestedInput
     services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
     processingOptions?: ProcessingOptionUpdateManyWithoutLocationsNestedInput
-    mailStart?: MailUpdateManyWithoutLocation_startNestedInput
-    mailEnd?: MailUpdateManyWithoutLocation_endNestedInput
+    mailStart?: MailUpdateManyWithoutLocationStartNestedInput
+    mailEnd?: MailUpdateManyWithoutLocationEndNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutCollectingOptionsInput = {
@@ -18588,8 +18588,8 @@ export namespace Prisma {
     LocationTypeId?: StringFieldUpdateOperationsInput | string
     serviceId?: StringFieldUpdateOperationsInput | string
     processingOptions?: ProcessingOptionUncheckedUpdateManyWithoutLocationsNestedInput
-    mailStart?: MailUncheckedUpdateManyWithoutLocation_startNestedInput
-    mailEnd?: MailUncheckedUpdateManyWithoutLocation_endNestedInput
+    mailStart?: MailUncheckedUpdateManyWithoutLocationStartNestedInput
+    mailEnd?: MailUncheckedUpdateManyWithoutLocationEndNestedInput
   }
 
   export type LocationUpdateWithoutProcessingOptionsInput = {
@@ -18604,8 +18604,8 @@ export namespace Prisma {
     LocationType?: LocationTypeUpdateOneRequiredWithoutLocationNestedInput
     services?: ServiceUpdateOneRequiredWithoutLocationNestedInput
     collectingOptions?: CollectingOptionUpdateManyWithoutLocationsNestedInput
-    mailStart?: MailUpdateManyWithoutLocation_startNestedInput
-    mailEnd?: MailUpdateManyWithoutLocation_endNestedInput
+    mailStart?: MailUpdateManyWithoutLocationStartNestedInput
+    mailEnd?: MailUpdateManyWithoutLocationEndNestedInput
   }
 
   export type LocationUncheckedUpdateWithoutProcessingOptionsInput = {
@@ -18620,56 +18620,56 @@ export namespace Prisma {
     LocationTypeId?: StringFieldUpdateOperationsInput | string
     serviceId?: StringFieldUpdateOperationsInput | string
     collectingOptions?: CollectingOptionUncheckedUpdateManyWithoutLocationsNestedInput
-    mailStart?: MailUncheckedUpdateManyWithoutLocation_startNestedInput
-    mailEnd?: MailUncheckedUpdateManyWithoutLocation_endNestedInput
+    mailStart?: MailUncheckedUpdateManyWithoutLocationStartNestedInput
+    mailEnd?: MailUncheckedUpdateManyWithoutLocationEndNestedInput
   }
 
   export type MailCreateManyMailCarrierInput = {
     id?: string
-    mail_code: string
-    mail_category_id: string
-    recipient_address: string
-    sender_address: string
-    location_start_id: string
-    location_end_id?: string | null
-    time_inserted?: Date | string
-    time_delivered?: Date | string | null
+    mailCode: string
+    mailCategory_id: string
+    recipientAddress: string
+    senderAddress: string
+    locationStart_id: string
+    locationEnd_id?: string | null
+    timeInserted?: Date | string
+    timeDelivered?: Date | string | null
   }
 
   export type MailUpdateWithoutMailCarrierInput = {
     id?: StringFieldUpdateOperationsInput | string
-    mail_code?: StringFieldUpdateOperationsInput | string
-    mail_category_id?: StringFieldUpdateOperationsInput | string
-    recipient_address?: StringFieldUpdateOperationsInput | string
-    sender_address?: StringFieldUpdateOperationsInput | string
-    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
-    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    location_start?: LocationUpdateOneRequiredWithoutMailStartNestedInput
-    location_end?: LocationUpdateOneWithoutMailEndNestedInput
+    mailCode?: StringFieldUpdateOperationsInput | string
+    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    recipientAddress?: StringFieldUpdateOperationsInput | string
+    senderAddress?: StringFieldUpdateOperationsInput | string
+    timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    locationStart?: LocationUpdateOneRequiredWithoutMailStartNestedInput
+    locationEnd?: LocationUpdateOneWithoutMailEndNestedInput
   }
 
   export type MailUncheckedUpdateWithoutMailCarrierInput = {
     id?: StringFieldUpdateOperationsInput | string
-    mail_code?: StringFieldUpdateOperationsInput | string
-    mail_category_id?: StringFieldUpdateOperationsInput | string
-    recipient_address?: StringFieldUpdateOperationsInput | string
-    sender_address?: StringFieldUpdateOperationsInput | string
-    location_start_id?: StringFieldUpdateOperationsInput | string
-    location_end_id?: NullableStringFieldUpdateOperationsInput | string | null
-    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
-    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mailCode?: StringFieldUpdateOperationsInput | string
+    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    recipientAddress?: StringFieldUpdateOperationsInput | string
+    senderAddress?: StringFieldUpdateOperationsInput | string
+    locationStart_id?: StringFieldUpdateOperationsInput | string
+    locationEnd_id?: NullableStringFieldUpdateOperationsInput | string | null
+    timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type MailUncheckedUpdateManyWithoutMailInput = {
     id?: StringFieldUpdateOperationsInput | string
-    mail_code?: StringFieldUpdateOperationsInput | string
-    mail_category_id?: StringFieldUpdateOperationsInput | string
-    recipient_address?: StringFieldUpdateOperationsInput | string
-    sender_address?: StringFieldUpdateOperationsInput | string
-    location_start_id?: StringFieldUpdateOperationsInput | string
-    location_end_id?: NullableStringFieldUpdateOperationsInput | string | null
-    time_inserted?: DateTimeFieldUpdateOperationsInput | Date | string
-    time_delivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mailCode?: StringFieldUpdateOperationsInput | string
+    mailCategory_id?: StringFieldUpdateOperationsInput | string
+    recipientAddress?: StringFieldUpdateOperationsInput | string
+    senderAddress?: StringFieldUpdateOperationsInput | string
+    locationStart_id?: StringFieldUpdateOperationsInput | string
+    locationEnd_id?: NullableStringFieldUpdateOperationsInput | string | null
+    timeInserted?: DateTimeFieldUpdateOperationsInput | Date | string
+    timeDelivered?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
 

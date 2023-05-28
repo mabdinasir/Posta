@@ -148,14 +148,14 @@ exports.Prisma.MailCarrierScalarFieldEnum = {
 
 exports.Prisma.MailScalarFieldEnum = {
   id: 'id',
-  mail_code: 'mail_code',
-  mail_category_id: 'mail_category_id',
-  recipient_address: 'recipient_address',
-  sender_address: 'sender_address',
-  location_start_id: 'location_start_id',
-  location_end_id: 'location_end_id',
-  time_inserted: 'time_inserted',
-  time_delivered: 'time_delivered',
+  mailCode: 'mailCode',
+  mailCategory_id: 'mailCategory_id',
+  recipientAddress: 'recipientAddress',
+  senderAddress: 'senderAddress',
+  locationStart_id: 'locationStart_id',
+  locationEnd_id: 'locationEnd_id',
+  timeInserted: 'timeInserted',
+  timeDelivered: 'timeDelivered',
   mailCarrierId: 'mailCarrierId'
 };
 

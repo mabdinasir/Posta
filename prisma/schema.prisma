@@ -162,17 +162,17 @@ model ProcessingOption {
 
 model Mail {
   id                  String        @id @unique @default(uuid())
-  mail_code           String        @unique
-  mail_category_id    String
-  recipient_address   String
-  sender_address      String
-  location_start_id   String
-  location_end_id     String?
-  time_inserted       DateTime      @default(now())
-  time_delivered      DateTime?
+  mailCode           String        @unique
+  mailCategory_id    String
+  recipientAddress   String
+  senderAddress      String
+  locationStart_id   String
+  locationEnd_id     String?
+  timeInserted       DateTime      @default(now())
+  timeDelivered      DateTime?
 
-  location_start      Location      @relation("MailLocationStart", fields: [location_start_id], references: [id])
-  location_end        Location?     @relation("MailLocationEnd", fields: [location_end_id], references: [id])
+  locationStart      Location      @relation("MailLocationStart", fields: [locationStart_id], references: [id])
+  locationEnd        Location?     @relation("MailLocationEnd", fields: [locationEnd_id], references: [id])
 
   mailCarrierId       String
   mailCarrier         MailCarrier   @relation(fields: [mailCarrierId], references: [id])
